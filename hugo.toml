@@ -26,3 +26,28 @@ enableRobotsTXT   = true
   source = "themes/jmp/assets"
   target = "assets"
 
+[[menu.main]]
+  name = "Lab"
+  url = "/lab/"
+  weight = 1
+
+[[menu.main]]
+  name = "Research"
+  url = "/research/"
+  weight = 2
+
+[[menu.main]]
+  name = "Newsletter"
+  url = "/newsletter/"
+  weight = 3
+
+[[menu.main]]
+  name = "About"
+  url = "/about/"
+  weight = 4
+
+[[menu.main]]
+  name = "Media"
+  url = "/media/"
+  weight = 5
+
