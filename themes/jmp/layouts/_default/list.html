@@ -1,0 +1,53 @@
+{{ define "main" }}
+
+<!-- Header -->
+<header class="bg-navy border-b-4 border-gold px-6 lg:px-20 pt-20 pb-16">
+  <div class="max-w-content mx-auto">
+    {{ with .Params.eyebrow }}
+    <div class="flex items-center gap-2 mb-4">
+      <span class="w-6 h-px bg-gold opacity-70"></span>
+      <span class="font-mono text-xs font-medium tracking-ultra uppercase text-gold">{{ . }}</span>
+    </div>
+    {{ end }}
+    <h1 class="font-display font-bold text-white leading-tight text-4xl md:text-5xl mb-4">
+      {{ .Title }}
+    </h1>
+    {{ with .Params.description }}
+    <p class="text-white/60 text-lg max-w-xl leading-relaxed">{{ . }}</p>
+    {{ end }}
+  </div>
+</header>
+
+<!-- Post list -->
+<section class="bg-white bg-dot-grid bg-dot px-6 lg:px-20 py-16">
+  <div class="max-w-content mx-auto">
+    <ul class="list-none m-0 p-0">
+      {{ range $i, $page := .Pages }}
+      <li class="{{ if eq $i 0 }}border-t border-b border-silk{{ else }}border-b border-silk{{ end }}">
+        <a href="{{ $page.RelPermalink }}" class="flex gap-6 py-7 no-underline hover:opacity-70 transition-opacity duration-200">
+          <span class="font-mono text-xs font-medium tracking-wider text-gold pt-1 min-w-7">
+            {{ printf "%02d" (add $i 1) }}
+          </span>
+          <div>
+            {{ with $page.Params.category }}
+            <p class="font-mono text-xs tracking-wider uppercase text-muted mb-1">
+              {{ . }} — {{ $page.Date.Format "January 2, 2006" }}
+            </p>
+            {{ else }}
+            <p class="font-mono text-xs tracking-wider uppercase text-muted mb-1">
+              {{ $page.Date.Format "January 2, 2006" }}
+            </p>
+            {{ end }}
+            <p class="font-display font-bold text-navy text-xl leading-snug mb-2">{{ $page.Title }}</p>
+            {{ with $page.Params.summary }}
+            <p class="font-sans text-sm text-muted leading-relaxed">{{ . }}</p>
+            {{ end }}
+          </div>
+        </a>
+      </li>
+      {{ end }}
+    </ul>
+  </div>
+</section>
+
+{{ end }}

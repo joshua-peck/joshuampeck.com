@@ -1,0 +1,18 @@
+<nav class="sticky top-0 z-50 bg-navy border-b border-gold/20 h-16 flex items-center justify-between px-6 lg:px-20">
+
+  <a href="/" class="font-mono text-sm font-medium tracking-ultra uppercase text-gold no-underline">
+    Joshua M. Peck
+  </a>
+
+  <ul class="hidden md:flex items-center gap-8 list-none m-0 p-0">
+    {{ range .Site.Menus.main }}
+    <li>
+      <a href="{{ .URL }}"
+         class="font-sans text-sm font-semibold no-underline transition-colors duration-200 {{ if $.IsMenuCurrent "main" . }}text-gold{{ else }}text-white/60 hover:text-gold{{ end }}">
+        {{ .Name }}
+      </a>
+    </li>
+    {{ end }}
+  </ul>
+
+</nav>

@@ -1,0 +1,17 @@
+# Hugo
+public/
+resources/_gen/
+hugo_stats.json
+
+# Node
+node_modules/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Terraform
+infra/.terraform/
+infra/*.tfstate
+infra/*.tfstate.backup
+infra/.terraform.lock.hcl

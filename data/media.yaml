@@ -1,0 +1,13 @@
+# Credibility bar on homepage — add/remove outlets as needed.
+# Set mono: true for logos that look better in monospace (e.g. CBS).
+
+- name: CBS
+  mono: true
+- name: Wall Street Journal
+  mono: false
+- name: Reuters
+  mono: false
+- name: MarketWatch
+  mono: false
+- name: Bloomberg
+  mono: false

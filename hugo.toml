@@ -1,0 +1,28 @@
+baseURL           = "https://joshuampeck.com/"
+languageCode      = "en-us"
+title             = "Joshua Peck"
+theme             = "jmp"
+enableRobotsTXT   = true
+
+[build]
+  [build.buildStats]
+    enable         = true
+    disableClasses = false
+    disableIDs     = false
+    disableTags    = false
+
+[module]
+  [module.hugoVersion]
+    extended = true
+
+[frontmatter]
+  lastmod = ["lastmod", ":git", "date"]
+
+[[module.mounts]]
+  source = "assets"
+  target = "assets"
+
+[[module.mounts]]
+  source = "themes/jmp/assets"
+  target = "assets"
+

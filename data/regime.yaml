@@ -1,0 +1,13 @@
+# Update this file every Monday when you publish the weekly regime call.
+# status: danger | boom | mid
+
+status:   danger
+label:    Danger
+date:     "April 4, 2026"
+headline: "Multiple stress signals are aligned simultaneously."
+note:     "Iran war stress period ongoing. Model assigns Danger with high probability. Defensive positioning warranted per framework rules."
+signals:
+  - Credit spreads widening
+  - VIX elevated
+  - SPX below 200-day MA
+  - Momentum negative

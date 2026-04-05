@@ -1,0 +1,62 @@
+{{ define "main" }}
+
+<article>
+
+  <!-- Header -->
+  <header class="bg-navy border-b-4 border-gold px-6 lg:px-20 pt-20 pb-16">
+    <div class="max-w-content mx-auto">
+
+      <div class="flex items-center gap-2 mb-6">
+        <a href="/research/" class="font-mono text-xs font-medium tracking-ultra uppercase text-gold/60 hover:text-gold no-underline transition-colors duration-200">
+          ← Research
+        </a>
+      </div>
+
+      {{ with .Params.category }}
+      <div class="flex items-center gap-2 mb-4">
+        <span class="w-6 h-px bg-gold opacity-70"></span>
+        <span class="font-mono text-xs font-medium tracking-ultra uppercase text-gold">{{ . }}</span>
+      </div>
+      {{ end }}
+
+      <h1 class="font-display font-bold text-white leading-tight text-3xl md:text-5xl mb-6 max-w-3xl">
+        {{ .Title }}
+      </h1>
+
+      <p class="font-mono text-xs tracking-wider text-white/40">
+        {{ .Date.Format "January 2, 2006" }}
+        {{ with .ReadingTime }} · {{ . }} min read{{ end }}
+      </p>
+
+    </div>
+  </header>
+
+  <!-- Body -->
+  <div class="bg-white bg-dot-grid bg-dot border-b border-silk px-6 lg:px-20 py-16">
+    <div class="max-w-2xl mx-auto prose prose-lg font-sans
+                prose-headings:font-display prose-headings:text-navy
+                prose-a:text-navy prose-a:border-b prose-a:border-gold prose-a:no-underline
+                hover:prose-a:text-gold-dark
+                prose-blockquote:border-gold prose-blockquote:text-muted prose-blockquote:italic
+                prose-hr:border-silk">
+      {{ .Content }}
+    </div>
+  </div>
+
+  <!-- Footer nav -->
+  <div class="bg-cream border-b border-silk px-6 lg:px-20 py-10">
+    <div class="max-w-content mx-auto flex items-center justify-between flex-wrap gap-4">
+      <a href="/research/"
+         class="font-sans font-semibold text-sm text-navy no-underline inline-flex items-center gap-1 border-b-2 border-gold pb-px hover:text-gold-dark hover:border-gold-dark transition-colors duration-200">
+        ← All research
+      </a>
+      <a href="{{ .Site.Params.newsletterURL }}"
+         class="bg-gold text-navy font-semibold text-sm px-6 py-3 rounded-lg no-underline hover:bg-gold-dark transition-colors duration-200">
+        Subscribe to the newsletter →
+      </a>
+    </div>
+  </div>
+
+</article>
+
+{{ end }}

@@ -1,0 +1,13 @@
+@import "tailwindcss";
+@config "./tailwind.config.js";
+@plugin "@tailwindcss/typography";
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'Source Sans 3', sans-serif;
+  }
+}

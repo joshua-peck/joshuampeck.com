@@ -1,0 +1,56 @@
+<footer class="bg-navy border-t border-gold/20 px-6 lg:px-20 pt-12 pb-8">
+  <div class="max-w-content mx-auto">
+
+    <div class="flex flex-wrap justify-between gap-10 mb-10">
+
+      <div>
+        <p class="font-mono text-sm font-medium tracking-ultra uppercase text-gold mb-2">Joshua M. Peck</p>
+        <p class="font-sans text-sm text-white/30 max-w-xs leading-relaxed">
+          Quantitative researcher applying complexity science to systematic macro trading.
+        </p>
+      </div>
+
+      <div class="flex flex-wrap gap-12">
+        <div>
+          <p class="font-mono text-xs tracking-ultra uppercase text-white/30 mb-3">Work</p>
+          <ul class="list-none m-0 p-0 space-y-2">
+            <li><a href="/lab/regime-detection/" class="font-sans text-sm text-white/50 no-underline hover:text-gold transition-colors duration-200">MacroContext</a></li>
+            <li><a href="/lab/"                  class="font-sans text-sm text-white/50 no-underline hover:text-gold transition-colors duration-200">The Lab</a></li>
+            <li><a href="/open-source/"          class="font-sans text-sm text-white/50 no-underline hover:text-gold transition-colors duration-200">Open Source</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="font-mono text-xs tracking-ultra uppercase text-white/30 mb-3">Writing</p>
+          <ul class="list-none m-0 p-0 space-y-2">
+            <li><a href="/newsletter/" class="font-sans text-sm text-white/50 no-underline hover:text-gold transition-colors duration-200">Newsletter</a></li>
+            <li><a href="/research/"   class="font-sans text-sm text-white/50 no-underline hover:text-gold transition-colors duration-200">Research</a></li>
+            <li><a href="/book/"       class="font-sans text-sm text-white/50 no-underline hover:text-gold transition-colors duration-200">Book</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="font-mono text-xs tracking-ultra uppercase text-white/30 mb-3">More</p>
+          <ul class="list-none m-0 p-0 space-y-2">
+            <li><a href="/about/"   class="font-sans text-sm text-white/50 no-underline hover:text-gold transition-colors duration-200">About</a></li>
+            <li><a href="/media/"   class="font-sans text-sm text-white/50 no-underline hover:text-gold transition-colors duration-200">Media</a></li>
+            <li><a href="/contact/" class="font-sans text-sm text-white/50 no-underline hover:text-gold transition-colors duration-200">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="border-t border-white/10 pt-6 flex flex-wrap items-center justify-between gap-4">
+      <p class="font-mono text-xs tracking-wider text-white/25">
+        © {{ now.Year }} Joshua M. Peck / AppliedComplexity
+      </p>
+      <div class="flex gap-5">
+        {{ with .Site.Params.linkedinURL }}
+        <a href="{{ . }}" class="font-mono text-xs font-medium tracking-ultra uppercase text-white/30 no-underline hover:text-gold transition-colors duration-200">LinkedIn</a>
+        {{ end }}
+        {{ with .Site.Params.twitterURL }}
+        <a href="{{ . }}" class="font-mono text-xs font-medium tracking-ultra uppercase text-white/30 no-underline hover:text-gold transition-colors duration-200">X / Twitter</a>
+        {{ end }}
+      </div>
+    </div>
+
+  </div>
+</footer>

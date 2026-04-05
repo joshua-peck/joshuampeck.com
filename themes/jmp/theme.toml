@@ -1,0 +1,8 @@
+name        = "JoshPeck"
+license     = "MIT"
+licenselink = "https://github.com/joshuampeck/joshuampeck.com/blob/main/LICENSE"
+description = "Personal site theme for joshuampeck.com — refined institutional aesthetic for quantitative research."
+homepage    = "https://joshuampeck.com"
+tags        = ["personal", "research", "minimal"]
+features    = ["tailwindcss"]
+min_version = "0.120.0"
