@@ -1,5 +1,5 @@
 ENV=dev
-PROJECT_ID=virtualbusinessmailbox
+PROJECT_ID=joshuampeck
 GOOGLE_APPLICATION_CREDENTIALS=~/.config/gcloud/application_default_credentials.json
 
 export $(cat ../.env | xargs)
@@ -7,28 +7,19 @@ export $(cat ../.env | xargs)
 .SILENT: refresh plan apply
 
 refresh:
-	terraform refresh  -var="project_id=$(PROJECT_ID)" -var="env=$(ENV)" \
-		-var="stripe_secret_key=${STRIPE_SECRET_KEY}" \
-  		-var="stripe_webhook_secret=${STRIPE_WEBHOOK_SECRET}" \
-  		-var="teams_webhook_url=${TEAMS_WEBHOOK_URL}"
+	terraform refresh  -var="project_id=$(PROJECT_ID)" -var="env=$(ENV)" 
 
 plan:
-	terraform plan -var="project_id=$(PROJECT_ID)" -var="env=$(ENV)" \
-		-var="stripe_secret_key=${STRIPE_SECRET_KEY}" \
-  		-var="stripe_webhook_secret=${STRIPE_WEBHOOK_SECRET}" \
-  		-var="teams_webhook_url=${TEAMS_WEBHOOK_URL}"
+	terraform plan -var="project_id=$(PROJECT_ID)" -var="env=$(ENV)" 
 
 apply:
-	terraform apply -var="project_id=$(PROJECT_ID)" -var="env=$(ENV)" \
-		-var="stripe_secret_key=${STRIPE_SECRET_KEY}" \
-  		-var="stripe_webhook_secret=${STRIPE_WEBHOOK_SECRET}" \
-  		-var="teams_webhook_url=${TEAMS_WEBHOOK_URL}"
+	terraform apply -var="project_id=$(PROJECT_ID)" -var="env=$(ENV)" 
 
 certificate-status:
-	gcloud compute ssl-certificates describe virtualbusinessmailbox-com-cert --global --project=virtualbusinessmailbox --format='value(managed.status)'
+	gcloud compute ssl-certificates describe joshuampeck-com-cert --global --project=joshuampeck --format='value(managed.status)'
 
 benchmark:
-	npx lighthouse https://virtualbusinessmailbox.com --only-categories=performance,seo,accessibility --view
+	npx lighthouse https://joshuampeck.com --only-categories=performance,seo,accessibility --view
 
 auth:
 	gcloud auth login
