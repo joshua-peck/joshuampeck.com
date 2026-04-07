@@ -1,0 +1,38 @@
+<!-- ════════════════════════════════════ NEWSLETTER CTA ════ -->
+<section class="bg-cream border-t border-silk px-6 lg:px-20 py-20">
+    <div class="max-w-xl mx-auto text-center">
+  
+      <div class="flex items-center justify-center gap-3 mb-5">
+        <span class="w-6 h-px bg-gold opacity-60"></span>
+        <span class="font-mono text-xs text-gold/40 tracking-wider mr-2">03</span><span class="font-mono text-xs font-medium tracking-ultra uppercase text-gold">The AppliedComplexity Newsletter</span>
+        <span class="w-6 h-px bg-gold opacity-60"></span>
+      </div>
+  
+      <h2 class="font-display font-bold text-navy leading-tight text-3xl md:text-4xl mb-4">
+        Macro regime detection, weekly.
+      </h2>
+  
+      <p class="font-sans text-base text-muted max-w-md mx-auto mb-8 leading-relaxed">
+        The current regime call, top contributing features, and research notes. Every Monday. Free.
+      </p>
+  
+      {{/* Replace action URL with your Beehiiv embed URL */}}
+      <form class="flex flex-wrap gap-3 justify-center" action="{{ .Site.Params.newsletterURL }}" method="get" target="_blank">
+        <input
+          type="email"
+          name="email"
+          placeholder="your@email.com"
+          class="flex-1 min-w-60 px-4 py-3 font-sans text-sm text-ink bg-white border border-silk rounded-lg outline-none focus:border-gold transition-colors duration-200 placeholder:text-muted"
+        />
+        <button type="submit"
+          class="px-7 py-3 bg-gold text-navy font-sans font-semibold text-sm rounded-lg border-none cursor-pointer hover:bg-gold-dark transition-colors duration-200">
+          Subscribe →
+        </button>
+      </form>
+  
+      <p class="font-sans text-xs text-muted mt-4">
+        No spam. Unsubscribe anytime. Institutional research, not financial advice.
+      </p>
+  
+    </div>
+  </section>

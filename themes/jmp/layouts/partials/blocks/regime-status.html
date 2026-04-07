@@ -1,0 +1,69 @@
+{{ $d := .Site.Data.regime }}
+{{ $r := index $d.regimes $d.current_regime }}
+
+{{/* ── Derive regime colors from status ── */}}
+{{ $borderColor := "border-danger"      }}
+
+{{ if eq $r.status "boom" }}
+  {{ $borderColor = "border-boom"     }}
+{{ else if eq $r.status "mid" }}
+  {{ $borderColor = "border-mid" }}
+{{ end }}
+
+<section class="bg-navy border-y-4 {{ $borderColor }} px-6 lg:px-20 py-20">
+  <div class="max-w-content mx-auto">
+
+    {{/* ── Two-column grid ── */}}
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-0">
+
+      {{/* ── Left column — eyebrow + regime name + date ── */}}
+      <div class="flex flex-col justify-between
+                  pr-0 lg:pr-16
+                  pb-10 lg:pb-0
+                  border-b lg:border-b-0 lg:border-r border-white/10">
+
+        {{/* Eyebrow */}}
+        <div class="flex items-center gap-2 mb-10">
+          <span class="w-6 h-px bg-white opacity-20"></span>
+          <span class="font-mono text-xs font-medium tracking-ultra uppercase text-white/40">
+            Current Regime
+          </span>
+        </div>
+
+        {{/* Regime name */}}
+        <div class="font-display font-bold text-white leading-none tracking-tight text-7xl md:text-8xl mb-6 justify-start gap-6">
+          {{ $r.label }}
+        </div>
+
+        {{/* Date */}}
+        <div class="font-mono text-sm tracking-wider text-white/40">
+          {{ $d.date }}
+        </div>
+
+      </div>
+
+      {{/* ── Right column — separator + note + link ── */}}
+      <div class="flex flex-col justify-center pt-10 lg:pt-0 pl-0 lg:pl-16 gap-6">
+
+        {{/* Short gold rule */}}
+        <div class="w-12 h-px bg-gold/30"></div>
+
+        {{/* Researcher note */}}
+        <p class="font-sans text-lg italic text-white/50 leading-relaxed">
+          {{ $r.note }}
+        </p>
+
+        {{/* Methodology link */}}
+        <a href="/lab/regime-detection/"
+           class="font-mono text-xs font-medium tracking-wider uppercase
+                  text-gold/60 hover:text-gold no-underline
+                  transition-colors duration-200">
+          Check the dashboard →
+        </a>
+
+      </div>
+
+    </div>
+
+  </div>
+</section>

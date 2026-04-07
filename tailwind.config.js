@@ -14,6 +14,9 @@ module.exports = {
     'border-boom',   'bg-boom/10',   'border-boom/30',   'bg-boom',   'text-boom',
     // Mid-Market
     'border-yellow-500', 'bg-yellow-500/10', 'border-yellow-500/30', 'bg-yellow-500', 'text-yellow-500',
+    'border-danger',
+    'border-boom', 
+    'border-yellow-500',
   ],
 
   theme: {
@@ -26,7 +29,8 @@ module.exports = {
         ink:    '#1A1A1A',
         muted:  '#6B7280',
         danger: '#E74C3C',
-        boom:   '#27AE60',
+        mid:   '#27AE60',
+        boom:    '#F1C40F',
       },
       fontFamily: {
         display: ['"Playfair Display"', 'serif'],

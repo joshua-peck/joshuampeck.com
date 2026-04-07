@@ -1,14 +1,9 @@
 # TODO
 
 ## INDEX REWRITE - AUTHORITY SITE
-
-01  NAV          — unchanged
-02  HERO         — person-first, two CTAs, no stats
-03  PRINCIPLES   — intellectual framework, 6–8 items, navy bg
-04  THE WORK     — three cards (MacroContext, Newsletter, Book)
-05  CREDIBILITY  — media bar, unchanged
-06  LIVE SIGNAL  — current regime, stripped of product framing
-07  RESEARCH     — 6 most recent posts, this is the authority core
+03  PRINCIPLES   — update principles to be more all-encompassing personal statement of principles
+05  CREDIBILITY  — media bar needs logos
+07  RESEARCH     — update after research is published
 08  ABOUT        — 3-sentence condensed bio, photo placeholder, link
 09  FOOTER       — unchanged
 

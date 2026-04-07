@@ -1,13 +1,36 @@
-# Update this file every Monday when you publish the weekly regime call.
+# Update current_regime every Monday when you publish the weekly regime call.
 # status: danger | boom | mid
 
-status:   danger
-label:    Danger
-date:     "April 5, 2026"
-headline: "Multiple stress signals are aligned simultaneously."
-note:     "Iran war stress period ongoing. Model assigns Danger with high probability. Defensive positioning warranted per framework rules."
-signals:
-  - Credit spreads widening
-  - VIX elevated
-  - SPX below 200-day MA
-  - Momentum negative
+current_regime: boom
+date:  "April 14, 2026"
+week:  "16"
+year:  "2026"
+
+regimes:
+  danger:
+    status: danger
+    label:  Danger
+    note: >
+      The conditions the model is designed to detect are present.
+      Credit stress, volatility trend, and price structure are all
+      consistent with the Danger regime. The classification updates
+      as conditions evolve.
+  mid:
+    status: mid
+    label:  Mid-Market
+    note: >
+      No acute stress signals are present. Credit spreads, volatility,
+      and price structure are all within normal ranges. The model reads
+      current conditions as Mid-Market — the baseline state that
+      describes the unremarkable majority of market history.
+  boom:
+    status: boom
+    label:  Boom
+    note: >
+      Strong directional momentum with compressing volatility. Price
+      near recent highs, credit spreads tight, trend positive. The
+      model reads current conditions as Boom — the state that captures
+      both melt-up periods and strong recoveries. Historically the
+      highest Sharpe regime, though also the one that immediately
+      precedes many major drawdowns.
+

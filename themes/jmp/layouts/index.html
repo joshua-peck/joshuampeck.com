@@ -108,7 +108,7 @@
       <span class="w-6 h-px bg-gold opacity-70"></span>
       <span class="font-mono text-xs font-medium tracking-ultra uppercase text-gold">The Work</span>
     </div>
-
+    <h2 class="font-display font-bold text-navy text-2xl leading-tight mb-8">How do you apply quantitative methods to systems that can't be predicted?</h2>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-px bg-silk rounded-xl overflow-hidden border border-silk">
 
@@ -118,10 +118,9 @@
           <span class="w-2 h-2 rounded-full bg-boom animate-pulse-dot"></span>
           <span class="font-mono text-xs font-medium tracking-widest uppercase text-boom">Live</span>
         </div>
-        <h3 class="font-display font-bold text-navy text-2xl leading-tight">MacroContext</h3>
+        <h3 class="font-display font-bold text-navy text-2xl leading-tight">MacroContext Dashboard</h3>
         <p class="font-sans text-base text-gray-600 leading-relaxed flex-1">
-          Detects prevailing macro regimes in real time. Built on Hidden Markov Models,
-          PCA preprocessing, and SHAP attribution. Updated daily.
+          A live regime detection platform for financial markets. Most models tell you where the market is going. This one tells you where it is now — Boom, Mid-Market, or Danger — updated daily as conditions evolve.
         </p>
         <a href="/lab/regime-detection/"
            class="font-sans text-sm font-semibold text-navy no-underline inline-flex items-center gap-1 border-b-2 border-gold pb-px w-fit hover:text-gold-dark hover:border-gold-dark transition-colors duration-200">
@@ -135,10 +134,9 @@
           <span class="w-2 h-2 rounded-full bg-gold animate-pulse-dot"></span>
           <span class="font-mono text-xs font-medium tracking-widest uppercase text-gold">Weekly</span>
         </div>
-        <h3 class="font-display font-bold text-navy text-2xl leading-tight">The AppliedComplexity Newsletter</h3>
+        <h3 class="font-display font-bold text-navy text-2xl leading-tight">Applied Complexity Newsletter</h3>
         <p class="font-sans text-base text-gray-600 leading-relaxed flex-1">
-          Publishes the weekly regime call, model updates, and research notes on the
-          intersection of complexity science and systematic trading.
+          A weekly research publication on financial systems. The regime call every Monday — which behavioral state markets are currently in, which signals drove the classification, and what the research is showing about how to think about it.
         </p>
         <a href="/newsletter/"
            class="font-sans text-sm font-semibold text-navy no-underline inline-flex items-center gap-1 border-b-2 border-gold pb-px w-fit hover:text-gold-dark hover:border-gold-dark transition-colors duration-200">
@@ -153,9 +151,7 @@
         </div>
         <h3 class="font-display font-bold text-navy text-2xl leading-tight">Cryptocurrency Risk Management</h3>
         <p class="font-sans text-base text-gray-600 leading-relaxed flex-1">
-          The earlier expression. The same conviction that markets reward rigorous
-          thinking about the environment you're actually in — applied to an asset class
-          most institutions were approaching with the wrong framework.
+          Published 2022. A rigorous risk framework for institutional crypto exposure. Classical models weren't built for this asset class. Written for family offices and wealth managers who needed one that worked.
         </p>
         <a href="/book/"
            class="font-sans text-sm font-semibold text-navy no-underline inline-flex items-center gap-1 border-b-2 border-gold pb-px w-fit hover:text-gold-dark hover:border-gold-dark transition-colors duration-200">
@@ -167,9 +163,6 @@
 
   </div>
 </section>
-
-
-
 
 <!-- ════════════════════════════════════ CREDIBILITY BAR ════ -->
 <div class="bg-cream border-y border-silk px-6 lg:px-20 py-12">
@@ -189,50 +182,10 @@
 
 
 <!-- ════════════════════════════════════ CURRENT REGIME ════ -->
-<section class="bg-navy border-y-4 {{ $secBorder }} px-6 lg:px-20 py-20">
-  <div class="max-w-content mx-auto">
+{{ partial "blocks/regime-status.html" . }}
 
-    <div class="flex items-center gap-2 mb-6">
-      <span class="w-6 h-px bg-white opacity-20"></span>
-      <span class="font-mono text-xs text-white/20 tracking-wider mr-2">01</span><span class="font-mono text-xs font-medium tracking-ultra uppercase text-white/40">Current Regime</span>
-    </div>
 
-    <div class="inline-flex items-center gap-3 {{ $badgeBg }} border {{ $badgeBorder }} rounded-lg px-4 py-2 mb-6">
-      <span class="w-2.5 h-2.5 rounded-full {{ $dotColor }} animate-pulse-dot"></span>
-      <span class="font-mono text-xs font-medium tracking-widest uppercase {{ $textColor }}">{{ $r.label }}</span>
-      <span class="font-mono text-xs tracking-wider text-white/30">— {{ $r.date }}</span>
-    </div>
-
-    <h2 class="font-display font-bold text-white leading-tight text-4xl md:text-5xl max-w-2xl mb-5">
-      {{ $r.headline }}
-    </h2>
-
-    <div class="flex flex-wrap gap-2 mb-6">
-      {{ range $r.signals }}
-      <span class="font-mono text-xs font-medium tracking-wider uppercase text-white/50 bg-white/5 border border-white/10 rounded px-3 py-1">
-        {{ . }}
-      </span>
-      {{ end }}
-    </div>
-
-    <p class="font-sans italic text-white/40 max-w-xl border-l-2 border-gold/30 pl-4 mb-8 text-base leading-relaxed">
-      {{ $r.note }}
-    </p>
-
-    <div class="flex flex-wrap gap-4 items-center">
-      <a href="/lab/regime-detection/#methodology"
-         class="bg-gold text-navy font-semibold text-sm px-6 py-3 rounded-lg no-underline hover:bg-gold-dark transition-colors duration-200">
-        Understand the model →
-      </a>
-      <a href="{{ .Site.Params.newsletterURL }}"
-         class="text-gold font-semibold text-sm px-6 py-3 rounded-lg border-2 border-gold/30 no-underline hover:border-gold hover:bg-gold/10 transition-all duration-200">
-        Get the weekly call →
-      </a>
-    </div>
-
-  </div>
-</section>
-
+{{ partial "blocks/about.html" . }}
 
 <!-- ════════════════════════════════════ LATEST RESEARCH ════ -->
 <section class="bg-white bg-dot-grid bg-dot px-6 lg:px-20 py-20">
@@ -278,43 +231,6 @@
 </section>
 
 
-<!-- ════════════════════════════════════ NEWSLETTER CTA ════ -->
-<section class="bg-cream border-t border-silk px-6 lg:px-20 py-20">
-  <div class="max-w-xl mx-auto text-center">
-
-    <div class="flex items-center justify-center gap-3 mb-5">
-      <span class="w-6 h-px bg-gold opacity-60"></span>
-      <span class="font-mono text-xs text-gold/40 tracking-wider mr-2">03</span><span class="font-mono text-xs font-medium tracking-ultra uppercase text-gold">The AppliedComplexity Newsletter</span>
-      <span class="w-6 h-px bg-gold opacity-60"></span>
-    </div>
-
-    <h2 class="font-display font-bold text-navy leading-tight text-3xl md:text-4xl mb-4">
-      Macro regime detection, weekly.
-    </h2>
-
-    <p class="font-sans text-base text-muted max-w-md mx-auto mb-8 leading-relaxed">
-      The current regime call, top contributing features, and research notes. Every Monday. Free.
-    </p>
-
-    {{/* Replace action URL with your Beehiiv embed URL */}}
-    <form class="flex flex-wrap gap-3 justify-center" action="{{ .Site.Params.newsletterURL }}" method="get" target="_blank">
-      <input
-        type="email"
-        name="email"
-        placeholder="your@email.com"
-        class="flex-1 min-w-60 px-4 py-3 font-sans text-sm text-ink bg-white border border-silk rounded-lg outline-none focus:border-gold transition-colors duration-200 placeholder:text-muted"
-      />
-      <button type="submit"
-        class="px-7 py-3 bg-gold text-navy font-sans font-semibold text-sm rounded-lg border-none cursor-pointer hover:bg-gold-dark transition-colors duration-200">
-        Subscribe →
-      </button>
-    </form>
-
-    <p class="font-sans text-xs text-muted mt-4">
-      No spam. Unsubscribe anytime. Institutional research, not financial advice.
-    </p>
-
-  </div>
-</section>
+{{ partial "blocks/newsletter_cta.html" . }}
 
 {{ end }}
