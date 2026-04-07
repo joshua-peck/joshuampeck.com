@@ -4,7 +4,6 @@
 03  PRINCIPLES   — update principles to be more all-encompassing personal statement of principles
 05  CREDIBILITY  — media bar needs logos
 07  RESEARCH     — update after research is published
-08  ABOUT        — 3-sentence condensed bio, photo placeholder, link
 09  FOOTER       — unchanged
 
 ## CODING
