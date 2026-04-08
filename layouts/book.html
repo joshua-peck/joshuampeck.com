@@ -1,0 +1,189 @@
+{{ define "main" }}
+
+<header class="bg-navy border-b-4 border-gold px-6 lg:px-20 pt-32 pb-16">
+    <div class="max-w-content mx-auto">
+  
+      <!-- Eyebrow -->
+      <div class="flex items-center gap-2 mb-6">
+        <span class="w-6 h-px bg-gold opacity-70"></span>
+        <span class="font-mono text-xs font-medium tracking-ultra uppercase text-gold">
+          Published Work
+        </span>
+      </div>
+  
+      <!-- Title -->
+      <h1 class="font-display font-bold text-white leading-tight
+                 text-4xl md:text-5xl mb-3 max-w-2xl">
+        Cryptocurrency Risk Management
+      </h1>
+  
+      <!-- Subtitle -->
+      <p class="font-mono text-sm tracking-wider text-white/40">
+        A Guide for Family Wealth Managers
+      </p>
+  
+    </div>
+  </header>
+
+  <section class="bg-cream border-b border-silk px-6 lg:px-20 py-16">
+    <div class="max-w-content mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-[240px_1fr] gap-12 items-start">
+  
+        <!-- Left: cover image -->
+        <div class="flex flex-col gap-6">
+  
+          <!-- Cover -->
+          <div class="rounded-xl overflow-hidden shadow-lg w-full max-w-[240px]">
+            {{ $cover := resources.Get "images/crypto_risk_management-v2.png" }}
+            {{ with $cover }}
+              {{ $resized := .Resize "480x q85 webp" }}
+              <img src="{{ $resized.Permalink }}"
+                   width="240"
+                   alt="Cryptocurrency Risk Management — Josh Peck"
+                   class="w-full h-auto block">
+            {{ end }}
+          </div>
+  
+          <!-- Primary CTA under cover -->
+          <a href="https://www.amazon.com/Cryptocurrency-Risk-Management-family-managers/dp/1781337225"
+             target="_blank" rel="noopener"
+             class="bg-gold text-navy font-sans font-semibold text-sm px-6 py-3
+                    rounded-lg no-underline text-center
+                    hover:bg-gold-dark transition-colors duration-200">
+            Get the Book on Amazon →
+          </a>
+  
+          <!-- Secondary CTA -->
+          <a href="https://www.amazon.com/Cryptocurrency-Risk-Management-family-managers-ebook/dp/B0BPTMH9YR"
+             target="_blank" rel="noopener"
+             class="text-navy font-sans font-semibold text-sm px-6 py-3
+                    rounded-lg border-2 border-silk no-underline text-center
+                    hover:border-navy transition-colors duration-200">
+            Kindle Edition →
+          </a>
+  
+        </div>
+  
+        <!-- Right: key details panel -->
+        <div class="flex flex-col gap-6">
+  
+          <!-- Star rating -->
+          <div class="flex items-center gap-3">
+            <div class="flex gap-0.5">
+              <!-- Five gold stars — inline SVG, no emoji -->
+              {{ range (seq 5) }}
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="#C8A951"
+                   xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 1l1.854 3.756 4.146.603-3 2.924.708 4.129L8 10.25l-3.708 1.162.708-4.129-3-2.924 4.146-.603z"/>
+              </svg>
+              {{ end }}
+            </div>
+            <span class="font-mono text-xs tracking-wider text-muted">
+              5.0 - Amazon
+            </span>
+          </div>
+  
+          <!-- Divider -->
+          <div class="w-12 h-px bg-gold/40"></div>
+  
+          <!-- Publisher meta — clean label/value pairs -->
+          <dl class="grid grid-cols-[120px_1fr] gap-y-3 gap-x-4">
+            <dt class="font-mono text-xs tracking-wider uppercase text-muted">Publisher</dt>
+            <dd class="font-sans text-sm text-navy font-semibold">Rethink Press</dd>
+  
+            <dt class="font-mono text-xs tracking-wider uppercase text-muted">Published</dt>
+            <dd class="font-sans text-sm text-navy font-semibold">December 8, 2022</dd>
+  
+            <dt class="font-mono text-xs tracking-wider uppercase text-muted">Pages</dt>
+            <dd class="font-sans text-sm text-navy font-semibold">248</dd>
+  
+            <dt class="font-mono text-xs tracking-wider uppercase text-muted">ISBN-13</dt>
+            <dd class="font-mono text-sm text-navy">978-1-78133-722-6</dd>
+  
+            <dt class="font-mono text-xs tracking-wider uppercase text-muted">Formats</dt>
+            <dd class="font-sans text-sm text-navy font-semibold">Paperback · Kindle</dd>
+          </dl>
+  
+          <!-- Divider -->
+          <div class="w-12 h-px bg-gold/40"></div>
+  
+          <!-- Audience tags -->
+          <div>
+            <p class="font-mono text-xs tracking-wider uppercase text-muted mb-3">
+              Written for
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span class="font-mono text-xs tracking-wider uppercase text-navy/70
+                           bg-white border border-silk rounded-lg px-3 py-1.5">
+                Family Offices
+              </span>
+              <span class="font-mono text-xs tracking-wider uppercase text-navy/70
+                           bg-white border border-silk rounded-lg px-3 py-1.5">
+                RIAs &amp; Wealth Managers
+              </span>
+              <span class="font-mono text-xs tracking-wider uppercase text-navy/70
+                           bg-white border border-silk rounded-lg px-3 py-1.5">
+                Institutional Investors
+              </span>
+            </div>
+          </div>
+  
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-cream px-6 lg:px-20 py-16 border-b border-silk">
+    <div class="max-w-2xl mx-auto">
+      <div class="prose prose-lg font-sans
+                  prose-headings:font-display prose-headings:text-navy
+                  prose-headings:font-bold prose-headings:leading-tight
+                  prose-h2:text-2xl prose-h2:mt-12 prose-h2:mb-4
+                  prose-p:text-muted prose-p:leading-relaxed
+                  prose-strong:text-navy prose-strong:font-semibold
+                  prose-em:not-italic prose-em:font-semibold prose-em:text-navy
+                  prose-li:text-muted prose-li:leading-relaxed
+                  prose-hr:border-silk prose-hr:my-10
+                  prose-blockquote:border-l-4 prose-blockquote:border-gold
+                  prose-blockquote:pl-6 prose-blockquote:italic
+                  prose-blockquote:text-muted prose-blockquote:not-italic
+                  prose-table:w-full
+                  prose-td:py-2 prose-td:border-b prose-td:border-silk
+                  prose-th:py-2 prose-th:border-b prose-th:border-silk
+                  max-w-none">
+        {{ .Content }}
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-cream px-6 lg:px-20 py-12">
+    <div class="max-w-content mx-auto
+                flex flex-wrap items-center justify-between gap-6">
+  
+      <div>
+        <p class="font-display font-bold text-xl mb-1">
+          Cryptocurrency Risk Management
+        </p>
+        <p class="font-mono text-xs tracking-wider">
+          Rethink Press · December 2022 · 248 pages
+        </p>
+      </div>
+  
+      <div class="flex flex-wrap gap-4">
+        <a href="https://www.amazon.com/Cryptocurrency-Risk-Management-family-managers/dp/1781337225"
+          class="bg-gold text-navy font-sans font-semibold text-sm px-6 py-3
+                 rounded-lg no-underline hover:bg-gold-dark transition-colors">
+          Get the Book on Amazon →
+        </a>
+        <a href="/research/"
+          class="text-navy font-sans font-semibold text-sm px-6 py-3
+                rounded-lg border-2 border-silk no-underline text-center
+                hover:border-navy transition-colors duration-200">
+          Read the Research →
+        </a>
+      </div>
+  
+    </div>
+  </section>
+
+  {{ end }}
