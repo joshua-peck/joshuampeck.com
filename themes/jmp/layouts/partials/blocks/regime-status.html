@@ -13,6 +13,13 @@
 <section class="bg-navy border-y-4 {{ $borderColor }} px-6 lg:px-20 py-20">
   <div class="max-w-content mx-auto">
 
+    {{/* Eyebrow  across both cols */}}
+    <div class="flex items-center gap-2 mb-10">
+      <span class="font-mono text-lg text-center w-full font-medium tracking-ultra uppercase text-gold">
+        MacroContext regime classification
+      </span>
+    </div>
+
     {{/* ── Two-column grid ── */}}
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-0">
 
@@ -21,14 +28,6 @@
                   pr-0 lg:pr-16
                   pb-10 lg:pb-0
                   border-b lg:border-b-0 lg:border-r border-white/10">
-
-        {{/* Eyebrow */}}
-        <div class="flex items-center gap-2 mb-10">
-          <span class="w-6 h-px bg-white opacity-20"></span>
-          <span class="font-mono text-xs font-medium tracking-ultra uppercase text-white/40">
-            Current Regime
-          </span>
-        </div>
 
         {{/* Regime name */}}
         <div class="font-display font-bold text-white leading-none tracking-tight text-7xl md:text-8xl mb-6 justify-start gap-6">
@@ -39,7 +38,6 @@
         <div class="font-mono text-sm tracking-wider text-white/40">
           {{ $d.date }}
         </div>
-
       </div>
 
       {{/* ── Right column — separator + note + link ── */}}

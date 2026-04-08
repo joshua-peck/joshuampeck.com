@@ -1,9 +1,9 @@
 # Update current_regime every Monday when you publish the weekly regime call.
 # status: danger | boom | mid
 
-current_regime: boom
-date:  "April 14, 2026"
-week:  "16"
+current_regime: mid
+date:  "April 8, 2026"
+week:  "15"
 year:  "2026"
 
 regimes:
