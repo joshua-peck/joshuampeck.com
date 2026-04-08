@@ -1,27 +1,5 @@
 {{ define "main" }}
 
-{{/* ── Regime data & derived classes ────────────────────────────────── */}}
-{{ $r := .Site.Data.regime }}
-{{ $dotColor    := "bg-danger" }}
-{{ $textColor   := "text-danger" }}
-{{ $badgeBg     := "bg-danger/10" }}
-{{ $badgeBorder := "border-danger/30" }}
-{{ $secBorder   := "border-danger" }}
-{{ if eq $r.status "boom" }}
-  {{ $dotColor    = "bg-boom" }}
-  {{ $textColor   = "text-boom" }}
-  {{ $badgeBg     = "bg-boom/10" }}
-  {{ $badgeBorder = "border-boom/30" }}
-  {{ $secBorder   = "border-boom" }}
-{{ else if eq $r.status "mid" }}
-  {{ $dotColor    = "bg-yellow-500" }}
-  {{ $textColor   = "text-yellow-500" }}
-  {{ $badgeBg     = "bg-yellow-500/10" }}
-  {{ $badgeBorder = "border-yellow-500/30" }}
-  {{ $secBorder   = "border-yellow-500" }}
-{{ end }}
-
-
 <!-- ════════════════════════════════════ HERO ════ -->
 <section class="relative bg-navy border-b-4 border-gold px-6 lg:px-20 pt-24 pb-20 overflow-hidden">
   <div class="absolute -top-20 -right-20 w-96 h-96 rounded-full bg-gold opacity-5 pointer-events-none"></div>
@@ -42,7 +20,7 @@
     <div class="animate-fade-4 flex flex-wrap gap-4 items-center">
       <a href="{{ .Site.Params.newsletterURL }}"
          class="bg-gold hover:bg-gold-dark hover:-translate-y-0.5 font-semibold text-sm px-7 py-3 rounded-lg border-none no-underline transition-all duration-200">
-        Subscribe to the Research →
+        Follow the Research →
       </a>
       <a href="/lab/regime-detection/"
          class="text-white/80 font-semibold hover:-translate-y-0.5 text-sm px-7 py-3 rounded-lg border-2 border-white/20 hover:border-gold hover:text-gold no-underline transition-all duration-200">
@@ -53,52 +31,7 @@
   </div>
 </section>
 
-<!-- ════════════════════════════════════ CREED ════ -->
-<section class="bg-cream border-b border-silk px-6 lg:px-20 py-20">
-  <div class="max-w-content mx-auto">
-
-    <div class="flex items-center gap-2 mb-8">
-      <span class="w-6 h-px bg-gold opacity-70"></span>
-      <span class="font-mono text-xs font-medium tracking-ultra uppercase text-gold">PRINCIPLES</span>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-silk rounded-xl overflow-hidden">
-      <div class="bg-white px-8 py-6 flex gap-4 items-start hover:bg-silk transition-colors duration-200">
-        <span class="font-mono text-xs text-gold/40 tracking-wider pt-1 shrink-0">01</span>
-        <p class="font-sans text-base text-navy leading-relaxed m-0">Humans are complex adaptive systems.</p>
-      </div>
-      <div class="bg-white px-8 py-6 flex gap-4 items-start hover:bg-silk transition-colors duration-200">
-        <span class="font-mono text-xs text-gold/40 tracking-wider pt-1 shrink-0">02</span>
-        <p class="font-sans text-base text-navy leading-relaxed m-0">The economy is a complex adaptive system composed of humans.</p>
-      </div>
-      <div class="bg-white px-8 py-6 flex gap-4 items-start hover:bg-silk transition-colors duration-200">
-        <span class="font-mono text-xs text-gold/40 tracking-wider pt-1 shrink-0">03</span>
-        <p class="font-sans text-base text-navy leading-relaxed m-0">Markets are the economy's information processing mechanism.</p>
-      </div>
-      <div class="bg-white px-8 py-6 flex gap-4 items-start hover:bg-silk transition-colors duration-200">
-        <span class="font-mono text-xs text-gold/40 tracking-wider pt-1 shrink-0">04</span>
-        <p class="font-sans text-base text-navy leading-relaxed m-0">Regimes are the economy's discrete behavioral states.</p>
-      </div>
-      <div class="bg-white px-8 py-6 flex gap-4 items-start hover:bg-silk transition-colors duration-200">
-        <span class="font-mono text-xs text-gold/40 tracking-wider pt-1 shrink-0">05</span>
-        <p class="font-sans text-base text-navy leading-relaxed m-0">Transitions between regimes are probabilistic, not deterministic.</p>
-      </div>
-      <div class="bg-white px-8 py-6 flex gap-4 items-start hover:bg-silk transition-colors duration-200">
-        <span class="font-mono text-xs text-gold/40 tracking-wider pt-1 shrink-0">06</span>
-        <p class="font-sans text-base text-navy leading-relaxed m-0">Historical regime behavior rhymes but doesn't repeat.</p>
-      </div>
-      <div class="bg-white px-8 py-6 flex gap-4 items-start hover:bg-silk transition-colors duration-200">
-        <span class="font-mono text-xs text-gold/40 tracking-wider pt-1 shrink-0">07</span>
-        <p class="font-sans text-base text-navy leading-relaxed m-0">SHAP attribution reveals which forces drive the current regime.</p>
-      </div>
-      <div class="bg-white px-8 py-6 flex gap-4 items-start hover:bg-silk transition-colors duration-200">
-        <span class="font-mono text-xs text-gold/40 tracking-wider pt-1 shrink-0">08</span>
-        <p class="font-sans text-base text-navy leading-relaxed m-0">Probabilistic characterization beats point prediction.</p>
-      </div>
-    </div>
-
-  </div>
-</section>
+{{ partial "blocks/creed.html" . }}
 
 <!-- ════════════════════════════════════ THE WORK ════ -->
 <section class="bg-cream border-b border-silk px-6 lg:px-20 py-20">
@@ -164,74 +97,10 @@
   </div>
 </section>
 
-<!-- ════════════════════════════════════ CREDIBILITY BAR ════ -->
-<div class="bg-cream border-y border-silk px-6 lg:px-20 py-12">
-  <p class="font-mono text-xs tracking-ultra uppercase text-muted text-center mb-7">As seen in</p>
-  <div class="flex flex-wrap justify-center items-center gap-10 lg:gap-16">
-    {{ range .Site.Data.media }}
-    <span class="text-gray-400 hover:text-navy transition-colors duration-200 cursor-default select-none
-                 {{ if .mono }}font-mono text-base font-medium tracking-wide{{ else }}font-display font-bold text-base{{ end }}">
-      {{ .name }}
-    </span>
-    {{ end }}
-  </div>
-</div>
-
-  </div>
-</section>
-
-
-<!-- ════════════════════════════════════ CURRENT REGIME ════ -->
+{{ partial "blocks/credibility-bar.html" . }}
 {{ partial "blocks/regime-status.html" . }}
-
-
 {{ partial "blocks/about.html" . }}
-
-<!-- ════════════════════════════════════ LATEST RESEARCH ════ -->
-
-<section class="bg-white bg-dot-grid bg-dot px-6 lg:px-20 py-20">
-  <div class="max-w-content mx-auto">
-
-    <div class="flex items-center gap-2 mb-5">
-      <span class="w-6 h-px bg-gold opacity-70"></span>
-      <span class="font-mono text-xs text-gold/40 tracking-wider mr-2">02</span><span class="font-mono text-xs font-medium tracking-ultra uppercase text-gold">Latest Research</span>
-    </div>
-
-    <h2 class="font-display font-bold text-navy leading-tight text-3xl md:text-4xl mb-8">
-      From the publication
-    </h2>
-
-    {{ $research := where .Site.RegularPages "Section" "research" }}
-    <ul class="list-none m-0 p-0">
-      {{ range $i, $post := first 3 $research }}
-      <li class="{{ if eq $i 0 }}border-t border-b border-silk{{ else }}border-b border-silk{{ end }}">
-        <a href="{{ $post.RelPermalink }}" class="flex gap-6 py-7 no-underline hover:opacity-70 transition-opacity duration-200">
-          <span class="font-mono text-xs font-medium tracking-wider text-gold pt-1 min-w-7">
-            {{ printf "%02d" (add $i 1) }}
-          </span>
-          <div>
-            <p class="font-mono text-xs tracking-wider uppercase text-muted mb-1">
-              {{ $post.Params.category }} — {{ $post.Date.Format "January 2, 2006" }}
-            </p>
-            <p class="font-display font-bold text-navy text-xl leading-snug mb-2">{{ $post.Title }}</p>
-            <p class="font-sans text-sm text-muted leading-relaxed">{{ $post.Params.summary }}</p>
-          </div>
-        </a>
-      </li>
-      {{ end }}
-    </ul>
-
-    <div class="mt-7">
-      <a href="/research/"
-         class="font-sans font-semibold text-sm text-navy no-underline inline-flex items-center gap-1 border-b-2 border-gold pb-px hover:text-gold-dark hover:border-gold-dark transition-colors duration-200">
-        All research →
-      </a>
-    </div>
-
-  </div>
-</section>
-
-
+{{ partial "blocks/latest-research.html" . }}
 {{ partial "blocks/newsletter_cta.html" . }}
 
 {{ end }}
