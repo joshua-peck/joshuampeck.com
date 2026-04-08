@@ -33,13 +33,14 @@
         <div class="flex flex-col gap-6">
   
           <!-- Cover -->
-          <div class="rounded-xl overflow-hidden shadow-lg w-full max-w-[240px]">
+          <div class="rounded-xl overflow-hidden shadow-lg max-w-[225px]">
             {{ $cover := resources.Get "images/crypto_risk_management-v2.png" }}
             {{ with $cover }}
-              {{ $resized := .Resize "480x q85 webp" }}
+              {{ $resized := .Resize "300x q85 webp" }}
               <img src="{{ $resized.Permalink }}"
-                   width="240"
-                   alt="Cryptocurrency Risk Management — Josh Peck"
+                   width={{ $resized.Width }}
+                   height={{ $resized.Height }}
+                   alt="Cryptocurrency Risk Management — Joshua M. Peck"
                    class="w-full h-auto block">
             {{ end }}
           </div>
