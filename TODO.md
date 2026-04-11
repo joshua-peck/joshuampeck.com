@@ -14,7 +14,6 @@
 - [ ] lab/regime-detection
 - [ ] open-source/
 - [ ] book/
-- [ ] about/
 - [ ] contact/
 
 ## WRITING
