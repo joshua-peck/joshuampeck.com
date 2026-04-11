@@ -1,0 +1,214 @@
+{{ define "main" }}
+
+{{/* ── Photo from assets ─────────────────────────────────────────── */}}
+{{ $photo := "" }}
+{{ with resources.Get "images/joshua_peck.jpg" }}
+  {{ $photo = .Resize "300x q85 webp" }}
+{{ end }}
+
+
+<!-- ════ HEADER ════ -->
+<section class="bg-navy border-b-4 border-gold px-6 lg:px-20 pt-28 pb-14">
+  <div class="max-w-content mx-auto">
+
+    <div class="flex items-center gap-3 mb-6">
+      <span class="w-5 h-px bg-gold opacity-60"></span>
+      <span class="font-mono text-xs font-medium tracking-ultra uppercase text-gold">
+        My story
+      </span>
+    </div>
+
+    <h1 class="font-display font-bold text-white leading-none tracking-tight mb-4
+               text-4xl md:text-5xl">
+      Joshua M. Peck
+    </h1>
+
+    <p class="font-sans text-white/45 text-lg max-w-lg leading-relaxed">
+      Quantitative researcher, builder, and author applying classical ML
+      and complexity science to financial markets.
+    </p>
+
+  </div>
+</section>
+
+
+<!-- ════ HERO — photo + throughline ════ -->
+<section class="bg-cream border-b border-silk px-6 lg:px-20 py-16">
+  <div class="max-w-content mx-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-[200px_1fr] gap-12 items-start">
+
+      <!-- Left: photo + meta -->
+      <div class="flex flex-col gap-5">
+
+        <div class="rounded-xl overflow-hidden w-full max-w-[200px] aspect-[3/4] bg-silk shrink-0">
+          {{ if $photo }}
+            <img src="{{ $photo.Permalink }}"
+                 width="{{ $photo.Width }}"
+                 height="{{ $photo.Height }}"
+                 alt="Joshua M. Peck"
+                 class="w-full h-full object-cover object-top">
+          {{ else }}
+            <div class="w-full h-full flex items-center justify-center">
+              <span class="font-mono text-base tracking-wider uppercase text-muted">Photo</span>
+            </div>
+          {{ end }}
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <p class="font-mono text-xs text-muted">
+            <span class="text-navy font-medium">Based in</span> Fort Collins, CO
+          </p>
+          <p class="font-mono text-xs text-muted">
+            <span class="text-navy font-medium">Published</span> Rethink Press, 2022
+          </p>
+          <p class="font-mono text-xs text-muted">
+            <span class="text-navy font-medium">Media</span> CBS · Reuters · WSJ
+          </p>
+        </div>
+
+      </div>
+
+      <!-- Right: throughline + opening -->
+      <div>
+
+        <p class="font-display font-bold text-navy text-2xl leading-snug
+                  border-l-4 border-gold pl-5 mb-8">
+          We are drowning in data and starving for understanding.
+        </p>
+
+        <div class="font-sans text-basetext-muted leading-relaxed space-y-4">
+          <p>Bad decisions aren't made from bad data. They're made from good data,
+          poorly interpreted. The bottleneck has never been information. It has
+          always been the framework for making sense of it.</p>
+          <p>That conviction has shaped every chapter.</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════ ERA 1 — Systems Engineering ════ -->
+<section class="bg-white bg-dot-grid bg-dot border-b border-silk px-6 lg:px-20 py-16">
+  <div class="max-w-content mx-auto">
+
+    <div class="flex items-center gap-4 mb-8">
+      <span class="font-mono text-xs font-medium tracking-ultra uppercase text-gold shrink-0">Era 01</span>
+      <span class="flex-1 h-px bg-silk"></span>
+    </div>
+
+    <h2 class="font-display font-bold text-navy text-3xl mb-6">Engineering Quantitative Systems</h2>
+
+    <div class="font-sans text-base text-muted leading-relaxed space-y-4 max-w-2xl">
+      <p>
+        Peck's career began in academic computing by managing systems
+        infrastructure for University and regional partners, then at the Kansas
+        Research and Education Network, where he advised state agencies on
+        cybersecurity policy, served as registrar for the state's academic
+        domain namespaces, and built telemetry platforms that collected and
+        processed network data in real time.
+      </p>
+      <p>
+        This data-first orientation carried forward. As CTO of a web startup in
+        the mid-2000s, Peck brought financial engineering to a domain that
+        hadn't seen it: building bid automation and yield management systems for
+        programmatic advertising, with real-time revenue attribution and anomaly
+        detection underneath. The company grew from zero to $30 million in
+        revenue in roughly eighteen months.
+      </p>
+    </div>
+
+    <blockquote class="border-l-2 border-gold pl-6 mt-8 max-w-xl">
+      <p class="font-display font-normal italic text-navy text-lg leading-snug">
+        Classical statistical tools, applied with engineering discipline to
+        the right problem, produce outsized results.
+      </p>
+    </blockquote>
+
+  </div>
+</section>
+
+
+<!-- ════ ERA 2 — Financial Services ════ -->
+<section class="bg-cream border-b border-silk px-6 lg:px-20 py-16">
+  <div class="max-w-content mx-auto">
+
+    <div class="flex items-center gap-4 mb-8">
+      <span class="font-mono text-xs font-medium tracking-ultra uppercase text-gold shrink-0">Era 02</span>
+      <span class="flex-1 h-px bg-silk"></span>
+    </div>
+
+    <h2 class="font-display font-bold text-navy text-3xl mb-6">Building a Systematic Family Office Portfolio </h2>
+
+    <div class="font-sans text-base text-muted leading-relaxed space-y-4 max-w-2xl">
+      <p>
+        Managing a first-generation family office, Peck applied the same
+        quantitative lens to a new domain: markets.
+      </p>
+        The strategies that worked became systematic. The systematic approaches
+        became funds.
+      </p>
+      <p>
+        Peck launched a quantitative cryptocurrency hedge fund applying
+        the same ML discipline to digital asset markets. The trading worked.
+        After four years, he took the fund private.
+      </p>
+      <p>
+        The book emerged from the same period. Managing significant crypto
+        exposure required a risk framework that didn't exist because classical
+        models weren't built for the asset class, so Peck built one for his own
+        portfolio, then published it.
+      </p>
+      <p>
+        <em class="text-navy not-italic font-medium">Cryptocurrency Risk
+        Management</em> was released in December 2022. The same month, FTX
+        collapsed — the largest counterparty failure in crypto history. The book
+        had mapped exactly that risk category months before it materialized. It
+        reached Amazon bestseller status in the weeks that followed. CBS,
+        Reuters, and the Wall Street Journal needed a credible voice with a
+        framework that predated the crisis.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ════ ERA 3 — Researcher ════ -->
+<section class="bg-white bg-dot-grid bg-dot border-b border-silk px-6 lg:px-20 py-16">
+  <div class="max-w-content mx-auto">
+
+    <div class="flex items-center gap-4 mb-8">
+      <span class="font-mono text-xs font-medium tracking-ultra uppercase text-gold shrink-0">Era 03</span>
+      <span class="flex-1 h-px bg-silk"></span>
+    </div>
+
+    <h2 class="font-display font-bold text-navy text-3xl mb-6">Publishing Independent Quantitative Research </h2>
+
+    <div class="font-sans text-base text-muted leading-relaxed space-y-4 max-w-2xl">
+      <p>
+        The quantitative tools that institutional investors use to navigate
+        financial markets have rarely been available outside institutions. The
+        frameworks exist. The methodology is known. The access isn't.
+      </p>
+
+      <blockquote class="border-l-2 border-gold pl-6 my-8 max-w-xl">
+        <p class="font-display font-normal italic text-navy text-lg leading-snug">
+          Financial markets are complex systems. Complex systems have structure.
+          That structure reveals itself in the data; if you have the right
+          framework to see it. 
+        </p>
+      </blockquote>
+
+      <p>
+        MacroContext is an attempt to close that gap by publishing the
+        methodology openly, making the tools available, and continuing the
+        research in public rather than in private. 
+      </p>
+    </div>
+
+  </div>
+</section>
+
+{{ end }}
