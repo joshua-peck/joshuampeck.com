@@ -1,0 +1,824 @@
+{{ define "main" }}
+
+{{/*
+  layouts/lab/regime-detection.html
+  ─────────────────────────────────────────────────────────────────
+  Signal communication page for /lab/regime-detection/
+
+  Content file: content/lab/regime-detection/_index.md
+  Front matter must include: layout: "regime-detection"
+
+  Charts: export PDFs to PNG and place at:
+    assets/images/charts/equity-curve.png
+    assets/images/charts/spx-regimes.png
+    assets/images/charts/return-distributions.png
+  Hugo will resize and optimize automatically.
+  Placeholder divs are shown when image files are missing.
+
+  Data source: data/regime.yaml — updated every Monday.
+  ─────────────────────────────────────────────────────────────────
+*/}}
+
+
+{{/* ── Regime data & derived color classes ── */}}
+{{ $r := .Site.Data.regime }}
+
+{{ $dotColor    := "bg-danger" }}
+{{ $textColor   := "text-danger" }}
+{{ $badgeBg     := "bg-danger/10" }}
+{{ $badgeBorder := "border-danger/30" }}
+{{ $secBorder   := "border-danger" }}
+{{ $regimeLabel := "Danger" }}
+
+{{ if eq $r.status "boom" }}
+  {{ $dotColor    = "bg-boom" }}
+  {{ $textColor   = "text-boom" }}
+  {{ $badgeBg     = "bg-boom/10" }}
+  {{ $badgeBorder = "border-boom/30" }}
+  {{ $secBorder   = "border-boom" }}
+  {{ $regimeLabel = "Boom" }}
+{{ else if eq $r.status "mid" }}
+  {{ $dotColor    = "bg-yellow-500" }}
+  {{ $textColor   = "text-yellow-500" }}
+  {{ $badgeBg     = "bg-yellow-500/10" }}
+  {{ $badgeBorder = "border-yellow-500/30" }}
+  {{ $secBorder   = "border-yellow-500" }}
+  {{ $regimeLabel = "Mid-Market" }}
+{{ end }}
+
+
+{{/* ── Chart image processing ── */}}
+{{ $equityCurve        := resources.Get "images/charts/equity-curve.png" }}
+{{ $spxRegimes         := resources.Get "images/charts/spx-regimes.png" }}
+{{ $returnDist         := resources.Get "images/charts/return-distributions.png" }}
+
+{{ if $equityCurve }}
+  {{ $equityCurve = $equityCurve.Resize "1200x q90 webp" }}
+{{ end }}
+{{ if $spxRegimes }}
+  {{ $spxRegimes = $spxRegimes.Resize "1200x q90 webp" }}
+{{ end }}
+{{ if $returnDist }}
+  {{ $returnDist = $returnDist.Resize "1200x q90 webp" }}
+{{ end }}
+
+
+{{/* ════════════════════════════════════════════════════════════
+     SECTION 1 — HEADER (navy)
+════════════════════════════════════════════════════════════ */}}
+<header class="bg-navy border-b-4 border-gold px-6 lg:px-20 pt-24 pb-16">
+  <div class="max-w-content mx-auto">
+
+    <div class="flex items-center gap-2 mb-6">
+      <span class="font-mono text-xs font-medium tracking-ultra uppercase text-gold">
+        MacroContext · Lab
+      </span>
+    </div>
+
+    <h1 class="font-display font-bold text-white leading-tight
+               text-4xl md:text-5xl mb-4">
+      Regime Detection
+    </h1>
+
+    <p class="font-sans text-lg text-white/45 max-w-lg leading-relaxed mb-8">
+      Financial markets don't trend — they cycle through behavioral states.
+      This model identifies which state the S&amp;P 500 is currently in,
+      updated weekly.
+    </p>
+
+    <div class="flex items-center gap-6 flex-wrap">
+      <span class="font-mono text-xs text-white/30">
+        Run date: April 8, 2026
+      </span>
+      <span class="font-mono text-xs text-white/20">·</span>
+      <span class="font-mono text-xs text-white/30">
+        Folds: 7
+      </span>
+      <span class="font-mono text-xs text-white/20">·</span>
+      <span class="font-mono text-xs text-white/30">
+        Period: 2006–2026
+      </span>
+    </div>
+
+  </div>
+</header>
+
+
+{{/* ════════════════════════════════════════════════════════════
+     SECTION 2 — CURRENT SIGNAL (dynamic regime color)
+════════════════════════════════════════════════════════════ */}}
+<section class="bg-navy border-b-4 {{ $secBorder }} px-6 lg:px-20 py-16">
+  <div class="max-w-content mx-auto">
+
+    <div class="flex items-center gap-2 mb-6">
+      <span class="font-mono text-xs font-medium tracking-ultra uppercase text-white/40">
+        Current Classification · Updated {{ $r.date }}
+      </span>
+    </div>
+
+    {{/* Regime badge */}}
+    <div class="inline-flex items-center gap-3 {{ $badgeBg }} border {{ $badgeBorder }}
+                rounded-lg px-4 py-2 mb-6">
+      <span class="w-2.5 h-2.5 rounded-full {{ $dotColor }} animate-pulse-dot"></span>
+      <span class="font-mono text-xs font-medium tracking-widest uppercase {{ $textColor }}">
+        {{ $r.label }}
+      </span>
+    </div>
+
+    {{/* Regime name — large display */}}
+    <div class="font-display font-bold text-white leading-none
+                text-6xl md:text-7xl mb-8 {{ $textColor }}">
+      {{ $r.label }}
+    </div>
+
+    {{/* Researcher note */}}
+    <p class="font-sans italic text-white/45 max-w-xl
+              border-l-2 border-gold/30 pl-5 mb-10
+              text-base leading-relaxed">
+      {{ $r.note }}
+    </p>
+
+    {{/* CTAs */}}
+    <div class="flex flex-wrap gap-4 items-center">
+      <a href="/lab/macrocontext/"
+         class="bg-gold text-navy font-semibold text-sm px-6 py-3 rounded-lg
+                no-underline hover:bg-gold-dark transition-colors duration-200">
+        MacroContext Dashboard →
+      </a>
+      <a href="{{ .Site.Params.newsletterURL }}"
+         class="text-gold font-semibold text-sm px-6 py-3 rounded-lg
+                border-2 border-gold/30 no-underline
+                hover:border-gold hover:bg-gold/10
+                transition-all duration-200">
+        Get the weekly call →
+      </a>
+    </div>
+
+  </div>
+</section>
+
+
+{{/* ════════════════════════════════════════════════════════════
+     SECTION 3 — THE THREE REGIMES (white + dot grid)
+════════════════════════════════════════════════════════════ */}}
+<section class="bg-white bg-dot-grid bg-dot border-b border-silk px-6 lg:px-20 py-16">
+  <div class="max-w-content mx-auto">
+
+    <div class="flex items-center gap-2 mb-4">
+      <span class="font-mono text-xs font-medium tracking-ultra uppercase text-gold">
+        The Three Regimes
+      </span>
+    </div>
+
+    <p class="font-sans text-lg text-muted max-w-2xl leading-relaxed mb-10">
+      The model produces one of three classifications. Each regime has a distinct
+      statistical character — not in average returns, but in the distribution of
+      risk around those returns.
+    </p>
+
+    {{/* Regime cards — three column */}}
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
+
+      {{/* BOOM */}}
+      <div class="bg-white border border-silk rounded-xl overflow-hidden">
+        <div class="border-t-4 border-boom px-6 pt-6 pb-5">
+
+          <div class="flex items-center gap-2 mb-4">
+            <span class="w-2.5 h-2.5 rounded-full bg-boom shrink-0"></span>
+            <span class="font-mono text-lg font-medium tracking-ultra uppercase text-boom">
+              Boom
+            </span>
+          </div>
+
+          <p class="font-sans text-sm text-muted leading-relaxed mb-6">
+            Broad market participation, trending prices, compressing volatility,
+            positive momentum across sectors.
+          </p>
+
+          <div class="border-t border-silk pt-5 flex flex-col gap-3">
+            <div class="flex justify-between items-baseline">
+              <span class="font-mono text-xs text-muted">21-day Sharpe</span>
+              <span class="font-display font-bold text-navy text-2xl">1.34</span>
+            </div>
+            <div class="flex justify-between items-baseline">
+              <span class="font-mono text-xs text-muted">Mean return / 21d</span>
+              <span class="font-mono text-sm font-medium text-boom">+1.8%</span>
+            </div>
+            <div class="flex justify-between items-baseline">
+              <span class="font-mono text-xs text-muted">Observations</span>
+              <span class="font-mono text-sm text-muted">1,142</span>
+            </div>
+          </div>
+
+          <p class="font-sans text-xs text-muted leading-relaxed mt-5 pt-5 border-t border-silk italic">
+            The environment in which equity risk is best compensated. Not a signal
+            to lever up — a signal that the wind is at your back.
+          </p>
+
+        </div>
+      </div>
+
+      {{/* MID-MARKET */}}
+      <div class="bg-white border border-silk rounded-xl overflow-hidden">
+        <div class="border-t-4 border-yellow-500 px-6 pt-6 pb-5">
+
+          <div class="flex items-center gap-2 mb-4">
+            <span class="w-2.5 h-2.5 rounded-full bg-yellow-500 shrink-0"></span>
+            <span class="font-mono text-lg font-medium tracking-ultra uppercase text-yellow-500">
+              Mid-Market
+            </span>
+          </div>
+
+          <p class="font-sans text-sm text-muted leading-relaxed mb-6">
+            No acute stress signals. No strong directional momentum. Markets are
+            moving without a clear behavioral thesis in either direction.
+          </p>
+
+          <div class="border-t border-silk pt-5 flex flex-col gap-3">
+            <div class="flex justify-between items-baseline">
+              <span class="font-mono text-xs text-muted">21-day Sharpe</span>
+              <span class="font-display font-bold text-navy text-2xl">0.49</span>
+            </div>
+            <div class="flex justify-between items-baseline">
+              <span class="font-mono text-xs text-muted">Mean return / 21d</span>
+              <span class="font-mono text-sm font-medium text-muted">+0.5%</span>
+            </div>
+            <div class="flex justify-between items-baseline">
+              <span class="font-mono text-xs text-muted">Observations</span>
+              <span class="font-mono text-sm text-muted">2,336</span>
+            </div>
+          </div>
+
+          <p class="font-sans text-xs text-muted leading-relaxed mt-5 pt-5 border-t border-silk italic">
+            The default state. Markets spend more time here than anywhere else.
+            The absence of a strong signal is itself information.
+          </p>
+
+        </div>
+      </div>
+
+      {{/* DANGER */}}
+      <div class="bg-white border border-silk rounded-xl overflow-hidden">
+        <div class="border-t-4 border-danger px-6 pt-6 pb-5">
+
+          <div class="flex items-center gap-2 mb-4">
+            <span class="w-2.5 h-2.5 rounded-full bg-danger shrink-0"></span>
+            <span class="font-mono text-lg font-medium tracking-ultra uppercase text-danger">
+              Danger
+            </span>
+          </div>
+
+          <p class="font-sans text-sm text-muted leading-relaxed mb-6">
+            Credit spreads widening, volatility expanding, momentum deteriorating,
+            macro indicators signaling stress.
+          </p>
+
+          <div class="border-t border-silk pt-5 flex flex-col gap-3">
+            <div class="flex justify-between items-baseline">
+              <span class="font-mono text-xs text-muted">21-day Sharpe</span>
+              <span class="font-display font-bold text-navy text-2xl">0.30</span>
+            </div>
+            <div class="flex justify-between items-baseline">
+              <span class="font-mono text-xs text-muted">Mean return / 21d</span>
+              <span class="font-mono text-sm font-medium text-muted">+0.5%</span>
+            </div>
+            <div class="flex justify-between items-baseline">
+              <span class="font-mono text-xs text-muted">Observations</span>
+              <span class="font-mono text-sm text-muted">1,508</span>
+            </div>
+          </div>
+
+          <p class="font-sans text-xs text-muted leading-relaxed mt-5 pt-5 border-t border-silk italic">
+            Same average return as Mid-Market. Twice the downside risk. The mean
+            hides the distribution — Danger periods produce the left tail events
+            that define drawdowns.
+          </p>
+
+        </div>
+      </div>
+
+    </div>
+
+    {{/* Key insight connector */}}
+    <div class="bg-cream border border-silk rounded-xl px-6 py-5">
+      <p class="font-sans text-sm text-navy leading-relaxed max-w-2xl">
+        The mean return in Danger is nearly identical to Mid-Market. The Sharpe
+        ratio is not. That gap — <span class="font-semibold">0.30 versus 0.49</span>
+        — is the entire argument for regime awareness.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+
+{{/* ════════════════════════════════════════════════════════════
+     SECTION 4 — THE EQUITY ARGUMENT (cream)
+════════════════════════════════════════════════════════════ */}}
+<section class="bg-cream border-b border-silk px-6 lg:px-20 py-16">
+  <div class="max-w-content mx-auto">
+
+    <div class="flex items-center gap-2 mb-4">
+      <span class="w-6 h-px bg-gold opacity-70"></span>
+      <span class="font-mono text-xs font-medium tracking-ultra uppercase text-gold">
+        The Equity Argument
+      </span>
+    </div>
+
+    <h2 class="font-display font-bold text-navy leading-tight text-2xl mb-2">
+      What regime awareness produces
+    </h2>
+
+    <p class="font-mono text-xs text-muted mb-8">
+      Walk-forward out-of-sample results · 2006–2026 ·
+      Position sizes: Boom 80% · Mid-Market 100% · Danger 25% ·
+      No leverage · Long only
+    </p>
+
+    {{/* Equity curve chart */}}
+    <div class="bg-white border border-silk rounded-xl overflow-hidden mb-8">
+      {{ if $equityCurve }}
+        <img src="{{ $equityCurve.Permalink }}"
+             width="{{ $equityCurve.Width }}"
+             height="{{ $equityCurve.Height }}"
+             alt="Regime-weighted equity curve vs buy-and-hold, 2006–2026, log scale"
+             class="w-full h-auto block">
+      {{ else }}
+        {{/* Placeholder — replace by exporting equity-curve PDF to PNG */}}
+        <div class="w-full bg-silk flex items-center justify-center" style="height:360px;">
+          <div class="text-center">
+            <p class="font-mono text-xs text-muted mb-1">Chart placeholder</p>
+            <p class="font-mono text-xs text-muted/60">
+              Export wf_equity_curve PDF → assets/images/charts/equity-curve.png
+            </p>
+          </div>
+        </div>
+      {{ end }}
+    </div>
+
+    {{/* Four-stat comparison grid */}}
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
+
+      <div class="bg-white border border-silk rounded-xl px-5 py-5">
+        <div class="font-mono text-xs text-muted mb-3 uppercase tracking-wider">CAGR</div>
+        <div class="flex items-baseline gap-2 mb-1">
+          <span class="font-display font-bold text-navy text-3xl">11.2</span>
+          <span class="font-mono text-sm text-gold">%</span>
+        </div>
+        <div class="font-mono text-xs text-muted/60">vs 8.4% buy-and-hold</div>
+      </div>
+
+      <div class="bg-white border border-silk rounded-xl px-5 py-5">
+        <div class="font-mono text-xs text-muted mb-3 uppercase tracking-wider">Sharpe Ratio</div>
+        <div class="flex items-baseline gap-2 mb-1">
+          <span class="font-display font-bold text-navy text-3xl">0.92</span>
+        </div>
+        <div class="font-mono text-xs text-muted/60">vs 0.51 buy-and-hold</div>
+      </div>
+
+      <div class="bg-white border border-silk rounded-xl px-5 py-5">
+        <div class="font-mono text-xs text-muted mb-3 uppercase tracking-wider">Max Drawdown</div>
+        <div class="flex items-baseline gap-2 mb-1">
+          <span class="font-display font-bold text-navy text-3xl">-33.8</span>
+          <span class="font-mono text-sm text-gold">%</span>
+        </div>
+        <div class="font-mono text-xs text-muted/60">vs -56.8% buy-and-hold</div>
+      </div>
+
+      <div class="bg-white border border-silk rounded-xl px-5 py-5">
+        <div class="font-mono text-xs text-muted mb-3 uppercase tracking-wider">Volatility</div>
+        <div class="flex items-baseline gap-2 mb-1">
+          <span class="font-display font-bold text-navy text-3xl">12.1</span>
+          <span class="font-mono text-sm text-gold">%</span>
+        </div>
+        <div class="font-mono text-xs text-muted/60">vs 19.4% buy-and-hold</div>
+      </div>
+
+    </div>
+
+    {{/* Explanatory copy */}}
+    <div class="max-w-2xl flex flex-col gap-4">
+      <p class="font-sans text-sm text-muted leading-relaxed">
+        The equity curve applies a simple position-sizing rule to the regime
+        classifications: reduce exposure in Danger, maintain full exposure in
+        Mid-Market and near-full in Boom. No forecasting. No price targets.
+        The only input is the current regime.
+      </p>
+      <p class="font-sans text-sm text-muted leading-relaxed">
+        The primary result is not a higher-returning strategy — though the CAGR
+        improvement from 8.4% to 11.2% is meaningful. The primary result is a
+        different risk profile: lower volatility, lower maximum drawdown, better
+        Sharpe. The regime-weighted curve doesn't beat the market by taking more
+        risk. It produces better risk-adjusted returns by taking less at the
+        wrong times.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+
+{{/* ════════════════════════════════════════════════════════════
+     SECTION 5 — HISTORICAL REGIMES (white + dot grid)
+════════════════════════════════════════════════════════════ */}}
+<section class="bg-white border-b border-silk px-6 lg:px-20 py-16"> 
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/xrange.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+<style type="text/css">
+  body {
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        "Apple Color Emoji",
+        "Segoe UI Emoji",
+        "Segoe UI Symbol",
+        sans-serif;
+  }
+
+  #container {
+      height: 300px;
+  }
+
+  .highcharts-figure {
+      min-width: 320px;
+      max-width: 800px;
+      margin: 1em auto;
+  }
+
+  .highcharts-description {
+      margin: 0.3rem 10px;
+  }
+</style>
+<figure class="highcharts-figure">
+    <div id="container"></div>
+    <div class="highcharts-description border-l-2 border-gold/40 pl-5 max-w-2xl font-sans text-sm text-muted leading-relaxed">
+      <p>
+        Every classification shown was generated on data the model had not been
+        trained on. 
+      </p>
+      <p>
+        The 2008 Danger classifications were made by a model trained
+        through 2007. 
+      </p>
+      <p>
+          The 2020 COVID Danger classification was made by a model
+        trained through 2019. 
+      </p>      
+      <p>
+        This is not a backtest — it is a stitched sequence
+        of genuine out-of-sample predictions.
+      </p>
+      <a href="/lab/regime-detection/methodology/"
+         class="font-mono text-xs font-medium tracking-wider uppercase
+                text-gold no-underline hover:text-gold-dark transition-colors duration-200">
+        Full methodology and validation results →
+      </a>
+    </div>
+</figure>
+
+<script type="text/javascript">
+  const REGIME = {
+    boom:   { label: 'Boom',       color: '#F39C12', size: 0.80 },
+    mid:    { label: 'Mid-Market', color: '#27AE60', size: 1.00 },
+    danger: { label: 'Danger',     color: '#E74C3C', size: 0.25 },
+  };
+
+  const SITE = {
+    navy:  '#1B2A4A',
+    gold:  '#C8A951',
+    cream: '#F8F7F4',
+    silk:  '#E5E3DF',
+    muted: '#6B7280',
+    ink:   '#1A1A1A',
+    font:  '"DM Mono", ui-monospace, monospace',
+  };
+  const TIMELINE_BLOCKS = JSON.parse({{ .Site.Data.regime_timeline.blocks | jsonify }});
+
+
+  function toMs(dateStr) {
+    return new Date(dateStr).getTime();
+  }
+
+  function blocksForRegime(label, yIndex, color) {
+    return TIMELINE_BLOCKS
+      .filter(b => b.regime === label)
+      .map(b => ({
+        x:  toMs(b.x),
+        x2: toMs(b.x2),
+        y:  yIndex,
+        color: color,
+      }));
+  }
+
+
+//   series: [{
+//   name:  REGIME.mid.label,
+//   color: REGIME.mid.color,
+//   data:  []
+// }, {
+//   name:  REGIME.danger.label,
+//   color: REGIME.danger.color,
+//   data:  []
+// }, {
+//   name:  REGIME.boom.label,
+//   color: REGIME.boom.color,
+//   data:  []
+// }],
+
+// yAxis: {
+//   categories: [
+//     REGIME.mid.label,
+//     REGIME.danger.label,
+//     REGIME.boom.label,
+//   ],
+//   labels: {
+//     style: { color: SITE.navy, fontFamily: SITE.font }
+//   }
+// },
+
+// xAxis: {
+//   lineColor:  SITE.silk,
+//   tickColor:  SITE.silk,
+//   labels: { style: { color: SITE.muted, fontFamily: SITE.font } }
+// },
+
+// tooltip: {
+//   backgroundColor: '#ffffff',
+//   borderColor:     SITE.silk,
+//   style: { color: SITE.ink, fontFamily: SITE.font }
+// },
+
+  Highcharts.chart('container', {
+    chart: {
+        type: 'xrange'
+    },
+    title: {
+        text: 'Walk-Forward Regime Timeline'
+    },
+    subtitle: {
+      text: 'OOS predictions stitched'
+    },
+    accessibility: {
+        point: {
+            descriptionFormat: '{add index 1}. {yCategory}, {x:%A %e %B %Y} ' +
+                'to {x2:%A %e %B %Y}.'
+        }
+    },
+    xAxis: {
+        type: 'datetime'
+    },
+    yAxis: {
+        title: {
+            text: ''
+        },
+        categories: ['Mid-Market', 'Danger', 'Boom'],
+        reversed: true
+    },
+    series: [{
+    name:  REGIME.mid.label,
+    color: REGIME.mid.color,
+    data:  blocksForRegime(REGIME.mid.label, 0, REGIME.mid.color),
+  }, {
+    name:  REGIME.danger.label,
+    color: REGIME.danger.color,
+    data:  blocksForRegime(REGIME.danger.label, 1, REGIME.danger.color),
+  }, {
+    name:  REGIME.boom.label,
+    color: REGIME.boom.color,
+    data:  blocksForRegime(REGIME.boom.label, 2, REGIME.boom.color),
+  }],
+});
+</script>
+
+</section>
+<!-- <section class="bg-white bg-dot-grid bg-dot border-b border-silk px-6 lg:px-20 py-16">
+  <div class="max-w-content mx-auto">
+
+    <div class="flex items-center gap-2 mb-4">
+      <span class="w-6 h-px bg-gold opacity-70"></span>
+      <span class="font-mono text-xs font-medium tracking-ultra uppercase text-gold">
+        Historical Record
+      </span>
+    </div>
+
+    <h2 class="font-display font-bold text-navy leading-tight text-2xl mb-2">
+      Twenty years of classifications
+    </h2>
+
+    <p class="font-mono text-xs text-muted mb-8">
+      S&P 500 with Boom · Mid-Market · Danger shading ·
+      Walk-forward out-of-sample · 2006–2026
+    </p>
+
+    {{/* SPX regimes chart */}}
+    <div class="bg-white border border-silk rounded-xl overflow-hidden mb-6">
+      {{ if $spxRegimes }}
+        <img src="{{ $spxRegimes.Permalink }}"
+             width="{{ $spxRegimes.Width }}"
+             height="{{ $spxRegimes.Height }}"
+             alt="S&P 500 price chart with Boom, Mid-Market, and Danger regime shading, 2006–2026"
+             class="w-full h-auto block">
+      {{ else }}
+        <div class="w-full bg-silk flex items-center justify-center" style="height:320px;">
+          <div class="text-center">
+            <p class="font-mono text-xs text-muted mb-1">Chart placeholder</p>
+            <p class="font-mono text-xs text-muted/60">
+              Export wf_spx_regimes PDF → assets/images/charts/spx-regimes.png
+            </p>
+          </div>
+        </div>
+      {{ end }}
+    </div>
+
+    {{/* Chart legend */}}
+    <div class="flex flex-wrap gap-6 mb-8">
+      <div class="flex items-center gap-2">
+        <span class="w-3 h-3 rounded-sm bg-boom/30 shrink-0"></span>
+        <span class="font-mono text-xs text-muted">Boom</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="w-3 h-3 rounded-sm bg-yellow-500/30 shrink-0"></span>
+        <span class="font-mono text-xs text-muted">Mid-Market</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="w-3 h-3 rounded-sm bg-danger/30 shrink-0"></span>
+        <span class="font-mono text-xs text-muted">Danger</span>
+      </div>
+    </div>
+
+    {{/* OOS explanation */}}
+    <div class="border-l-2 border-gold/40 pl-5 max-w-2xl">
+      <p class="font-sans text-sm text-muted leading-relaxed">
+        Every classification shown was generated on data the model had not been
+        trained on. The 2008 Danger classifications were made by a model trained
+        through 2007. The 2020 COVID Danger classification was made by a model
+        trained through 2019. This is not a backtest — it is a stitched sequence
+        of genuine out-of-sample predictions.
+      </p>
+    </div>
+
+    <div class="mt-6">
+      <a href="/lab/regime-detection/methodology/"
+         class="font-mono text-xs font-medium tracking-wider uppercase
+                text-gold no-underline hover:text-gold-dark transition-colors duration-200">
+        Full methodology and validation results →
+      </a>
+    </div>
+
+  </div>
+</section> -->
+
+
+{{/* ════════════════════════════════════════════════════════════
+     SECTION 6 — RETURN DISTRIBUTIONS (cream)
+════════════════════════════════════════════════════════════ */}}
+<section class="bg-cream border-b border-silk px-6 lg:px-20 py-16">
+  <div class="max-w-content mx-auto">
+
+    <div class="flex items-center gap-2 mb-4">
+      <span class="w-6 h-px bg-gold opacity-70"></span>
+      <span class="font-mono text-xs font-medium tracking-ultra uppercase text-gold">
+        Return Distributions
+      </span>
+    </div>
+
+    <h2 class="font-display font-bold text-navy leading-tight text-2xl mb-2">
+      The statistical character of each regime
+    </h2>
+
+    <p class="font-mono text-xs text-muted mb-8">
+      21-day forward return distributions · Boom · Mid-Market · Danger · 2006–2026
+    </p>
+
+    {{/* Return distributions chart */}}
+    <div class="bg-white border border-silk rounded-xl overflow-hidden mb-6">
+      {{ if $returnDist }}
+        <img src="{{ $returnDist.Permalink }}"
+             width="{{ $returnDist.Width }}"
+             height="{{ $returnDist.Height }}"
+             alt="Forward return distributions by regime showing Boom right skew vs Danger fat left tail"
+             class="w-full h-auto block">
+      {{ else }}
+        <div class="w-full bg-silk flex items-center justify-center" style="height:280px;">
+          <div class="text-center">
+            <p class="font-mono text-xs text-muted mb-1">Chart placeholder</p>
+            <p class="font-mono text-xs text-muted/60">
+              Export wf_return_distributions PDF → assets/images/charts/return-distributions.png
+            </p>
+          </div>
+        </div>
+      {{ end }}
+    </div>
+
+    <div class="max-w-2xl">
+      <p class="font-sans text-sm text-muted leading-relaxed">
+        The Boom distribution skews right — more observations in the positive
+        tail, fewer catastrophic outcomes. The Danger distribution is the inverse:
+        similar mean, but the left tail is wider and heavier. Mid-Market sits
+        between them. The three distributions look similar in their centers.
+        They diverge in their tails. That divergence is where drawdowns are made.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+
+{{/* ════════════════════════════════════════════════════════════
+     SECTION 7 — CTA STRIP (navy)
+════════════════════════════════════════════════════════════ */}}
+<section class="bg-navy px-6 lg:px-20 py-14">
+  <div class="max-w-content mx-auto
+              flex flex-wrap items-center justify-between gap-8">
+
+    <div class="max-w-sm">
+      <p class="font-sans text-sm text-white/60 leading-relaxed">
+        The regime classification publishes every Monday in the
+        AppliedComplexity Newsletter — with the signals that drove it
+        and notes on what changed.
+      </p>
+    </div>
+
+    <div class="flex flex-wrap gap-4">
+      <a href="{{ .Site.Params.newsletterURL }}"
+         class="bg-gold text-navy font-semibold text-sm px-6 py-3 rounded-lg
+                no-underline hover:bg-gold-dark transition-colors duration-200">
+        Follow the research →
+      </a>
+      <a href="/lab/macrocontext/"
+         class="text-gold font-semibold text-sm px-6 py-3 rounded-lg
+                border-2 border-gold/30 no-underline
+                hover:border-gold hover:bg-gold/10
+                transition-all duration-200">
+        Explore MacroContext →
+      </a>
+    </div>
+
+  </div>
+</section>
+
+
+{{/* ════════════════════════════════════════════════════════════
+     DISCLAIMER (cream, small mono)
+════════════════════════════════════════════════════════════ */}}
+<section class="bg-cream border-t border-silk px-6 lg:px-20 py-12">
+  <div class="max-w-content mx-auto">
+
+    <p class="font-mono text-xs font-medium tracking-wider uppercase
+              text-muted mb-4">
+      Important disclosures
+    </p>
+
+    <div class="max-w-3xl flex flex-col gap-3">
+
+      <p class="font-mono text-xs text-muted/70 leading-relaxed">
+        The MacroContext regime classification system is provided for
+        informational and research purposes only. It does not constitute
+        investment advice, a solicitation, or a recommendation to buy or sell
+        any security or financial instrument. Nothing on this page should be
+        construed as legal, tax, or investment advice.
+      </p>
+
+      <p class="font-mono text-xs text-muted/70 leading-relaxed">
+        Past performance of the regime-weighted equity curve shown above is
+        hypothetical and based on walk-forward out-of-sample simulation applied
+        retroactively to historical data. It does not represent actual trading
+        results and has not been verified by any independent third party.
+        Hypothetical performance results have inherent limitations: they are
+        prepared with the benefit of hindsight, do not reflect the impact of
+        material economic and market factors that may have affected actual
+        investment decisions, and do not account for transaction costs, slippage,
+        or taxes. Actual results will differ.
+      </p>
+
+      <p class="font-mono text-xs text-muted/70 leading-relaxed">
+        MacroContext regime classifications are produced by a quantitative model
+        that may be incomplete, inaccurate, or subject to revision. The model has
+        failed formal validation criteria on the current run. Full validation
+        results, including pass/fail metrics, are available on the
+        <a href="/lab/regime-detection/methodology/"
+           class="text-muted underline hover:text-navy transition-colors duration-200">
+          methodology page</a>.
+        AppliedComplexity Research makes no representations as to the accuracy
+        or completeness of the information presented and accepts no liability
+        for decisions made in reliance on this material.
+      </p>
+
+      <p class="font-mono text-xs text-muted/70 leading-relaxed">
+        Not an offer to sell or solicitation of an offer to buy any security.
+        For informational use only.
+      </p>
+
+    </div>
+
+  </div>
+</section>
+
+{{ end }}
