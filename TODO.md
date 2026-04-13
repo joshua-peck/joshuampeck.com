@@ -39,34 +39,10 @@
       Prioritize: methodology explainers, the 2024 misclassification,
       the rate-of-change vs level decision, the PCA preprocessing rationale.
 
-- [ ] **Write the intellectual biography** (`/about/`)
-      Not a CV. The narrative: what questions in 2015 led to the book,
-      what the book revealed that led to MacroContext, what's still open.
-      Add professional headshot (only appears here).
-
-
 ## High Priority (before any press or launch announcement)
-
-- [ ] **Homepage re-architecture**
-      Shift from product-optimized to person-first.
-      Implement agreed section order:
-      Hero → Creed/Principles → The Work → Credibility Bar →
-      Regime Signal (stripped of product framing) → Research Archive →
-      About (condensed) → Footer
-
-- [ ] **Hero copy** — implement chosen option from copy review session
 
 - [ ] **Principles section** — replace creed with broader personal principles
       (copy TBD — finish principles discussion before building)
-
-- [ ] **"The Work" section** — three cards, implement per spec
-      MacroContext / Newsletter / Book
-      Section title: "Research, tools, and writing — all the same question."
-
-- [ ] **Regime signal — reframe for authority site**
-      Strip product CTAs. Keep: current regime, date, one plain-English sentence,
-      link to methodology. No signal tags as feature bullets.
-      No "Understand the model →" CTA.
 
 - [ ] **Canonical methodology document** (`/lab/regime-detection/methodology/`)
       Permanent URL. Versioned. Treated as a living document.
@@ -84,13 +60,6 @@
       what it revealed about the fast-shock gap, what changed.
       2026 Iran war: same treatment.
       These are the strongest authority signals available.
-
-- [ ] **Section numbering** — add 01/02/03 etc. to all homepage sections
-      Per the concept review — gives the page deliberate editorial architecture.
-
-- [ ] **Book page** (`/book/`)
-      Full treatment: cover image, Amazon link, publisher, audience,
-      one paragraph connecting it to the current intellectual project.
 
 - [ ] **Newsletter landing page** (`/newsletter/`)
       Full SCR copy per copywriting skill.
