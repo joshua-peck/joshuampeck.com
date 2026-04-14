@@ -62,7 +62,6 @@
   {{ $returnDist = $returnDist.Resize "1200x q90 webp" }}
 {{ end }}
 
-
 {{/* ════════════════════════════════════════════════════════════
      SECTION 1 — HEADER (navy)
 ════════════════════════════════════════════════════════════ */}}
@@ -103,59 +102,118 @@
   </div>
 </header>
 
+<style>
+:root{
+  --navy:#1B2A4A;--gold:#C8A951;--cream:#F8F7F4;--silk:#E5E3DF;
+  --muted:#6B7280;--ink:#1A1A1A;--boom:#F39C12;--mid:#27AE60;--danger:#E74C3C;
+  --font-mono:'DM Mono',monospace;--font-display:'Playfair Display',serif;
+  --font-sans:'Source Sans 3',sans-serif;
+}
 
-{{/* ════════════════════════════════════════════════════════════
-     SECTION 2 — CURRENT SIGNAL (dynamic regime color)
-════════════════════════════════════════════════════════════ */}}
-<section class="bg-navy border-b-4 {{ $secBorder }} px-6 lg:px-20 py-16">
-  <div class="max-w-content mx-auto">
+.chart-block{margin-bottom:48px;}
+.chart-label{font-family:var(--font-mono);font-size:9px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.chart-title{font-family:var(--font-display);font-size:18px;font-weight:700;color:var(--navy);margin-bottom:4px;}
+.chart-sub{font-family:var(--font-mono);font-size:10px;color:var(--muted);margin-bottom:14px;line-height:1.6;}
+.chart-card{background:#fff;border:.5px solid var(--silk);border-radius:12px;overflow:hidden;}
+.divider{height:1px;background:var(--silk);margin:0 0 48px;}
 
-    <div class="flex items-center gap-2 mb-6">
-      <span class="font-mono text-xs font-medium tracking-ultra uppercase text-white/40">
-        Current Classification · Updated {{ $r.date }}
-      </span>
+.eq-legend{display:flex;gap:16px;margin-bottom:12px;flex-wrap:wrap;}
+.eq-leg{display:flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:10px;color:var(--muted);}
+.eq-line{width:18px;height:2px;background:var(--navy);}
+.eq-dashed{width:18px;height:0;border-top:2px dashed var(--gold);}
+.eq-box{width:9px;height:9px;border-radius:2px;}
+
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px;}
+.stat{background:var(--cream);border-radius:8px;padding:10px 14px;}
+.stat-lbl{font-family:var(--font-mono);font-size:9px;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:.1em;}
+.stat-val{font-family:var(--font-display);font-size:22px;font-weight:700;color:var(--navy);}
+.stat-sub{font-family:var(--font-mono);font-size:9px;color:var(--muted);}
+
+.dual-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--silk);}
+.panel{background:#fff;padding:18px 20px;}
+.panel-title{font-family:var(--font-mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;}
+.s-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.s-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+.s-name{font-family:var(--font-mono);font-size:10px;color:var(--muted);width:72px;flex-shrink:0;}
+.s-track{flex:1;background:var(--cream);border-radius:3px;height:7px;overflow:hidden;}
+.s-fill{height:7px;border-radius:3px;}
+.s-val{font-family:var(--font-mono);font-size:12px;font-weight:500;color:var(--navy);width:30px;text-align:right;}
+.cov-row{display:flex;align-items:center;gap:8px;margin-bottom:7px;}
+.cov-event{font-family:var(--font-mono);font-size:9px;color:var(--muted);width:150px;flex-shrink:0;line-height:1.3;}
+.cov-track{flex:1;background:var(--cream);border-radius:3px;height:5px;overflow:hidden;}
+.cov-fill{height:5px;border-radius:3px;}
+.cov-pct{font-family:var(--font-mono);font-size:10px;font-weight:500;width:34px;text-align:right;flex-shrink:0;}
+
+/* Teaser */
+.teaser{display:grid;grid-template-columns:200px 1fr;}
+.teaser-left{padding:28px 24px;display:flex;flex-direction:column;justify-content:space-between;}
+.teaser-right{padding:20px 24px;display:flex;flex-direction:column;gap:10px;background:var(--navy);}
+.strip-track{height:16px;border-radius:4px;overflow:hidden;display:flex;}
+.strip-seg{height:100%;}
+.strip-labels{display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:9px;color:rgba(255,255,255,.3);margin-top:4px;}
+.strip-legend{display:flex;gap:10px;margin-top:4px;}
+.strip-leg{display:flex;align-items:center;gap:4px;font-family:var(--font-mono);font-size:9px;color:rgba(255,255,255,.4);}
+.strip-dot{width:7px;height:7px;border-radius:2px;opacity:.8;}
+
+/* Tile */
+.tile{background:#fff;border:.5px solid var(--silk);border-radius:12px;overflow:hidden;width:360px;}
+.tile-header{background:var(--navy);padding:12px 16px;display:flex;justify-content:space-between;align-items:center;}
+.tile-brand{font-family:var(--font-mono);font-size:9px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.4);}
+.tile-date{font-family:var(--font-mono);font-size:9px;color:rgba(255,255,255,.3);}
+.tile-body{padding:16px;}
+.tile-regime-row{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.tile-dot{width:10px;height:10px;border-radius:50%;}
+.tile-regime-name{font-family:var(--font-display);font-size:26px;font-weight:700;}
+.tile-meta{display:flex;flex-direction:column;gap:5px;border-top:.5px solid var(--silk);padding-top:12px;margin-bottom:12px;}
+.tile-row{display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:10px;}
+.tile-row-lbl{color:var(--muted);}
+.tile-row-val{color:var(--navy);font-weight:500;}
+.tile-note{font-family:var(--font-mono);font-size:9px;color:var(--muted);line-height:1.6;margin-bottom:12px;}
+.tile-sharpe{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--silk);border-top:.5px solid var(--silk);}
+.tile-sharpe-cell{background:#fff;padding:10px 12px;text-align:center;}
+.tile-sharpe-lbl{font-family:var(--font-mono);font-size:8px;color:var(--muted);margin-bottom:3px;letter-spacing:.08em;text-transform:uppercase;}
+.tile-sharpe-val{font-family:var(--font-mono);font-size:14px;font-weight:500;}
+
+/* Swimlane */
+.swim-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.swim-label{font-family:var(--font-mono);font-size:10px;color:var(--navy);width:80px;text-align:right;flex-shrink:0;}
+.swim-track{flex:1;height:24px;border-radius:4px;overflow:hidden;display:flex;gap:2px;}
+.swim-seg{height:100%;border-radius:3px;}
+.swim-axis{display:flex;justify-content:space-between;padding:0 0 0 90px;margin-top:6px;}
+.swim-tick{font-family:var(--font-mono);font-size:9px;color:var(--muted);}
+</style>
+
+<section class="bg-cream border-b border-silk py-16 max-w-content mx-auto">
+  <div class="chart-block">
+  <div class="chart-label">Walk-forward out-of-sample · 2006-2026</div>
+  <div class="chart-title"><h2 class="font-display font-bold text-navy leading-tight text-2xl mb-2">Regime detection model caught 2008, 2020, and 2022 in real time</h2>
+  </div>
+  <div class="chart-sub">Each classification was generated on data the model had not seen.
+  </div>
+  <div class="chart-card" style="padding:20px 20px 14px;">
+    <div class="eq-legend" style="margin-bottom:12px;">
+      <span class="eq-leg"><span class="eq-box" style="background:rgba(243,156,18,.2)"></span> Boom</span>
+      <span class="eq-leg"><span class="eq-box" style="background:rgba(39,174,96,.15)"></span> Mid-Market</span>
+      <span class="eq-leg"><span class="eq-box" style="background:rgba(231,76,60,.15)"></span> Danger</span>
+      <span class="eq-leg" style="margin-left:auto;"><span class="eq-line"></span> S&amp;P 500</span>
     </div>
-
-    {{/* Regime badge */}}
-    <div class="inline-flex items-center gap-3 {{ $badgeBg }} border {{ $badgeBorder }}
-                rounded-lg px-4 py-2 mb-6">
-      <span class="w-2.5 h-2.5 rounded-full {{ $dotColor }} animate-pulse-dot"></span>
-      <span class="font-mono text-xs font-medium tracking-widest uppercase {{ $textColor }}">
-        {{ $r.label }}
-      </span>
+    <div class="w-full rounded-xl overflow-hidden">
+      <canvas id="spxChart" role="img" aria-label="S&amp;P 500 with regime shading 2006-2026" width="1718" height="560" style="display: block; box-sizing: border-box; height: 280px; width: 859px;">S&amp;P 500 price from 1,270 in 2006 to approximately 5,600 in 2026 with regime background shading.</canvas>
     </div>
-
-    {{/* Regime name — large display */}}
-    <div class="font-display font-bold text-white leading-none
-                text-6xl md:text-7xl mb-8 {{ $textColor }}">
-      {{ $r.label }}
+    <div class="text-center font-mono text-xs text-muted mt-4" style="line-height:1.6;">
+      MacroContext regime detection  ·  <a href="https://joshuampeck.com/lab/regime-detection/">https://joshuampeck.com/lab/regime-detection</a>
     </div>
-
-    {{/* Researcher note */}}
-    <p class="font-sans italic text-white/45 max-w-xl
-              border-l-2 border-gold/30 pl-5 mb-10
-              text-base leading-relaxed">
-      {{ $r.note }}
-    </p>
-
-    {{/* CTAs */}}
-    <div class="flex flex-wrap gap-4 items-center">
-      <a href="/lab/macrocontext/"
-         class="bg-gold text-navy font-semibold text-sm px-6 py-3 rounded-lg
-                no-underline hover:bg-gold-dark transition-colors duration-200">
-        MacroContext Dashboard →
-      </a>
-      <a href="{{ .Site.Params.newsletterURL }}"
-         class="text-gold font-semibold text-sm px-6 py-3 rounded-lg
-                border-2 border-gold/30 no-underline
-                hover:border-gold hover:bg-gold/10
-                transition-all duration-200">
-        Get the weekly call →
-      </a>
-    </div>
-
+  </div>
+  <div class="text-center pl-5 max-w font-sans text-sm text-muted leading-relaxed mt-2">
+    <a href="/lab/regime-detection/methodology/"
+        class="font-mono text-xs font-medium tracking-wider uppercase
+              text-navy no-underline hover:text-gold-dark transition-colors duration-200">
+      Full methodology and validation results →
+    </a>
   </div>
 </section>
+
+
 
 
 {{/* ════════════════════════════════════════════════════════════
@@ -421,12 +479,14 @@
 {{/* ════════════════════════════════════════════════════════════
      SECTION 5 — HISTORICAL REGIMES (white + dot grid)
 ════════════════════════════════════════════════════════════ */}}
-<section class="bg-white border-b border-silk px-6 lg:px-20 py-16"> 
+{{/*  <section class="bg-white border-b border-silk px-6 lg:px-20 py-16"> 
 
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/xrange.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
 <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+<script src="https://code.highcharts.com/modules/offline-exporting.js"></script>
+
 <style type="text/css">
   body {
     font-family:
@@ -515,7 +575,7 @@
         y:  yIndex,
         color: color,
       }));
-  }
+  }  */}}
 
 
 //   series: [{
@@ -555,7 +615,7 @@
 //   style: { color: SITE.ink, fontFamily: SITE.font }
 // },
 
-  Highcharts.chart('container', {
+  {{/*  Highcharts.chart('container', {
     chart: {
         type: 'xrange'
     },
@@ -571,6 +631,73 @@
                 'to {x2:%A %e %B %Y}.'
         }
     },
+    credits: {
+      enabled: true,
+      text: 'MacroContext regime detection  ·  joshuampeck.com/lab/regime-detection/',
+      href: 'https://joshuampeck.com/lab/regime-detection/',
+      position: { align: 'center', x: 0, y: -4 },
+      style: {
+        color:      '#6B7280',
+        fontSize:   '9px',
+        fontFamily: '"DM Mono", ui-monospace, monospace',
+        cursor:     'pointer',
+      }
+    },
+    exporting: {
+      enabled: true,
+      filename: 'macrocontext-regime-timeline',
+      buttons: {
+        contextButton: {
+          menuItems: ['downloadPDF'],
+        }
+      },
+      chartOptions: {
+        chart: {
+          events: {
+            render: function () {
+              const chart = this;
+
+              if (chart._watermark) {
+                chart._watermark.destroy();
+              }
+
+              chart._watermark = chart.renderer
+                .text(
+                  'MacroContext regime detection · joshuampeck.com/lab/regime-detection/',
+                  chart.chartWidth / 2,
+                  chart.chartHeight - 8
+                )
+                .attr({ align: 'center', zIndex: 5 })
+                .css({
+                  color:      '#6B7280',
+                  fontSize:   '9px',
+                  fontFamily: '"DM Mono", ui-monospace, monospace',
+                })
+                .add();
+            }
+          }
+        },
+        title: {
+          text: 'Walk-Forward Regime Timeline',
+          style: { color: '#1B2A4A', fontFamily: '"Playfair Display", serif', fontWeight: '700' }
+        },
+        subtitle: {
+          text: 'MacroContext out-of-sample regime classifications  ·  joshuampeck.com',
+          style: {
+            color:      '#6B7280',
+            fontSize:   '10px',
+            fontFamily: '"DM Mono", ui-monospace, monospace',
+          }
+        },        
+        legend: { enabled: false },
+        credits: { enabled: false },
+      },
+      pdf: {
+        author: 'Joshua M. Peck / AppliedComplexity',
+        subject: 'MacroContext Regime Detection',
+      }
+    },
+    legend:    { enabled: false },
     xAxis: {
         type: 'datetime'
     },
@@ -597,8 +724,8 @@
 });
 </script>
 
-</section>
-<!-- <section class="bg-white bg-dot-grid bg-dot border-b border-silk px-6 lg:px-20 py-16">
+</section>  */}}
+<section class="bg-white bg-dot-grid bg-dot border-b border-silk px-6 lg:px-20 py-16">
   <div class="max-w-content mx-auto">
 
     <div class="flex items-center gap-2 mb-4">
@@ -764,6 +891,59 @@
   </div>
 </section>
 
+{{/* ════════════════════════════════════════════════════════════
+     SECTION 2 — CURRENT SIGNAL (dynamic regime color)
+════════════════════════════════════════════════════════════ */}}
+<section class="bg-navy border-b-4 {{ $secBorder }} px-6 lg:px-20 py-16">
+  <div class="max-w-content mx-auto">
+
+    <div class="flex items-center gap-2 mb-6">
+      <span class="font-mono text-xs font-medium tracking-ultra uppercase text-white/40">
+        Current Classification · Updated {{ $r.date }}
+      </span>
+    </div>
+
+    {{/* Regime badge */}}
+    <div class="inline-flex items-center gap-3 {{ $badgeBg }} border {{ $badgeBorder }}
+                rounded-lg px-4 py-2 mb-6">
+      <span class="w-2.5 h-2.5 rounded-full {{ $dotColor }} animate-pulse-dot"></span>
+      <span class="font-mono text-xs font-medium tracking-widest uppercase {{ $textColor }}">
+        {{ $r.label }}
+      </span>
+    </div>
+
+    {{/* Regime name — large display */}}
+    <div class="font-display font-bold text-white leading-none
+                text-6xl md:text-7xl mb-8 {{ $textColor }}">
+      {{ $r.label }}
+    </div>
+
+    {{/* Researcher note */}}
+    <p class="font-sans italic text-white/45 max-w-xl
+              border-l-2 border-gold/30 pl-5 mb-10
+              text-base leading-relaxed">
+      {{ $r.note }}
+    </p>
+
+    {{/* CTAs */}}
+    <div class="flex flex-wrap gap-4 items-center">
+      <a href="/lab/macrocontext/"
+         class="bg-gold text-navy font-semibold text-sm px-6 py-3 rounded-lg
+                no-underline hover:bg-gold-dark transition-colors duration-200">
+        MacroContext Dashboard →
+      </a>
+      <a href="{{ .Site.Params.newsletterURL }}"
+         class="text-gold font-semibold text-sm px-6 py-3 rounded-lg
+                border-2 border-gold/30 no-underline
+                hover:border-gold hover:bg-gold/10
+                transition-all duration-200">
+        Get the weekly call →
+      </a>
+    </div>
+
+  </div>
+</section>
+
 
 {{/* ════════════════════════════════════════════════════════════
      DISCLAIMER (cream, small mono)
@@ -820,5 +1000,183 @@
 
   </div>
 </section>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
 
+<script>
+const NAVY='#1B2A4A',GOLD='#C8A951',MUTED='#6B7280',SILK='#E5E3DF',INK='#1A1A1A';
+const BOOM='#F39C12',MID='#27AE60',DANGER='#E74C3C';
+const MONO='"DM Mono",monospace';
+
+const TIMELINE_BLOCKS = JSON.parse({{ .Site.Data.regime_timeline.blocks | jsonify }});
+const SPX_PRICES = JSON.parse({{ .Site.Data.spx.obs | jsonify }})
+  .map(p => ({ x: p.x, y: p.y }));
+
+// const yrs=['2006','2007','2008','2009','2010','2011','2012','2013','2014','2015','2016','2017','2018','2019','2020','2021','2022','2023','2024','2025',"'26"];
+// const bh=[1000,1136,723,918,1013,1034,1199,1581,1799,1823,2044,2490,2386,3141,3727,4797,3931,4969,6251,7843,7350];
+// const rw=[1000,1095,1058,1280,1450,1460,1710,2201,2490,2540,2760,3360,3140,3940,3820,4900,4830,6210,7640,9010,8700];
+
+// const dangerZones=[[1.5,2.9],[13.8,14.1],[16.0,17.0]];
+// const boomZones=[[2.9,4.5],[14.2,15.5],[17.1,18.8]];
+
+// const regimeBgPlugin={
+//   id:'rb',
+//   beforeDatasetsDraw(chart){
+//     const {ctx,chartArea,scales:{x}}=chart;
+//     if(!chartArea)return;
+//     const n=TIMELINE_BLOCKS.length;
+//     const px=i=>{const cl=Math.min(Math.max(i,0),n-1),fl=Math.floor(cl),ce=Math.ceil(cl),fr=cl-fl;if(fl===ce)return x.getPixelForValue(fl);return x.getPixelForValue(fl)+(x.getPixelForValue(ce)-x.getPixelForValue(fl))*fr;};
+//     dangerZones.forEach(([s,e])=>{ctx.fillStyle='rgba(231,76,60,0.10)';ctx.fillRect(px(s),chartArea.top,px(e)-px(s),chartArea.height);});
+//     boomZones.forEach(([s,e])=>{ctx.fillStyle='rgba(243,156,18,0.08)';ctx.fillRect(px(s),chartArea.top,px(e)-px(s),chartArea.height);});
+//   }
+// };
+
+{{/*  new Chart(document.getElementById('eqChart'),{
+  type:'line',plugins:[regimeBgPlugin],
+  data:{labels:yrs,datasets:[
+    {label:'Regime-weighted',data:rw,borderColor:NAVY,borderWidth:2.5,pointRadius:0,tension:0.3,fill:false},
+    {label:'Buy & hold',data:bh,borderColor:GOLD,borderWidth:1.5,borderDash:[5,4],pointRadius:0,tension:0.3,fill:false}
+  ]},
+  options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+    plugins:{legend:{display:false},tooltip:{backgroundColor:'#fff',borderColor:SILK,borderWidth:1,titleColor:INK,bodyColor:MUTED,titleFont:{family:MONO,size:10},bodyFont:{family:MONO,size:10},callbacks:{label:c=>`${c.dataset.label}: ${c.parsed.y.toLocaleString()}`}}},
+    scales:{
+      x:{grid:{display:false},ticks:{font:{family:MONO,size:9},color:MUTED,maxTicksLimit:11,maxRotation:0}},
+      y:{type:'logarithmic',grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{family:MONO,size:9},color:MUTED,callback:v=>[1000,2000,3000,5000,7000,9000].includes(v)?v.toLocaleString():''}}
+    }
+  }
+});  */}}
+
+// const spxPrices=[1270,1478,903,1115,1258,1258,1426,1849,2059,2044,2239,2674,2507,3231,3756,4766,3840,4770,4769,5882,5600];
+// const spxRegimes=['Mid','Mid','Danger','Mid','Mid','Mid','Mid','Mid','Mid','Danger','Mid','Mid','Danger','Mid','Danger','Boom','Danger','Boom','Mid','Boom','Danger'];
+// const regimeColors={Mid:'rgba(39,174,96,0.10)',Danger:'rgba(231,76,60,0.10)',Boom:'rgba(243,156,18,0.08)'};
+
+
+const regimeColors = {
+  'Boom':       'rgba(243,156,18,0.08)',
+  'Mid-Market': 'rgba(39,174,96,0.06)',
+  'Danger':     'rgba(231,76,60,0.14)',
+};
+
+const regimeShadingPlugin = {
+  id: 'regimeShading',
+  beforeDatasetsDraw(chart) {
+    const { ctx, chartArea, scales: { x } } = chart;
+    if (!chartArea) return;
+
+    TIMELINE_BLOCKS.forEach(block => {
+      const x0 = x.getPixelForValue(new Date(block.x).getTime());
+      const x1 = x.getPixelForValue(new Date(block.x2).getTime());
+      ctx.fillStyle = regimeColors[block.regime] || 'transparent';
+      ctx.fillRect(x0, chartArea.top, x1 - x0, chartArea.height);
+    });
+  }
+};
+
+// const spxBgPlugin={
+//   id:'spxbg',
+//   beforeDatasetsDraw(chart){
+//     const {ctx,chartArea,scales:{x}}=chart;
+//     if(!chartArea)return;
+//     for(let i=0;i<spxRegimes.length-1;i++){
+//       const x0=x.getPixelForValue(i),x1=x.getPixelForValue(i+1);
+//       ctx.fillStyle=regimeColors[spxRegimes[i]]||'transparent';
+//       ctx.fillRect(x0,chartArea.top,x1-x0,chartArea.height);
+//     }
+//   }
+// };
+
+// new Chart(document.getElementById('spxChart'),{
+//   type:'line',plugins:[regimeShadingPlugin],
+//   data:{labels:yrs,datasets:[{label:'S&P 500',data:SPX_PRICES,borderColor:NAVY,borderWidth:2,pointRadius:0,tension:0.3,fill:false}]},
+//   options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+//     plugins:{legend:{display:false},tooltip:{backgroundColor:'#fff',borderColor:SILK,borderWidth:1,titleColor:INK,bodyColor:MUTED,titleFont:{family:MONO,size:10},bodyFont:{family:MONO,size:10},
+//       callbacks:{
+//         title:items=>yrs[items[0].dataIndex],
+//         label:ctx=>{
+//           const r=spxRegimes[ctx.dataIndex];
+//           return [`S&P 500: ${ctx.parsed.y.toLocaleString()}`,`Regime: ${r==='Mid'?'Mid-Market':r}`];
+//         }
+//       }
+//     }},
+//     scales:{
+//       x:{type: 'time', time: { unit: 'year' },grid:{display:false},ticks:{font:{family:MONO,size:9},color:MUTED,maxTicksLimit:11,maxRotation:0}},
+//       y:{type:'logarithmic',grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{family:MONO,size:9},color:MUTED,callback:v=>[1000,2000,3000,5000].includes(v)?v.toLocaleString():''}}
+//     }
+//   }
+// });
+function getRegimeForDate(dateStr) {
+  const d = new Date(dateStr).getTime();
+  const block = TIMELINE_BLOCKS.find(b =>
+    d >= new Date(b.x).getTime() && d < new Date(b.x2).getTime()
+  );
+  return block ? block.regime : '—';
+}
+
+new Chart(document.getElementById('spxChart'), {
+  type: 'line',
+  plugins: [regimeShadingPlugin],
+  data: {
+    datasets: [{
+      label: 'S&P 500',
+      data: SPX_PRICES,        // [{x: '2006-01-06', y: 1285}, ...]
+      borderColor: NAVY,
+      borderWidth: 2,
+      pointRadius: 0,
+      tension: 0.3,
+      fill: false,
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    interaction: { mode: 'index', intersect: false },
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: '#fff',
+        borderColor: SILK,
+        borderWidth: 1,
+        titleColor: INK,
+        bodyColor: MUTED,
+        // titleFont: { family: SITE.font, size: 10 },
+        // bodyFont:  { family: SITE.font, size: 10 },
+        callbacks: {
+          title: items => {
+            const d = new Date(items[0].parsed.x);
+            return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+          },
+          label: ctx => {
+            const dateStr = new Date(ctx.parsed.x).toISOString().slice(0, 10);
+            const regime  = getRegimeForDate(dateStr);
+            const color   = regime === 'Boom'   ? REGIME.boom.color
+                          : regime === 'Danger' ? REGIME.danger.color
+                          : REGIME.mid.color;
+            return [
+              `S&P 500: ${ctx.parsed.y.toLocaleString()}`,
+              `Regime: ${regime}`,
+            ];
+          }
+        }
+      }
+    },
+    scales: {
+      x: {
+        type: 'time',
+        time: { unit: 'year' },
+        grid: { display: false },
+        ticks: { font: { family: MONO, size: 9 }, color: MUTED, maxRotation: 0 }
+      },
+      y: {
+        type: 'logarithmic',
+        grid: { color: 'rgba(0,0,0,0.04)' },
+        ticks: {
+          font: { family: MONO, size: 9 },
+          color: MUTED,  
+          callback: v => [1000, 2000, 3000, 5000].includes(v) ? v.toLocaleString() : ''
+        }
+      }
+    }
+  }
+});
+</script>
 {{ end }}
