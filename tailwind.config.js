@@ -13,10 +13,7 @@ module.exports = {
     // Boom
     'border-boom',   'bg-boom/10',   'border-boom/30',   'bg-boom',   'text-boom',
     // Mid-Market
-    'border-yellow-500', 'bg-yellow-500/10', 'border-yellow-500/30', 'bg-yellow-500', 'text-yellow-500',
-    'border-danger',
-    'border-boom', 
-    'border-yellow-500',
+    'border-mid', 'bg-mid/10', 'border-mid/30', 'bg-mid', 'text-mid',
   ],
 
   theme: {

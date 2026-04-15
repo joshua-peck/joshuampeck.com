@@ -1,65 +1,49 @@
 {{ define "main" }}
 
-{{/*
-  layouts/lab/regime-detection.html
-  ─────────────────────────────────────────────────────────────────
-  Signal communication page for /lab/regime-detection/
-
-  Content file: content/lab/regime-detection/_index.md
-  Front matter must include: layout: "regime-detection"
-
-  Charts: export PDFs to PNG and place at:
-    assets/images/charts/equity-curve.png
-    assets/images/charts/spx-regimes.png
-    assets/images/charts/return-distributions.png
-  Hugo will resize and optimize automatically.
-  Placeholder divs are shown when image files are missing.
-
-  Data source: data/regime.yaml — updated every Monday.
-  ─────────────────────────────────────────────────────────────────
-*/}}
-
-
 {{/* ── Regime data & derived color classes ── */}}
 {{ $r := .Site.Data.regime }}
+{{ $cur := index $r.regimes $r.current_regime }}
 
+
+{{/* DANGER is default case */}}
+{{ $tileTitle := "The model is reading Danger." }}
+{{ $tileSub   := "In Danger regimes, average returns match Mid-Market. The distribution does not." }}
 {{ $dotColor    := "bg-danger" }}
 {{ $textColor   := "text-danger" }}
 {{ $badgeBg     := "bg-danger/10" }}
 {{ $badgeBorder := "border-danger/30" }}
 {{ $secBorder   := "border-danger" }}
 {{ $regimeLabel := "Danger" }}
+{{ $sharpe_mid_bg := "bg-white" }}
+{{ $sharpe_boom_bg := "bg-white" }}
+{{ $sharpe_danger_bg := "bg-danger/10" }}
 
-{{ if eq $r.status "boom" }}
+{{/* BOOM */}}
+{{ if eq $r.current_regime "boom" }}
+  {{ $tileTitle = "The model is reading Boom." }}
+  {{ $tileSub   = "Boom regimes produce the highest risk-adjusted returns in the dataset. Sharpe 1.34." }}
   {{ $dotColor    = "bg-boom" }}
   {{ $textColor   = "text-boom" }}
   {{ $badgeBg     = "bg-boom/10" }}
   {{ $badgeBorder = "border-boom/30" }}
   {{ $secBorder   = "border-boom" }}
   {{ $regimeLabel = "Boom" }}
-{{ else if eq $r.status "mid" }}
-  {{ $dotColor    = "bg-yellow-500" }}
-  {{ $textColor   = "text-yellow-500" }}
-  {{ $badgeBg     = "bg-yellow-500/10" }}
-  {{ $badgeBorder = "border-yellow-500/30" }}
-  {{ $secBorder   = "border-yellow-500" }}
+  {{ $sharpe_mid_bg = "bg-white" }}
+  {{ $sharpe_boom_bg = "bg-boom/10" }}
+  {{ $sharpe_danger_bg = "bg-white" }}
+{{/* MID-MARKET */}}
+{{ else if eq $r.current_regime "mid" }}
+  {{ $tileTitle = "The model is reading Mid-Market." }}
+  {{ $tileSub   = "Mid-Market is the baseline state. No acute stress. No strong directional momentum." }}
+  {{ $dotColor    = "bg-mid" }}
+  {{ $textColor   = "text-mid" }}
+  {{ $badgeBg     = "bg-mid/10" }}
+  {{ $badgeBorder = "border-mid/30" }}
+  {{ $secBorder   = "border-mid" }}
   {{ $regimeLabel = "Mid-Market" }}
-{{ end }}
-
-
-{{/* ── Chart image processing ── */}}
-{{ $equityCurve        := resources.Get "images/charts/equity-curve.png" }}
-{{ $spxRegimes         := resources.Get "images/charts/spx-regimes.png" }}
-{{ $returnDist         := resources.Get "images/charts/return-distributions.png" }}
-
-{{ if $equityCurve }}
-  {{ $equityCurve = $equityCurve.Resize "1200x q90 webp" }}
-{{ end }}
-{{ if $spxRegimes }}
-  {{ $spxRegimes = $spxRegimes.Resize "1200x q90 webp" }}
-{{ end }}
-{{ if $returnDist }}
-  {{ $returnDist = $returnDist.Resize "1200x q90 webp" }}
+  {{ $sharpe_mid_bg = "bg-mid/10" }}
+  {{ $sharpe_boom_bg = "bg-white" }}
+  {{ $sharpe_danger_bg = "bg-white" }}
 {{ end }}
 
 {{/* ════════════════════════════════════════════════════════════
@@ -70,19 +54,17 @@
 
     <div class="flex items-center gap-2 mb-6">
       <span class="font-mono text-xs font-medium tracking-ultra uppercase text-gold">
-        MacroContext · Lab
+        Lab · Regime Detection · S&P 500
       </span>
     </div>
 
     <h1 class="font-display font-bold text-white leading-tight
                text-4xl md:text-5xl mb-4">
-      Regime Detection
+               Financial markets move through distinct regimes
     </h1>
 
     <p class="font-sans text-lg text-white/45 max-w-lg leading-relaxed mb-8">
-      Financial markets don't trend — they cycle through behavioral states.
-      This model identifies which state the S&amp;P 500 is currently in,
-      updated weekly.
+      Applied to the S&P 500 from 2006 to 2026, the model identified three regimes, Boom, Mid-Market, and Danger, each with measurably different risk and return characteristics.
     </p>
 
     <div class="flex items-center gap-6 flex-wrap">
@@ -95,100 +77,101 @@
       </span>
       <span class="font-mono text-xs text-white/20">·</span>
       <span class="font-mono text-xs text-white/30">
-        Period: 2006–2026
+        Period: 2006-2026
       </span>
     </div>
 
   </div>
 </header>
 
-<style>
-:root{
-  --navy:#1B2A4A;--gold:#C8A951;--cream:#F8F7F4;--silk:#E5E3DF;
-  --muted:#6B7280;--ink:#1A1A1A;--boom:#F39C12;--mid:#27AE60;--danger:#E74C3C;
-  --font-mono:'DM Mono',monospace;--font-display:'Playfair Display',serif;
-  --font-sans:'Source Sans 3',sans-serif;
-}
+<!-- SIGNAL DASHBOARD TILE -->
+<section class="bg-white bg-dot-grid bg-dot border-b border-silk px-6 lg:px-20 py-16">
+  <div class="max-w-content mx-auto">
+    <div class="mb-12">
+      <div class="flex items-center gap-2 font-mono text-xs font-medium tracking-ultra uppercase text-gold mb-2">
+        MacroContext regime model · Week {{ $r.week }}, {{ $r.year }}
+      </div>
+      <div class="font-display font-bold text-navy text-2xl mb-1">
+        {{ $tileTitle }}
+      </div>
+      <p class="font-mono text-xs text-muted leading-relaxed mb-6">
+        {{ $tileSub }}
+      </p>
 
-.chart-block{margin-bottom:48px;}
-.chart-label{font-family:var(--font-mono);font-size:9px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:8px;margin-bottom:8px;}
-.chart-title{font-family:var(--font-display);font-size:18px;font-weight:700;color:var(--navy);margin-bottom:4px;}
-.chart-sub{font-family:var(--font-mono);font-size:10px;color:var(--muted);margin-bottom:14px;line-height:1.6;}
-.chart-card{background:#fff;border:.5px solid var(--silk);border-radius:12px;overflow:hidden;}
-.divider{height:1px;background:var(--silk);margin:0 0 48px;}
+      <div class="flex flex-wrap justify-center gap-6 items-start">
+        {{/* Tile */}}
+        <div class="bg-white border border-silk rounded-xl overflow-hidden w-[420px]">
 
-.eq-legend{display:flex;gap:16px;margin-bottom:12px;flex-wrap:wrap;}
-.eq-leg{display:flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:10px;color:var(--muted);}
-.eq-line{width:18px;height:2px;background:var(--navy);}
-.eq-dashed{width:18px;height:0;border-top:2px dashed var(--gold);}
-.eq-box{width:9px;height:9px;border-radius:2px;}
+          <div class="bg-navy px-4 py-3 flex justify-between items-center">
+            <span class="font-mono text-xs font-medium tracking-wider uppercase text-white/60">
+              Regime Classification
+            </span>
+            <span class="font-mono text-xs text-white/60">{{ $r.date }}</span>
+          </div>
 
-.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px;}
-.stat{background:var(--cream);border-radius:8px;padding:10px 14px;}
-.stat-lbl{font-family:var(--font-mono);font-size:9px;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:.1em;}
-.stat-val{font-family:var(--font-display);font-size:22px;font-weight:700;color:var(--navy);}
-.stat-sub{font-family:var(--font-mono);font-size:9px;color:var(--muted);}
+          <div class="p-4">
+            <div class="flex items-center gap-3 mb-4">
+              <span class="w-2.5 h-2.5 rounded-full {{ $dotColor }} shrink-0"></span>
+              <span class="font-display font-bold text-3xl {{ $textColor }}">{{ $cur.label }}</span>
+            </div>
 
-.dual-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--silk);}
-.panel{background:#fff;padding:18px 20px;}
-.panel-title{font-family:var(--font-mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;}
-.s-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
-.s-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
-.s-name{font-family:var(--font-mono);font-size:10px;color:var(--muted);width:72px;flex-shrink:0;}
-.s-track{flex:1;background:var(--cream);border-radius:3px;height:7px;overflow:hidden;}
-.s-fill{height:7px;border-radius:3px;}
-.s-val{font-family:var(--font-mono);font-size:12px;font-weight:500;color:var(--navy);width:30px;text-align:right;}
-.cov-row{display:flex;align-items:center;gap:8px;margin-bottom:7px;}
-.cov-event{font-family:var(--font-mono);font-size:9px;color:var(--muted);width:150px;flex-shrink:0;line-height:1.3;}
-.cov-track{flex:1;background:var(--cream);border-radius:3px;height:5px;overflow:hidden;}
-.cov-fill{height:5px;border-radius:3px;}
-.cov-pct{font-family:var(--font-mono);font-size:10px;font-weight:500;width:34px;text-align:right;flex-shrink:0;}
+            <div class="flex flex-col gap-1.5 border-t border-silk pt-3 mb-3">
+              <div class="flex justify-between font-mono text-xs">
+                <span class="text-muted">Since</span>
+                <span class="text-navy font-medium">{{ $r.date }}</span>
+              </div>
+              <div class="flex justify-between font-mono text-xs">
+                <span class="text-muted">Duration</span>
+                <span class="text-navy font-medium">{{ $r.duration }}</span>
+              </div>
+              <div class="flex justify-between font-mono text-xs">
+                <span class="text-muted">Prior regime</span>
+                <span class="text-navy font-medium">{{ $r.prior_regime }}</span>
+              </div>
+              <div class="flex justify-between font-mono text-xs">
+                <span class="text-muted">Classification</span>
+                <span class="text-navy font-medium">Week {{ $r.week }}, {{ $r.year }}</span>
+              </div>
+            </div>
+            <p class="font-mono text-xs text-muted leading-relaxed mb-3">
+              {{ $cur.note }}
+            </p>
+          </div>
 
-/* Teaser */
-.teaser{display:grid;grid-template-columns:200px 1fr;}
-.teaser-left{padding:28px 24px;display:flex;flex-direction:column;justify-content:space-between;}
-.teaser-right{padding:20px 24px;display:flex;flex-direction:column;gap:10px;background:var(--navy);}
-.strip-track{height:16px;border-radius:4px;overflow:hidden;display:flex;}
-.strip-seg{height:100%;}
-.strip-labels{display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:9px;color:rgba(255,255,255,.3);margin-top:4px;}
-.strip-legend{display:flex;gap:10px;margin-top:4px;}
-.strip-leg{display:flex;align-items:center;gap:4px;font-family:var(--font-mono);font-size:9px;color:rgba(255,255,255,.4);}
-.strip-dot{width:7px;height:7px;border-radius:2px;opacity:.8;}
+          <div class="grid grid-cols-3 gap-px bg-silk border-t border-silk">
+            <div class="{{ $sharpe_boom_bg }} px-3 py-3 text-center">
+              <div class="font-mono text-muted mb-1 uppercase tracking-wider"
+                   style="font-size:8px;">Boom SR</div>
+              <div class="font-mono text-sm font-medium text-boom">{{ $r.boom_sharpe }}</div>
+            </div>
+            <div class="{{ $sharpe_mid_bg }} px-3 py-3 text-center">
+              <div class="font-mono text-muted mb-1 uppercase tracking-wider"
+                   style="font-size:8px;">Mid SR</div>
+              <div class="font-mono text-sm font-medium text-mid">{{ $r.mid_sharpe }}</div>
+            </div>
+            <div class="px-3 py-3 text-center {{ $sharpe_danger_bg }}">
+              <div class="font-mono text-muted mb-1 uppercase tracking-wider"
+                   style="font-size:8px;">Danger SR ◀</div>
+              <div class="font-mono text-sm font-medium text-danger">{{ $r.danger_sharpe }}</div>
+            </div>
+          </div>
 
-/* Tile */
-.tile{background:#fff;border:.5px solid var(--silk);border-radius:12px;overflow:hidden;width:360px;}
-.tile-header{background:var(--navy);padding:12px 16px;display:flex;justify-content:space-between;align-items:center;}
-.tile-brand{font-family:var(--font-mono);font-size:9px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.4);}
-.tile-date{font-family:var(--font-mono);font-size:9px;color:rgba(255,255,255,.3);}
-.tile-body{padding:16px;}
-.tile-regime-row{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
-.tile-dot{width:10px;height:10px;border-radius:50%;}
-.tile-regime-name{font-family:var(--font-display);font-size:26px;font-weight:700;}
-.tile-meta{display:flex;flex-direction:column;gap:5px;border-top:.5px solid var(--silk);padding-top:12px;margin-bottom:12px;}
-.tile-row{display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:10px;}
-.tile-row-lbl{color:var(--muted);}
-.tile-row-val{color:var(--navy);font-weight:500;}
-.tile-note{font-family:var(--font-mono);font-size:9px;color:var(--muted);line-height:1.6;margin-bottom:12px;}
-.tile-sharpe{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--silk);border-top:.5px solid var(--silk);}
-.tile-sharpe-cell{background:#fff;padding:10px 12px;text-align:center;}
-.tile-sharpe-lbl{font-family:var(--font-mono);font-size:8px;color:var(--muted);margin-bottom:3px;letter-spacing:.08em;text-transform:uppercase;}
-.tile-sharpe-val{font-family:var(--font-mono);font-size:14px;font-weight:500;}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-/* Swimlane */
-.swim-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
-.swim-label{font-family:var(--font-mono);font-size:10px;color:var(--navy);width:80px;text-align:right;flex-shrink:0;}
-.swim-track{flex:1;height:24px;border-radius:4px;overflow:hidden;display:flex;gap:2px;}
-.swim-seg{height:100%;border-radius:3px;}
-.swim-axis{display:flex;justify-content:space-between;padding:0 0 0 90px;margin-top:6px;}
-.swim-tick{font-family:var(--font-mono);font-size:9px;color:var(--muted);}
-</style>
 
+{{/* ════════════════════════════════════════════════════════════
+  REGIMES WITH SPX OVERLAY
+════════════════════════════════════════════════════════════ */}}
 <section class="bg-cream border-b border-silk py-16 max-w-content mx-auto">
   <div class="chart-block">
   <div class="chart-label">Walk-forward out-of-sample · 2006-2026</div>
-  <div class="chart-title"><h2 class="font-display font-bold text-navy leading-tight text-2xl mb-2">Regime detection model caught 2008, 2020, and 2022 in real time</h2>
+  <div class="chart-title"><h2 class="font-display font-bold text-navy leading-tight text-2xl mb-2">The model identified major market regimes as they occurred across two decades.</h2>
   </div>
-  <div class="chart-sub">Each classification was generated on data the model had not seen.
+  <div class="chart-sub">The regimes caught major market turning points in 2008, 2020, and 2022.
   </div>
   <div class="chart-card" style="padding:20px 20px 14px;">
     <div class="eq-legend" style="margin-bottom:12px;">
@@ -212,9 +195,6 @@
     </a>
   </div>
 </section>
-
-
-
 
 {{/* ════════════════════════════════════════════════════════════
      SECTION 3 — THE THREE REGIMES (white + dot grid)
@@ -371,581 +351,6 @@
 
 
 {{/* ════════════════════════════════════════════════════════════
-     SECTION 4 — THE EQUITY ARGUMENT (cream)
-════════════════════════════════════════════════════════════ */}}
-<section class="bg-cream border-b border-silk px-6 lg:px-20 py-16">
-  <div class="max-w-content mx-auto">
-
-    <div class="flex items-center gap-2 mb-4">
-      <span class="w-6 h-px bg-gold opacity-70"></span>
-      <span class="font-mono text-xs font-medium tracking-ultra uppercase text-gold">
-        The Equity Argument
-      </span>
-    </div>
-
-    <h2 class="font-display font-bold text-navy leading-tight text-2xl mb-2">
-      What regime awareness produces
-    </h2>
-
-    <p class="font-mono text-xs text-muted mb-8">
-      Walk-forward out-of-sample results · 2006–2026 ·
-      Position sizes: Boom 80% · Mid-Market 100% · Danger 25% ·
-      No leverage · Long only
-    </p>
-
-    {{/* Equity curve chart */}}
-    <div class="bg-white border border-silk rounded-xl overflow-hidden mb-8">
-      {{ if $equityCurve }}
-        <img src="{{ $equityCurve.Permalink }}"
-             width="{{ $equityCurve.Width }}"
-             height="{{ $equityCurve.Height }}"
-             alt="Regime-weighted equity curve vs buy-and-hold, 2006–2026, log scale"
-             class="w-full h-auto block">
-      {{ else }}
-        {{/* Placeholder — replace by exporting equity-curve PDF to PNG */}}
-        <div class="w-full bg-silk flex items-center justify-center" style="height:360px;">
-          <div class="text-center">
-            <p class="font-mono text-xs text-muted mb-1">Chart placeholder</p>
-            <p class="font-mono text-xs text-muted/60">
-              Export wf_equity_curve PDF → assets/images/charts/equity-curve.png
-            </p>
-          </div>
-        </div>
-      {{ end }}
-    </div>
-
-    {{/* Four-stat comparison grid */}}
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
-
-      <div class="bg-white border border-silk rounded-xl px-5 py-5">
-        <div class="font-mono text-xs text-muted mb-3 uppercase tracking-wider">CAGR</div>
-        <div class="flex items-baseline gap-2 mb-1">
-          <span class="font-display font-bold text-navy text-3xl">11.2</span>
-          <span class="font-mono text-sm text-gold">%</span>
-        </div>
-        <div class="font-mono text-xs text-muted/60">vs 8.4% buy-and-hold</div>
-      </div>
-
-      <div class="bg-white border border-silk rounded-xl px-5 py-5">
-        <div class="font-mono text-xs text-muted mb-3 uppercase tracking-wider">Sharpe Ratio</div>
-        <div class="flex items-baseline gap-2 mb-1">
-          <span class="font-display font-bold text-navy text-3xl">0.92</span>
-        </div>
-        <div class="font-mono text-xs text-muted/60">vs 0.51 buy-and-hold</div>
-      </div>
-
-      <div class="bg-white border border-silk rounded-xl px-5 py-5">
-        <div class="font-mono text-xs text-muted mb-3 uppercase tracking-wider">Max Drawdown</div>
-        <div class="flex items-baseline gap-2 mb-1">
-          <span class="font-display font-bold text-navy text-3xl">-33.8</span>
-          <span class="font-mono text-sm text-gold">%</span>
-        </div>
-        <div class="font-mono text-xs text-muted/60">vs -56.8% buy-and-hold</div>
-      </div>
-
-      <div class="bg-white border border-silk rounded-xl px-5 py-5">
-        <div class="font-mono text-xs text-muted mb-3 uppercase tracking-wider">Volatility</div>
-        <div class="flex items-baseline gap-2 mb-1">
-          <span class="font-display font-bold text-navy text-3xl">12.1</span>
-          <span class="font-mono text-sm text-gold">%</span>
-        </div>
-        <div class="font-mono text-xs text-muted/60">vs 19.4% buy-and-hold</div>
-      </div>
-
-    </div>
-
-    {{/* Explanatory copy */}}
-    <div class="max-w-2xl flex flex-col gap-4">
-      <p class="font-sans text-sm text-muted leading-relaxed">
-        The equity curve applies a simple position-sizing rule to the regime
-        classifications: reduce exposure in Danger, maintain full exposure in
-        Mid-Market and near-full in Boom. No forecasting. No price targets.
-        The only input is the current regime.
-      </p>
-      <p class="font-sans text-sm text-muted leading-relaxed">
-        The primary result is not a higher-returning strategy — though the CAGR
-        improvement from 8.4% to 11.2% is meaningful. The primary result is a
-        different risk profile: lower volatility, lower maximum drawdown, better
-        Sharpe. The regime-weighted curve doesn't beat the market by taking more
-        risk. It produces better risk-adjusted returns by taking less at the
-        wrong times.
-      </p>
-    </div>
-
-  </div>
-</section>
-
-
-{{/* ════════════════════════════════════════════════════════════
-     SECTION 5 — HISTORICAL REGIMES (white + dot grid)
-════════════════════════════════════════════════════════════ */}}
-{{/*  <section class="bg-white border-b border-silk px-6 lg:px-20 py-16"> 
-
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/xrange.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
-<script src="https://code.highcharts.com/modules/accessibility.js"></script>
-<script src="https://code.highcharts.com/modules/offline-exporting.js"></script>
-
-<style type="text/css">
-  body {
-    font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        Roboto,
-        Helvetica,
-        Arial,
-        "Apple Color Emoji",
-        "Segoe UI Emoji",
-        "Segoe UI Symbol",
-        sans-serif;
-  }
-
-  #container {
-      height: 300px;
-  }
-
-  .highcharts-figure {
-      min-width: 320px;
-      max-width: 800px;
-      margin: 1em auto;
-  }
-
-  .highcharts-description {
-      margin: 0.3rem 10px;
-  }
-</style>
-<figure class="highcharts-figure">
-    <div id="container"></div>
-    <div class="highcharts-description border-l-2 border-gold/40 pl-5 max-w-2xl font-sans text-sm text-muted leading-relaxed">
-      <p>
-        Every classification shown was generated on data the model had not been
-        trained on. 
-      </p>
-      <p>
-        The 2008 Danger classifications were made by a model trained
-        through 2007. 
-      </p>
-      <p>
-          The 2020 COVID Danger classification was made by a model
-        trained through 2019. 
-      </p>      
-      <p>
-        This is not a backtest — it is a stitched sequence
-        of genuine out-of-sample predictions.
-      </p>
-      <a href="/lab/regime-detection/methodology/"
-         class="font-mono text-xs font-medium tracking-wider uppercase
-                text-gold no-underline hover:text-gold-dark transition-colors duration-200">
-        Full methodology and validation results →
-      </a>
-    </div>
-</figure>
-
-<script type="text/javascript">
-  const REGIME = {
-    boom:   { label: 'Boom',       color: '#F39C12', size: 0.80 },
-    mid:    { label: 'Mid-Market', color: '#27AE60', size: 1.00 },
-    danger: { label: 'Danger',     color: '#E74C3C', size: 0.25 },
-  };
-
-  const SITE = {
-    navy:  '#1B2A4A',
-    gold:  '#C8A951',
-    cream: '#F8F7F4',
-    silk:  '#E5E3DF',
-    muted: '#6B7280',
-    ink:   '#1A1A1A',
-    font:  '"DM Mono", ui-monospace, monospace',
-  };
-  const TIMELINE_BLOCKS = JSON.parse({{ .Site.Data.regime_timeline.blocks | jsonify }});
-
-
-  function toMs(dateStr) {
-    return new Date(dateStr).getTime();
-  }
-
-  function blocksForRegime(label, yIndex, color) {
-    return TIMELINE_BLOCKS
-      .filter(b => b.regime === label)
-      .map(b => ({
-        x:  toMs(b.x),
-        x2: toMs(b.x2),
-        y:  yIndex,
-        color: color,
-      }));
-  }  */}}
-
-
-//   series: [{
-//   name:  REGIME.mid.label,
-//   color: REGIME.mid.color,
-//   data:  []
-// }, {
-//   name:  REGIME.danger.label,
-//   color: REGIME.danger.color,
-//   data:  []
-// }, {
-//   name:  REGIME.boom.label,
-//   color: REGIME.boom.color,
-//   data:  []
-// }],
-
-// yAxis: {
-//   categories: [
-//     REGIME.mid.label,
-//     REGIME.danger.label,
-//     REGIME.boom.label,
-//   ],
-//   labels: {
-//     style: { color: SITE.navy, fontFamily: SITE.font }
-//   }
-// },
-
-// xAxis: {
-//   lineColor:  SITE.silk,
-//   tickColor:  SITE.silk,
-//   labels: { style: { color: SITE.muted, fontFamily: SITE.font } }
-// },
-
-// tooltip: {
-//   backgroundColor: '#ffffff',
-//   borderColor:     SITE.silk,
-//   style: { color: SITE.ink, fontFamily: SITE.font }
-// },
-
-  {{/*  Highcharts.chart('container', {
-    chart: {
-        type: 'xrange'
-    },
-    title: {
-        text: 'Walk-Forward Regime Timeline'
-    },
-    subtitle: {
-      text: 'OOS predictions stitched'
-    },
-    accessibility: {
-        point: {
-            descriptionFormat: '{add index 1}. {yCategory}, {x:%A %e %B %Y} ' +
-                'to {x2:%A %e %B %Y}.'
-        }
-    },
-    credits: {
-      enabled: true,
-      text: 'MacroContext regime detection  ·  joshuampeck.com/lab/regime-detection/',
-      href: 'https://joshuampeck.com/lab/regime-detection/',
-      position: { align: 'center', x: 0, y: -4 },
-      style: {
-        color:      '#6B7280',
-        fontSize:   '9px',
-        fontFamily: '"DM Mono", ui-monospace, monospace',
-        cursor:     'pointer',
-      }
-    },
-    exporting: {
-      enabled: true,
-      filename: 'macrocontext-regime-timeline',
-      buttons: {
-        contextButton: {
-          menuItems: ['downloadPDF'],
-        }
-      },
-      chartOptions: {
-        chart: {
-          events: {
-            render: function () {
-              const chart = this;
-
-              if (chart._watermark) {
-                chart._watermark.destroy();
-              }
-
-              chart._watermark = chart.renderer
-                .text(
-                  'MacroContext regime detection · joshuampeck.com/lab/regime-detection/',
-                  chart.chartWidth / 2,
-                  chart.chartHeight - 8
-                )
-                .attr({ align: 'center', zIndex: 5 })
-                .css({
-                  color:      '#6B7280',
-                  fontSize:   '9px',
-                  fontFamily: '"DM Mono", ui-monospace, monospace',
-                })
-                .add();
-            }
-          }
-        },
-        title: {
-          text: 'Walk-Forward Regime Timeline',
-          style: { color: '#1B2A4A', fontFamily: '"Playfair Display", serif', fontWeight: '700' }
-        },
-        subtitle: {
-          text: 'MacroContext out-of-sample regime classifications  ·  joshuampeck.com',
-          style: {
-            color:      '#6B7280',
-            fontSize:   '10px',
-            fontFamily: '"DM Mono", ui-monospace, monospace',
-          }
-        },        
-        legend: { enabled: false },
-        credits: { enabled: false },
-      },
-      pdf: {
-        author: 'Joshua M. Peck / AppliedComplexity',
-        subject: 'MacroContext Regime Detection',
-      }
-    },
-    legend:    { enabled: false },
-    xAxis: {
-        type: 'datetime'
-    },
-    yAxis: {
-        title: {
-            text: ''
-        },
-        categories: ['Mid-Market', 'Danger', 'Boom'],
-        reversed: true
-    },
-    series: [{
-    name:  REGIME.mid.label,
-    color: REGIME.mid.color,
-    data:  blocksForRegime(REGIME.mid.label, 0, REGIME.mid.color),
-  }, {
-    name:  REGIME.danger.label,
-    color: REGIME.danger.color,
-    data:  blocksForRegime(REGIME.danger.label, 1, REGIME.danger.color),
-  }, {
-    name:  REGIME.boom.label,
-    color: REGIME.boom.color,
-    data:  blocksForRegime(REGIME.boom.label, 2, REGIME.boom.color),
-  }],
-});
-</script>
-
-</section>  */}}
-<section class="bg-white bg-dot-grid bg-dot border-b border-silk px-6 lg:px-20 py-16">
-  <div class="max-w-content mx-auto">
-
-    <div class="flex items-center gap-2 mb-4">
-      <span class="w-6 h-px bg-gold opacity-70"></span>
-      <span class="font-mono text-xs font-medium tracking-ultra uppercase text-gold">
-        Historical Record
-      </span>
-    </div>
-
-    <h2 class="font-display font-bold text-navy leading-tight text-2xl mb-2">
-      Twenty years of classifications
-    </h2>
-
-    <p class="font-mono text-xs text-muted mb-8">
-      S&P 500 with Boom · Mid-Market · Danger shading ·
-      Walk-forward out-of-sample · 2006–2026
-    </p>
-
-    {{/* SPX regimes chart */}}
-    <div class="bg-white border border-silk rounded-xl overflow-hidden mb-6">
-      {{ if $spxRegimes }}
-        <img src="{{ $spxRegimes.Permalink }}"
-             width="{{ $spxRegimes.Width }}"
-             height="{{ $spxRegimes.Height }}"
-             alt="S&P 500 price chart with Boom, Mid-Market, and Danger regime shading, 2006–2026"
-             class="w-full h-auto block">
-      {{ else }}
-        <div class="w-full bg-silk flex items-center justify-center" style="height:320px;">
-          <div class="text-center">
-            <p class="font-mono text-xs text-muted mb-1">Chart placeholder</p>
-            <p class="font-mono text-xs text-muted/60">
-              Export wf_spx_regimes PDF → assets/images/charts/spx-regimes.png
-            </p>
-          </div>
-        </div>
-      {{ end }}
-    </div>
-
-    {{/* Chart legend */}}
-    <div class="flex flex-wrap gap-6 mb-8">
-      <div class="flex items-center gap-2">
-        <span class="w-3 h-3 rounded-sm bg-boom/30 shrink-0"></span>
-        <span class="font-mono text-xs text-muted">Boom</span>
-      </div>
-      <div class="flex items-center gap-2">
-        <span class="w-3 h-3 rounded-sm bg-yellow-500/30 shrink-0"></span>
-        <span class="font-mono text-xs text-muted">Mid-Market</span>
-      </div>
-      <div class="flex items-center gap-2">
-        <span class="w-3 h-3 rounded-sm bg-danger/30 shrink-0"></span>
-        <span class="font-mono text-xs text-muted">Danger</span>
-      </div>
-    </div>
-
-    {{/* OOS explanation */}}
-    <div class="border-l-2 border-gold/40 pl-5 max-w-2xl">
-      <p class="font-sans text-sm text-muted leading-relaxed">
-        Every classification shown was generated on data the model had not been
-        trained on. The 2008 Danger classifications were made by a model trained
-        through 2007. The 2020 COVID Danger classification was made by a model
-        trained through 2019. This is not a backtest — it is a stitched sequence
-        of genuine out-of-sample predictions.
-      </p>
-    </div>
-
-    <div class="mt-6">
-      <a href="/lab/regime-detection/methodology/"
-         class="font-mono text-xs font-medium tracking-wider uppercase
-                text-gold no-underline hover:text-gold-dark transition-colors duration-200">
-        Full methodology and validation results →
-      </a>
-    </div>
-
-  </div>
-</section> -->
-
-
-{{/* ════════════════════════════════════════════════════════════
-     SECTION 6 — RETURN DISTRIBUTIONS (cream)
-════════════════════════════════════════════════════════════ */}}
-<section class="bg-cream border-b border-silk px-6 lg:px-20 py-16">
-  <div class="max-w-content mx-auto">
-
-    <div class="flex items-center gap-2 mb-4">
-      <span class="w-6 h-px bg-gold opacity-70"></span>
-      <span class="font-mono text-xs font-medium tracking-ultra uppercase text-gold">
-        Return Distributions
-      </span>
-    </div>
-
-    <h2 class="font-display font-bold text-navy leading-tight text-2xl mb-2">
-      The statistical character of each regime
-    </h2>
-
-    <p class="font-mono text-xs text-muted mb-8">
-      21-day forward return distributions · Boom · Mid-Market · Danger · 2006–2026
-    </p>
-
-    {{/* Return distributions chart */}}
-    <div class="bg-white border border-silk rounded-xl overflow-hidden mb-6">
-      {{ if $returnDist }}
-        <img src="{{ $returnDist.Permalink }}"
-             width="{{ $returnDist.Width }}"
-             height="{{ $returnDist.Height }}"
-             alt="Forward return distributions by regime showing Boom right skew vs Danger fat left tail"
-             class="w-full h-auto block">
-      {{ else }}
-        <div class="w-full bg-silk flex items-center justify-center" style="height:280px;">
-          <div class="text-center">
-            <p class="font-mono text-xs text-muted mb-1">Chart placeholder</p>
-            <p class="font-mono text-xs text-muted/60">
-              Export wf_return_distributions PDF → assets/images/charts/return-distributions.png
-            </p>
-          </div>
-        </div>
-      {{ end }}
-    </div>
-
-    <div class="max-w-2xl">
-      <p class="font-sans text-sm text-muted leading-relaxed">
-        The Boom distribution skews right — more observations in the positive
-        tail, fewer catastrophic outcomes. The Danger distribution is the inverse:
-        similar mean, but the left tail is wider and heavier. Mid-Market sits
-        between them. The three distributions look similar in their centers.
-        They diverge in their tails. That divergence is where drawdowns are made.
-      </p>
-    </div>
-
-  </div>
-</section>
-
-
-{{/* ════════════════════════════════════════════════════════════
-     SECTION 7 — CTA STRIP (navy)
-════════════════════════════════════════════════════════════ */}}
-<section class="bg-navy px-6 lg:px-20 py-14">
-  <div class="max-w-content mx-auto
-              flex flex-wrap items-center justify-between gap-8">
-
-    <div class="max-w-sm">
-      <p class="font-sans text-sm text-white/60 leading-relaxed">
-        The regime classification publishes every Monday in the
-        AppliedComplexity Newsletter — with the signals that drove it
-        and notes on what changed.
-      </p>
-    </div>
-
-    <div class="flex flex-wrap gap-4">
-      <a href="{{ .Site.Params.newsletterURL }}"
-         class="bg-gold text-navy font-semibold text-sm px-6 py-3 rounded-lg
-                no-underline hover:bg-gold-dark transition-colors duration-200">
-        Follow the research →
-      </a>
-      <a href="/lab/macrocontext/"
-         class="text-gold font-semibold text-sm px-6 py-3 rounded-lg
-                border-2 border-gold/30 no-underline
-                hover:border-gold hover:bg-gold/10
-                transition-all duration-200">
-        Explore MacroContext →
-      </a>
-    </div>
-
-  </div>
-</section>
-
-{{/* ════════════════════════════════════════════════════════════
-     SECTION 2 — CURRENT SIGNAL (dynamic regime color)
-════════════════════════════════════════════════════════════ */}}
-<section class="bg-navy border-b-4 {{ $secBorder }} px-6 lg:px-20 py-16">
-  <div class="max-w-content mx-auto">
-
-    <div class="flex items-center gap-2 mb-6">
-      <span class="font-mono text-xs font-medium tracking-ultra uppercase text-white/40">
-        Current Classification · Updated {{ $r.date }}
-      </span>
-    </div>
-
-    {{/* Regime badge */}}
-    <div class="inline-flex items-center gap-3 {{ $badgeBg }} border {{ $badgeBorder }}
-                rounded-lg px-4 py-2 mb-6">
-      <span class="w-2.5 h-2.5 rounded-full {{ $dotColor }} animate-pulse-dot"></span>
-      <span class="font-mono text-xs font-medium tracking-widest uppercase {{ $textColor }}">
-        {{ $r.label }}
-      </span>
-    </div>
-
-    {{/* Regime name — large display */}}
-    <div class="font-display font-bold text-white leading-none
-                text-6xl md:text-7xl mb-8 {{ $textColor }}">
-      {{ $r.label }}
-    </div>
-
-    {{/* Researcher note */}}
-    <p class="font-sans italic text-white/45 max-w-xl
-              border-l-2 border-gold/30 pl-5 mb-10
-              text-base leading-relaxed">
-      {{ $r.note }}
-    </p>
-
-    {{/* CTAs */}}
-    <div class="flex flex-wrap gap-4 items-center">
-      <a href="/lab/macrocontext/"
-         class="bg-gold text-navy font-semibold text-sm px-6 py-3 rounded-lg
-                no-underline hover:bg-gold-dark transition-colors duration-200">
-        MacroContext Dashboard →
-      </a>
-      <a href="{{ .Site.Params.newsletterURL }}"
-         class="text-gold font-semibold text-sm px-6 py-3 rounded-lg
-                border-2 border-gold/30 no-underline
-                hover:border-gold hover:bg-gold/10
-                transition-all duration-200">
-        Get the weekly call →
-      </a>
-    </div>
-
-  </div>
-</section>
-
-
-{{/* ════════════════════════════════════════════════════════════
      DISCLAIMER (cream, small mono)
 ════════════════════════════════════════════════════════════ */}}
 <section class="bg-cream border-t border-silk px-6 lg:px-20 py-12">
@@ -1004,57 +409,44 @@
 <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
 
 <script>
-const NAVY='#1B2A4A',GOLD='#C8A951',MUTED='#6B7280',SILK='#E5E3DF',INK='#1A1A1A';
-const BOOM='#F39C12',MID='#27AE60',DANGER='#E74C3C';
-const MONO='"DM Mono",monospace';
+  const REGIME = {
+    boom:   { label: 'Boom',       color: '#F39C12', size: 0.80 },
+    mid:    { label: 'Mid-Market', color: '#27AE60', size: 1.00 },
+    danger: { label: 'Danger',     color: '#E74C3C', size: 0.25 },
+  };
 
+  const SITE = {
+    navy:  '#1B2A4A',
+    gold:  '#C8A951',
+    cream: '#F8F7F4',
+    silk:  '#E5E3DF',
+    muted: '#6B7280',
+    ink:   '#1A1A1A',
+    font:  '"DM Mono", ui-monospace, monospace',
+  };
+
+  function toMs(dateStr) {
+    return new Date(dateStr).getTime();
+  }
+
+  function blocksForRegime(label, yIndex, color) {
+    return TIMELINE_BLOCKS
+      .filter(b => b.regime === label)
+      .map(b => ({
+        x:  toMs(b.x),
+        x2: toMs(b.x2),
+        y:  yIndex,
+        color: color,
+      }));
+  }  
 const TIMELINE_BLOCKS = JSON.parse({{ .Site.Data.regime_timeline.blocks | jsonify }});
 const SPX_PRICES = JSON.parse({{ .Site.Data.spx.obs | jsonify }})
   .map(p => ({ x: p.x, y: p.y }));
 
-// const yrs=['2006','2007','2008','2009','2010','2011','2012','2013','2014','2015','2016','2017','2018','2019','2020','2021','2022','2023','2024','2025',"'26"];
-// const bh=[1000,1136,723,918,1013,1034,1199,1581,1799,1823,2044,2490,2386,3141,3727,4797,3931,4969,6251,7843,7350];
-// const rw=[1000,1095,1058,1280,1450,1460,1710,2201,2490,2540,2760,3360,3140,3940,3820,4900,4830,6210,7640,9010,8700];
-
-// const dangerZones=[[1.5,2.9],[13.8,14.1],[16.0,17.0]];
-// const boomZones=[[2.9,4.5],[14.2,15.5],[17.1,18.8]];
-
-// const regimeBgPlugin={
-//   id:'rb',
-//   beforeDatasetsDraw(chart){
-//     const {ctx,chartArea,scales:{x}}=chart;
-//     if(!chartArea)return;
-//     const n=TIMELINE_BLOCKS.length;
-//     const px=i=>{const cl=Math.min(Math.max(i,0),n-1),fl=Math.floor(cl),ce=Math.ceil(cl),fr=cl-fl;if(fl===ce)return x.getPixelForValue(fl);return x.getPixelForValue(fl)+(x.getPixelForValue(ce)-x.getPixelForValue(fl))*fr;};
-//     dangerZones.forEach(([s,e])=>{ctx.fillStyle='rgba(231,76,60,0.10)';ctx.fillRect(px(s),chartArea.top,px(e)-px(s),chartArea.height);});
-//     boomZones.forEach(([s,e])=>{ctx.fillStyle='rgba(243,156,18,0.08)';ctx.fillRect(px(s),chartArea.top,px(e)-px(s),chartArea.height);});
-//   }
-// };
-
-{{/*  new Chart(document.getElementById('eqChart'),{
-  type:'line',plugins:[regimeBgPlugin],
-  data:{labels:yrs,datasets:[
-    {label:'Regime-weighted',data:rw,borderColor:NAVY,borderWidth:2.5,pointRadius:0,tension:0.3,fill:false},
-    {label:'Buy & hold',data:bh,borderColor:GOLD,borderWidth:1.5,borderDash:[5,4],pointRadius:0,tension:0.3,fill:false}
-  ]},
-  options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
-    plugins:{legend:{display:false},tooltip:{backgroundColor:'#fff',borderColor:SILK,borderWidth:1,titleColor:INK,bodyColor:MUTED,titleFont:{family:MONO,size:10},bodyFont:{family:MONO,size:10},callbacks:{label:c=>`${c.dataset.label}: ${c.parsed.y.toLocaleString()}`}}},
-    scales:{
-      x:{grid:{display:false},ticks:{font:{family:MONO,size:9},color:MUTED,maxTicksLimit:11,maxRotation:0}},
-      y:{type:'logarithmic',grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{family:MONO,size:9},color:MUTED,callback:v=>[1000,2000,3000,5000,7000,9000].includes(v)?v.toLocaleString():''}}
-    }
-  }
-});  */}}
-
-// const spxPrices=[1270,1478,903,1115,1258,1258,1426,1849,2059,2044,2239,2674,2507,3231,3756,4766,3840,4770,4769,5882,5600];
-// const spxRegimes=['Mid','Mid','Danger','Mid','Mid','Mid','Mid','Mid','Mid','Danger','Mid','Mid','Danger','Mid','Danger','Boom','Danger','Boom','Mid','Boom','Danger'];
-// const regimeColors={Mid:'rgba(39,174,96,0.10)',Danger:'rgba(231,76,60,0.10)',Boom:'rgba(243,156,18,0.08)'};
-
-
 const regimeColors = {
-  'Boom':       'rgba(243,156,18,0.08)',
-  'Mid-Market': 'rgba(39,174,96,0.06)',
-  'Danger':     'rgba(231,76,60,0.14)',
+  'Boom':       'rgba(243,156,18,0.25)',
+  'Mid-Market': 'rgba(39,174,96,0.25)',
+  'Danger':     'rgba(231,76,60,0.25)',
 };
 
 const regimeShadingPlugin = {
@@ -1072,38 +464,6 @@ const regimeShadingPlugin = {
   }
 };
 
-// const spxBgPlugin={
-//   id:'spxbg',
-//   beforeDatasetsDraw(chart){
-//     const {ctx,chartArea,scales:{x}}=chart;
-//     if(!chartArea)return;
-//     for(let i=0;i<spxRegimes.length-1;i++){
-//       const x0=x.getPixelForValue(i),x1=x.getPixelForValue(i+1);
-//       ctx.fillStyle=regimeColors[spxRegimes[i]]||'transparent';
-//       ctx.fillRect(x0,chartArea.top,x1-x0,chartArea.height);
-//     }
-//   }
-// };
-
-// new Chart(document.getElementById('spxChart'),{
-//   type:'line',plugins:[regimeShadingPlugin],
-//   data:{labels:yrs,datasets:[{label:'S&P 500',data:SPX_PRICES,borderColor:NAVY,borderWidth:2,pointRadius:0,tension:0.3,fill:false}]},
-//   options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
-//     plugins:{legend:{display:false},tooltip:{backgroundColor:'#fff',borderColor:SILK,borderWidth:1,titleColor:INK,bodyColor:MUTED,titleFont:{family:MONO,size:10},bodyFont:{family:MONO,size:10},
-//       callbacks:{
-//         title:items=>yrs[items[0].dataIndex],
-//         label:ctx=>{
-//           const r=spxRegimes[ctx.dataIndex];
-//           return [`S&P 500: ${ctx.parsed.y.toLocaleString()}`,`Regime: ${r==='Mid'?'Mid-Market':r}`];
-//         }
-//       }
-//     }},
-//     scales:{
-//       x:{type: 'time', time: { unit: 'year' },grid:{display:false},ticks:{font:{family:MONO,size:9},color:MUTED,maxTicksLimit:11,maxRotation:0}},
-//       y:{type:'logarithmic',grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{family:MONO,size:9},color:MUTED,callback:v=>[1000,2000,3000,5000].includes(v)?v.toLocaleString():''}}
-//     }
-//   }
-// });
 function getRegimeForDate(dateStr) {
   const d = new Date(dateStr).getTime();
   const block = TIMELINE_BLOCKS.find(b =>
@@ -1118,11 +478,11 @@ new Chart(document.getElementById('spxChart'), {
   data: {
     datasets: [{
       label: 'S&P 500',
-      data: SPX_PRICES,        // [{x: '2006-01-06', y: 1285}, ...]
-      borderColor: NAVY,
-      borderWidth: 2,
+      data: SPX_PRICES, 
+      borderColor: 'rgba(27,42,74, 0.5)',
+      borderWidth: 1.5,
       pointRadius: 0,
-      tension: 0.3,
+      tension: 0.5,
       fill: false,
     }]
   },
@@ -1134,12 +494,12 @@ new Chart(document.getElementById('spxChart'), {
       legend: { display: false },
       tooltip: {
         backgroundColor: '#fff',
-        borderColor: SILK,
+        borderColor: SITE.silk,
         borderWidth: 1,
-        titleColor: INK,
-        bodyColor: MUTED,
-        // titleFont: { family: SITE.font, size: 10 },
-        // bodyFont:  { family: SITE.font, size: 10 },
+        titleColor: SITE.ink,
+        bodyColor: SITE.muted,
+        titleFont: { family: SITE.font, size: 10 },
+        bodyFont:  { family: SITE.font, size: 10 },
         callbacks: {
           title: items => {
             const d = new Date(items[0].parsed.x);
@@ -1164,19 +524,39 @@ new Chart(document.getElementById('spxChart'), {
         type: 'time',
         time: { unit: 'year' },
         grid: { display: false },
-        ticks: { font: { family: MONO, size: 9 }, color: MUTED, maxRotation: 0 }
+        ticks: { display: true, source: 'auto',font: { family: SITE.mono, size: 9 }, color: SITE.muted, maxRotation: 0 }
       },
       y: {
         type: 'logarithmic',
         grid: { color: 'rgba(0,0,0,0.04)' },
         ticks: {
-          font: { family: MONO, size: 9 },
-          color: MUTED,  
+          font: { family: SITE.mono, size: 9 },
+          color: SITE.muted,  
           callback: v => [1000, 2000, 3000, 5000].includes(v) ? v.toLocaleString() : ''
         }
       }
     }
   }
 });
+
+// new Chart(document.getElementById('spxChart'),{
+//   type:'line',plugins:[regimeShadingPlugin],
+//   data:{labels:yrs,datasets:[{label:'S&P 500',data:SPX_PRICES,borderColor:NAVY,borderWidth:2,pointRadius:0,tension:0.3,fill:false}]},
+//   options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+//     plugins:{legend:{display:false},tooltip:{backgroundColor:'#fff',borderColor:SILK,borderWidth:1,titleColor:INK,bodyColor:MUTED,titleFont:{family:MONO,size:10},bodyFont:{family:MONO,size:10},
+//       callbacks:{
+//         title:items=>yrs[items[0].dataIndex],
+//         label:ctx=>{
+//           const r=spxRegimes[ctx.dataIndex];
+//           return [`S&P 500: ${ctx.parsed.y.toLocaleString()}`,`Regime: ${r==='Mid'?'Mid-Market':r}`];
+//         }
+//       }
+//     }},
+//     scales:{
+//       x:{type: 'time', time: { unit: 'year' },grid:{display:false},ticks:{font:{family:MONO,size:9},color:MUTED,maxTicksLimit:11,maxRotation:0}},
+//       y:{type:'logarithmic',grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{family:MONO,size:9},color:MUTED,callback:v=>[1000,2000,3000,5000].includes(v)?v.toLocaleString():''}}
+//     }
+//   }
+// });
 </script>
 {{ end }}

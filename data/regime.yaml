@@ -5,6 +5,11 @@ current_regime: mid
 date:  "April 8, 2026"
 week:  "15"
 year:  "2026"
+duration: "8 days"
+prior_regime: "Boom"
+boom_sharpe: "1.34"
+mid_sharpe: "0.50"
+danger_sharpe: "0.30"
 
 regimes:
   danger:

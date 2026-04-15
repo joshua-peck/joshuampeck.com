@@ -11,3 +11,138 @@
     font-family: 'Source Sans 3', sans-serif;
   }
 }
+
+@layer components {
+
+  .chart-label {
+    @apply flex items-center gap-2 font-mono text-xs font-medium
+           tracking-ultra uppercase text-gold mb-2;
+  }
+
+  .chart-title {
+    @apply font-display font-bold text-navy text-2xl mb-1;
+  }
+
+  .chart-sub {
+    @apply font-mono text-xs text-muted leading-relaxed mb-4;
+  }
+
+  .chart-card {
+    @apply bg-white border border-silk rounded-xl overflow-hidden;
+  }
+
+  .eq-legend {
+    @apply flex gap-4 mb-3 flex-wrap;
+  }
+
+  .eq-leg {
+    @apply flex items-center gap-1.5 font-mono text-xs text-muted;
+  }
+
+  .eq-line {
+    @apply w-4 bg-navy shrink-0;
+    height: 2px;
+  }
+
+  .eq-box {
+    @apply w-2.5 h-2.5 rounded-sm shrink-0;
+  }
+  
+  .stat-grid {
+    @apply grid grid-cols-4 gap-2 mt-4;
+  }
+
+  .stat {
+    @apply bg-cream rounded-lg px-4 py-3;
+  }
+
+  .stat-lbl {
+    @apply font-mono text-xs text-muted uppercase tracking-wider mb-1;
+  }
+
+  .stat-val {
+    @apply font-display font-bold text-navy text-2xl;
+  }
+
+  .stat-sub {
+    @apply font-mono text-xs text-muted;
+  }
+
+  .panel-title {
+    @apply font-mono text-xs tracking-wider uppercase text-muted mb-3;
+  }
+
+  .s-row {
+    @apply flex items-center gap-3 mb-3;
+  }
+
+  .s-dot {
+    @apply w-2.5 h-2.5 rounded-full shrink-0;
+  }
+
+  .s-name {
+    @apply font-mono text-xs text-muted w-20 shrink-0;
+  }
+
+  .s-track {
+    @apply flex-1 bg-cream rounded h-2 overflow-hidden;
+  }
+
+  .s-fill {
+    @apply h-2 rounded;
+  }
+
+  .s-val {
+    @apply font-mono text-sm font-medium text-navy w-8 text-right;
+  }
+
+  .tile-header {
+    @apply bg-navy px-4 py-3 flex justify-between items-center;
+  }
+
+  .tile-brand {
+    @apply font-mono text-xs font-medium tracking-wider uppercase text-white/40;
+  }
+
+  .tile-body {
+    @apply p-4;
+  }
+
+  .tile-meta {
+    @apply flex flex-col gap-1.5 border-t border-silk pt-3 mb-3;
+  }
+
+  .tile-row {
+    @apply flex justify-between font-mono text-xs;
+  }
+
+  .tile-sharpe {
+    @apply grid grid-cols-3 gap-px bg-silk border-t border-silk;
+  }
+
+  .tile-sharpe-cell {
+    @apply bg-white px-3 py-3 text-center;
+  }
+
+  .swim-row {
+    @apply flex items-center gap-3 mb-2;
+  }
+
+  .swim-label {
+    @apply font-mono text-xs text-navy w-20 text-right shrink-0;
+  }
+
+  .swim-track {
+    @apply flex-1 h-6 rounded overflow-hidden flex gap-0.5;
+  }
+
+  .swim-axis {
+    @apply flex justify-between mt-1.5;
+  }
+
+  .swim-tick {
+    @apply font-mono text-xs text-muted;
+  }
+
+
+}
