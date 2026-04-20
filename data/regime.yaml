@@ -16,9 +16,9 @@ danger_mean: "+0.51%"
 boom_obs: "1,142"
 mid_obs: "2,344"
 danger_obs: "1,508"
-boom_vol: "4.6%"
-mid_vol: "3.7%"
-danger_vol: "5.8%"
+boom_vol: "21.23%"
+mid_vol: "12.13%"
+danger_vol: "26.37%"
 
 regimes:
   danger:
