@@ -2,12 +2,12 @@
 # status: danger | boom | mid
 
 current_regime: mid
-date:  "April 8, 2026"
-week:  "15"
+date:  "April 20, 2026"
+week:  "17"
 year:  "2026"
-duration: "8 days"
+duration: "56 days"
 prior_regime: "Boom"
-boom_sharpe: "1.34"
+boom_sharpe: "1.33"
 mid_sharpe: "0.50"
 danger_sharpe: "0.30"
 
