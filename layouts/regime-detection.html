@@ -243,6 +243,10 @@
               <span class="font-mono text-sm font-medium text-boom">{{ $r.boom_mean }}</span>
             </div>
             <div class="flex justify-between items-baseline">
+              <span class="font-mono text-xs text-muted">Volatility</span>
+              <span class="font-mono text-sm text-muted">{{ $r.boom_vol }}</span>
+            </div>
+            <div class="flex justify-between items-baseline">
               <span class="font-mono text-xs text-muted">Observations</span>
               <span class="font-mono text-sm text-muted">{{ $r.boom_obs }}</span>
             </div>
@@ -282,6 +286,10 @@
               <span class="font-mono text-sm font-medium text-mid">{{ $r.mid_mean }}</span>
             </div>
             <div class="flex justify-between items-baseline">
+              <span class="font-mono text-xs text-muted">Volatility</span>
+              <span class="font-mono text-sm text-muted">{{ $r.mid_vol }}</span>
+            </div>
+            <div class="flex justify-between items-baseline">
               <span class="font-mono text-xs text-muted">Observations</span>
               <span class="font-mono text-sm text-muted">{{ $r.mid_obs }}</span>
             </div>
@@ -319,6 +327,10 @@
             <div class="flex justify-between items-baseline">
               <span class="font-mono text-xs text-muted">Mean return / 21d</span>
               <span class="font-mono text-sm font-medium text-danger">{{ $r.danger_mean }}</span>
+            </div>
+            <div class="flex justify-between items-baseline">
+              <span class="font-mono text-xs text-muted">Volatility</span>
+              <span class="font-mono text-sm text-muted">{{ $r.danger_vol }}</span>
             </div>
             <div class="flex justify-between items-baseline">
               <span class="font-mono text-xs text-muted">Observations</span>

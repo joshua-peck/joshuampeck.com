@@ -8,6 +8,7 @@ INFRA_DIR="$(dirname "$0")/infra"
 PROJECT=$(cd "$INFRA_DIR" && terraform output -raw project_id)
 BUCKET=$(cd "$INFRA_DIR" && terraform output -raw bucket_name)
 URL_MAP=$(cd "$INFRA_DIR" && terraform output -raw url_map_name)
+PROJECT=joshuampeck
 
 echo "→ Project: $PROJECT"
 echo "→ Bucket:  $BUCKET"
