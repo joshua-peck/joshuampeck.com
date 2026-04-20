@@ -10,6 +10,12 @@ prior_regime: "Boom"
 boom_sharpe: "1.33"
 mid_sharpe: "0.50"
 danger_sharpe: "0.30"
+boom_mean: "+1.78%"
+mid_mean: "+0.54%"
+danger_mean: "+0.51%"
+boom_obs: "1,142"
+mid_obs: "2,344"
+danger_obs: "1,508"
 
 regimes:
   danger:
