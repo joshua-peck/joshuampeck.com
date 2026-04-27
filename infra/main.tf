@@ -4,13 +4,12 @@ terraform {
       source  = "hashicorp/google"
       version = "~> 5.0"
     }
+    
   }
-
-  # Optional: store state in GCS
-  # backend "gcs" {
-  #   bucket = "your-terraform-state-bucket"
-  #   prefix = "vbm/state"
-  # }
+  backend "gcs" {
+    bucket = "joshuampeck-tfstate"
+    prefix = "terraform/state"
+  }
 }
 
 provider "google" {
