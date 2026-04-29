@@ -1,0 +1,28 @@
+# Regime-conditional return statistics.
+# Used by Section 5b — Regime-conditional returns.
+#
+# `color` maps to existing Tailwind classes (bg-boom / bg-mid / bg-danger).
+#
+# STUB DATA — replace with notebook output.
+
+regimes:
+  - label: "Boom"
+    color: "boom"
+    mean_return: "+1.8%"
+    sharpe: "1.34"
+    std: "4.6%"
+    n_days: "1,142"
+
+  - label: "Neutral"
+    color: "mid"
+    mean_return: "+0.5%"
+    sharpe: "0.50"
+    std: "3.7%"
+    n_days: "2,334"
+
+  - label: "Danger"
+    color: "danger"
+    mean_return: "+0.5%"
+    sharpe: "0.30"
+    std: "5.9%"
+    n_days: "1,508"

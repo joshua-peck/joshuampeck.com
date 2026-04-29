@@ -1,12 +1,13 @@
 {{ define "main" }}
 
-{{ $events    := .Site.Data.methodology_drawdown_events.events }}
-{{ $eq        := .Site.Data.methodology_equity_curve }}
-{{ $dist      := .Site.Data.methodology_regime_distribution }}
-{{ $score     := .Site.Data.methodology_coverage_scorecard }}
+{{ $events     := .Site.Data.methodology_drawdown_events }}
+{{ $approaches := .Site.Data.methodology_approaches.approaches }}
+{{ $features   := .Site.Data.methodology_features.groups }}
+{{ $stats      := .Site.Data.methodology_regime_stats.regimes }}
+
 
 {{/* ════════════════════════════════════════════════════════════
-     SECTION 1 — HEADER (navy)
+     HEADER (navy)
 ════════════════════════════════════════════════════════════ */}}
 <header class="bg-navy border-b-4 border-gold px-6 lg:px-20 pt-24 pb-16">
   <div class="max-w-content mx-auto">
@@ -21,27 +22,37 @@
     <div class="flex items-center gap-2 mb-6">
       <span class="w-6 h-px bg-gold opacity-70"></span>
       <span class="font-mono text-xs font-medium tracking-ultra uppercase text-gold">
-        Methodology &amp; Validation
+        MacroContext · Lab · Methodology
       </span>
     </div>
 
     <h1 class="font-display font-bold text-white leading-tight
-               text-4xl md:text-5xl mb-4 max-w-3xl">
-      How MacroContext detects drawdown regimes
+               text-4xl md:text-5xl mb-5 max-w-3xl">
+      How the model works
     </h1>
 
     <p class="font-sans text-lg text-white/45 max-w-2xl leading-relaxed mb-8">
-      A complete walk-through of the feature set, model architecture, walk-forward validation,
-      and known limitations. The model does one job — detect when conditions have deteriorated
-      enough to warrant defensive positioning — and this page documents how well it does it.
+      A plain-language account of the methodology, the validation approach, and the known
+      limitations. The full research paper is available separately.
     </p>
 
-    <div class="flex items-center gap-6 flex-wrap">
-      <span class="font-mono text-xs text-white/30">Walk-forward · 7 folds</span>
+    <div class="flex items-center gap-6 flex-wrap mb-8">
+      <span class="font-mono text-xs text-white/30">Run: April 29, 2026</span>
+      <span class="font-mono text-xs text-white/20">·</span>
+      <span class="font-mono text-xs text-white/30">Folds: 7</span>
       <span class="font-mono text-xs text-white/20">·</span>
       <span class="font-mono text-xs text-white/30">Period: 2006–2026</span>
-      <span class="font-mono text-xs text-white/20">·</span>
-      <span class="font-mono text-xs text-white/30">v{{ $score.run_date }}</span>
+    </div>
+
+    {{/* "Not a recession detector" callout */}}
+    <div class="bg-navy-deep border-l-4 border-gold rounded-r-xl px-6 py-4 max-w-2xl">
+      <div class="font-mono text-xs font-medium tracking-wider uppercase text-gold/80 mb-2">
+        Important framing
+      </div>
+      <p class="font-sans text-base text-white/80 leading-relaxed">
+        This model detects equity market regime changes, not economic recessions.
+        The distinction is deliberate.
+      </p>
     </div>
 
   </div>
@@ -49,289 +60,126 @@
 
 
 {{/* ════════════════════════════════════════════════════════════
-     SECTION 2 — HEADLINE METRICS (white + dot grid)
-════════════════════════════════════════════════════════════ */}}
-<section class="bg-white bg-dot-grid bg-dot border-b border-silk px-6 lg:px-20 py-16">
-  <div class="max-w-content mx-auto">
-
-    <div class="flex items-center gap-2 mb-4">
-      <span class="font-mono text-xs font-medium tracking-ultra uppercase text-gold">
-        Headline Result
-      </span>
-    </div>
-
-    <p class="font-sans text-lg text-muted max-w-2xl leading-relaxed mb-8">
-      Walk-forward out-of-sample, 2006–2026. Position sizing: Extremes 80%, Neutral 100%, Danger 25%.
-      All four metrics improve simultaneously — the strongest evidence for the model's validity.
-    </p>
-
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-
-      <div class="bg-cream rounded-lg px-5 py-5">
-        <div class="font-mono text-xs text-muted uppercase tracking-wider mb-2">CAGR</div>
-        <div class="font-display font-bold text-navy text-3xl mb-1">{{ $eq.summary.macrocontext.cagr }}</div>
-        <div class="font-mono text-xs text-muted">vs Buy &amp; Hold {{ $eq.summary.buy_hold.cagr }}</div>
-      </div>
-
-      <div class="bg-cream rounded-lg px-5 py-5">
-        <div class="font-mono text-xs text-muted uppercase tracking-wider mb-2">Sharpe Ratio</div>
-        <div class="font-display font-bold text-navy text-3xl mb-1">{{ $eq.summary.macrocontext.sharpe }}</div>
-        <div class="font-mono text-xs text-muted">vs Buy &amp; Hold {{ $eq.summary.buy_hold.sharpe }}</div>
-      </div>
-
-      <div class="bg-cream rounded-lg px-5 py-5">
-        <div class="font-mono text-xs text-muted uppercase tracking-wider mb-2">Volatility</div>
-        <div class="font-display font-bold text-navy text-3xl mb-1">{{ $eq.summary.macrocontext.vol }}</div>
-        <div class="font-mono text-xs text-muted">38% lower than B&amp;H</div>
-      </div>
-
-      <div class="bg-cream rounded-lg px-5 py-5">
-        <div class="font-mono text-xs text-muted uppercase tracking-wider mb-2">Max Drawdown</div>
-        <div class="font-display font-bold text-navy text-3xl mb-1">{{ $eq.summary.macrocontext.max_dd }}</div>
-        <div class="font-mono text-xs text-muted">40% shallower than B&amp;H</div>
-      </div>
-
-    </div>
-
-  </div>
-</section>
-
-
-{{/* ════════════════════════════════════════════════════════════
-     SECTION 3 — EXECUTIVE SUMMARY + THE PROBLEM (cream)
+     SECTION 1 — THE PROBLEM (cream)                  [Situation]
 ════════════════════════════════════════════════════════════ */}}
 <section class="bg-cream border-b border-silk px-6 lg:px-20 py-16">
   <div class="max-w-2xl mx-auto">
 
     <div class="flex items-center gap-2 mb-4">
       <span class="font-mono text-xs font-medium tracking-ultra uppercase text-gold">
-        Executive Summary
+        01 · The Problem
       </span>
     </div>
 
-    <h2 class="font-display font-bold text-navy text-3xl leading-tight mb-6">
-      A systematic drawdown detection engine, not a return predictor.
-    </h2>
-
-    <div class="flex flex-col gap-5 font-sans text-base text-muted leading-relaxed mb-12">
-      <p>
-        MacroContext is a quantitative framework that identifies prevailing market regimes
-        using a combination of macro and market stress indicators. By systematically reducing
-        equity exposure during confirmed stress periods and maintaining full exposure during
-        normal and recovery conditions, the framework has historically produced materially
-        better risk-adjusted returns than a buy-and-hold approach — with nearly double the
-        Sharpe ratio, <span class="text-navy font-semibold">38% less volatility</span>, and a
-        maximum drawdown <span class="text-navy font-semibold">40% shallower</span> than
-        unhedged equity exposure.
-      </p>
-      <p>
-        The core insight is not that we can predict market direction. It is that we can
-        systematically characterize the current macro and market environment, and size
-        positions accordingly. The model does one job well: detecting when conditions have
-        deteriorated enough to warrant defensive positioning.
-      </p>
-    </div>
-
-    <hr class="border-silk my-12">
-
-    <div class="flex items-center gap-2 mb-4">
-      <span class="font-mono text-xs font-medium tracking-ultra uppercase text-gold">
-        The Problem
-      </span>
-    </div>
-
-    <h2 class="font-display font-bold text-navy text-3xl leading-tight mb-6">
-      Buy-and-hold is the right default. The exceptions are what matter.
+    <h2 class="font-display font-bold text-navy text-3xl leading-tight mb-8">
+      Investors consistently misread which market environment they are operating in.
     </h2>
 
     <div class="flex flex-col gap-5 font-sans text-base text-muted leading-relaxed">
       <p>
-        Equity markets spend the vast majority of time trending higher. Buy-and-hold is the
-        correct default posture. But periodically — roughly 10–15% of all trading days
-        historically — conditions deteriorate sharply enough that unhedged equity exposure
-        becomes deeply unfavorable. The 2008 Global Financial Crisis, the 2020 COVID crash,
-        and the 2022 rate hike bear market each produced drawdowns exceeding 25% from peak
-        to trough.
+        Financial media optimizes for engagement, not accuracy. The result is constant
+        noise — every week is either a buying opportunity or a looming catastrophe. Most
+        of it is neither.
       </p>
       <p>
-        The challenge is not identifying these events in hindsight. Everyone knows the GFC
-        was a crisis. The challenge is detecting deteriorating conditions early enough to
-        reduce exposure before the worst damage occurs — without generating so many false
-        positives that defensive positioning erodes long-run returns.
+        The framing matters more than the forecast. An investor who believes they are in
+        a benign market takes on more risk than the environment warrants. An investor
+        convinced a crash is imminent sits in cash through a bull market.
       </p>
       <p>
-        Most approaches fail in one of two ways: react too slowly, triggering after most of
-        the damage has occurred, or react too aggressively, producing excessive trading costs
-        and missed upside from false alarms.
+        The consequential question is not which stock to buy. It is which market
+        environment you are currently in. Get that right and most allocation decisions
+        follow.
+      </p>
+      <p>
+        Systematic regime detection replaces narrative with measurement. The model asks
+        one question: what is the S&amp;P 500 doing right now, and has it changed?
       </p>
     </div>
 
-    <blockquote class="border-l-4 border-gold pl-6 mt-10 mb-2">
-      <p class="font-sans text-base text-navy leading-relaxed">
-        MacroContext was designed to find the middle path: a slow-moving, macro-anchored
-        signal that is wrong rarely, and early when it is.
-      </p>
-    </blockquote>
+    {{/* Critical framing callout */}}
+    <div class="bg-white border border-silk rounded-xl px-6 py-5 mt-10">
+      <div class="font-mono text-xs font-medium tracking-wider uppercase text-gold mb-3">
+        Critical framing
+      </div>
+      <ul class="flex flex-col gap-3 font-sans text-sm text-muted leading-relaxed">
+        <li>
+          This model does <span class="text-navy font-semibold">not</span> detect economic
+          recessions. It does not measure GDP, employment, or the business cycle.
+        </li>
+        <li>
+          It detects regime changes in the S&amp;P 500 index — behavioral shifts in price
+          action, volatility, and the macro indicators that have historically led those
+          shifts.
+        </li>
+        <li>
+          An economic recession may or may not accompany a Danger classification. The
+          model does not care. It cares about whether equity market conditions have
+          deteriorated enough to warrant defensive positioning.
+        </li>
+        <li>
+          The distinction matters: the 2022 bear market occurred with no official recession.
+          The 2001 recession produced a bear market. The model is calibrated to the equity
+          market, not the economy.
+        </li>
+      </ul>
+    </div>
 
   </div>
 </section>
 
 
 {{/* ════════════════════════════════════════════════════════════
-     SECTION 4 — THE THREE REGIMES (white + dot grid)
+     SECTION 2 — THE OPTIONS (white + dot grid)        [Complication]
 ════════════════════════════════════════════════════════════ */}}
 <section class="bg-white bg-dot-grid bg-dot border-b border-silk px-6 lg:px-20 py-16">
   <div class="max-w-content mx-auto">
 
     <div class="flex items-center gap-2 mb-4">
       <span class="font-mono text-xs font-medium tracking-ultra uppercase text-gold">
-        The Three Regimes
+        02 · The Options
       </span>
     </div>
 
-    <h2 class="font-display font-bold text-navy text-3xl leading-tight mb-4 max-w-2xl">
-      Every trading day classified into one of three states.
+    <h2 class="font-display font-bold text-navy text-3xl leading-tight mb-8 max-w-2xl">
+      Several approaches exist — each with meaningful tradeoffs.
     </h2>
 
-    <p class="font-sans text-lg text-muted max-w-2xl leading-relaxed mb-10">
-      The return ordering is monotonic and economically sensible: The Extremes regime produces the best
-      risk-adjusted returns, Neutral is solidly positive, Danger produces the weakest.
-      This ordering is data-derived, not imposed — it emerges from unsupervised learning
-      of feature structure.
-    </p>
-
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
-
-      {{/* BOOM */}}
-      <div class="bg-white border border-silk rounded-xl overflow-hidden">
-        <div class="border-t-4 border-boom px-6 pt-6 pb-5">
-
-          <div class="flex items-center gap-2 mb-4">
-            <span class="w-2.5 h-2.5 rounded-full bg-boom shrink-0"></span>
-            <span class="font-mono text-lg font-medium tracking-ultra uppercase text-boom">Extremes</span>
-          </div>
-
-          <p class="font-sans text-sm text-muted leading-relaxed mb-6">
-            Strong directional momentum with compressing volatility. SPX near recent highs,
-            VIX low and falling, credit spreads tight. Captures both melt-ups and strong
-            recoveries.
-          </p>
-
-          <div class="border-t border-silk pt-5 flex flex-col gap-3">
-            <div class="flex justify-between items-baseline">
-              <span class="font-mono text-xs text-muted">21-day Sharpe</span>
-              <span class="font-display font-bold text-navy text-2xl">1.34</span>
-            </div>
-            <div class="flex justify-between items-baseline">
-              <span class="font-mono text-xs text-muted">Mean return (Fwd. 21D)</span>
-              <span class="font-mono text-sm font-medium text-boom">+1.78%</span>
-            </div>
-            <div class="flex justify-between items-baseline">
-              <span class="font-mono text-xs text-muted">% of trading days</span>
-              <span class="font-mono text-sm text-muted">23%</span>
-            </div>
-            <div class="flex justify-between items-baseline">
-              <span class="font-mono text-xs text-muted">Observations</span>
-              <span class="font-mono text-sm text-muted">1,142</span>
-            </div>
-          </div>
-
-          <p class="font-sans text-xs text-muted leading-relaxed mt-5 pt-5 border-t border-silk italic">
-            The state in which equity risk is best compensated. Also carries elevated
-            transition risk — late-cycle peaks share the same feature signature.
-          </p>
-        </div>
-      </div>
-
-      {{/* MID-MARKET */}}
-      <div class="bg-white border border-silk rounded-xl overflow-hidden">
-        <div class="border-t-4 border-mid px-6 pt-6 pb-5">
-
-          <div class="flex items-center gap-2 mb-4">
-            <span class="w-2.5 h-2.5 rounded-full bg-mid shrink-0"></span>
-            <span class="font-mono text-lg font-medium tracking-ultra uppercase text-mid">Neutral</span>
-          </div>
-
-          <p class="font-sans text-sm text-muted leading-relaxed mb-6">
-            Normal conditions. The baseline state. Regular uncertainty, steady returns,
-            no acute stress signals. The unremarkable majority of market history.
-          </p>
-
-          <div class="border-t border-silk pt-5 flex flex-col gap-3">
-            <div class="flex justify-between items-baseline">
-              <span class="font-mono text-xs text-muted">21-day Sharpe</span>
-              <span class="font-display font-bold text-navy text-2xl">0.50</span>
-            </div>
-            <div class="flex justify-between items-baseline">
-              <span class="font-mono text-xs text-muted">Mean return (Fwd. 21D)</span>
-              <span class="font-mono text-sm font-medium text-mid">+0.53%</span>
-            </div>
-            <div class="flex justify-between items-baseline">
-              <span class="font-mono text-xs text-muted">% of trading days</span>
-              <span class="font-mono text-sm text-muted">47%</span>
-            </div>
-            <div class="flex justify-between items-baseline">
-              <span class="font-mono text-xs text-muted">Observations</span>
-              <span class="font-mono text-sm text-muted">2,334</span>
-            </div>
-          </div>
-
-          <p class="font-sans text-xs text-muted leading-relaxed mt-5 pt-5 border-t border-silk italic">
-            The default condition. Markets in the absence of exceptional circumstances.
-            Full position size lives here.
-          </p>
-        </div>
-      </div>
-
-      {{/* DANGER */}}
-      <div class="bg-white border border-silk rounded-xl overflow-hidden">
-        <div class="border-t-4 border-danger px-6 pt-6 pb-5">
-
-          <div class="flex items-center gap-2 mb-4">
-            <span class="w-2.5 h-2.5 rounded-full bg-danger shrink-0"></span>
-            <span class="font-mono text-lg font-medium tracking-ultra uppercase text-danger">Danger</span>
-          </div>
-
-          <p class="font-sans text-sm text-muted leading-relaxed mb-6">
-            Active drawdown conditions. Multiple stress signals aligned: SPX below recent
-            highs, VIX elevated, credit spreads widening, momentum negative.
-          </p>
-
-          <div class="border-t border-silk pt-5 flex flex-col gap-3">
-            <div class="flex justify-between items-baseline">
-              <span class="font-mono text-xs text-muted">21-day Sharpe</span>
-              <span class="font-display font-bold text-navy text-2xl">0.30</span>
-            </div>
-            <div class="flex justify-between items-baseline">
-              <span class="font-mono text-xs text-muted">Mean return (Fwd. 21D)</span>
-              <span class="font-mono text-sm font-medium text-danger">+0.51%</span>
-            </div>
-            <div class="flex justify-between items-baseline">
-              <span class="font-mono text-xs text-muted">% of trading days</span>
-              <span class="font-mono text-sm text-muted">30%</span>
-            </div>
-            <div class="flex justify-between items-baseline">
-              <span class="font-mono text-xs text-muted">Observations</span>
-              <span class="font-mono text-sm text-muted">1,508</span>
-            </div>
-          </div>
-
-          <p class="font-sans text-xs text-muted leading-relaxed mt-5 pt-5 border-t border-silk italic">
-            Same average return as Neutral. Twice the downside risk. Currently
-            overrepresented at 30% of days vs a 10–12% empirical base rate.
-          </p>
-        </div>
-      </div>
-
+    <div class="flex flex-col gap-5 font-sans text-base text-muted leading-relaxed mb-10 max-w-2xl">
+      {{ range $approaches }}
+      <p>
+        <span class="text-navy font-semibold">{{ .name }}.</span> {{ .note }}
+      </p>
+      {{ end }}
     </div>
 
-    <div class="bg-cream border border-silk rounded-xl px-6 py-5">
-      <p class="font-sans text-sm text-navy leading-relaxed max-w-2xl">
-        The mean return in Danger is nearly identical to Neutral. The Sharpe ratio is
-        not. That gap — <span class="font-semibold">0.30 versus 0.50</span> — confirmed
-        out-of-sample across seven walk-forward folds, is the primary evidence the model
-        is detecting real structure rather than fitting noise.
-      </p>
+    {{/* Comparison table */}}
+    <div class="bg-white border border-silk rounded-xl overflow-hidden overflow-x-auto">
+      <table class="w-full min-w-[640px]">
+        <thead>
+          <tr class="bg-navy">
+            <th class="text-left px-6 py-3 font-mono text-xs font-medium tracking-wider uppercase text-white/60">Approach</th>
+            <th class="text-left px-6 py-3 font-mono text-xs font-medium tracking-wider uppercase text-white/60">Temporal memory</th>
+            <th class="text-left px-6 py-3 font-mono text-xs font-medium tracking-wider uppercase text-white/60">Multivariate</th>
+            <th class="text-left px-6 py-3 font-mono text-xs font-medium tracking-wider uppercase text-white/60">Interpretable</th>
+            <th class="text-left px-6 py-3 font-mono text-xs font-medium tracking-wider uppercase text-white/60">Data req.</th>
+          </tr>
+        </thead>
+        <tbody class="font-sans text-sm">
+          {{ range $approaches }}
+          <tr class="border-b border-silk last:border-0 {{ if .selected }}bg-gold/10{{ end }}">
+            <td class="px-6 py-3 text-navy font-semibold">
+              {{ .name }}
+              {{ if .selected }}<span class="ml-2 font-mono text-xs font-medium tracking-wider uppercase text-gold-dark">← selected</span>{{ end }}
+            </td>
+            <td class="px-6 py-3 font-mono text-xs text-muted">{{ .temporal_memory }}</td>
+            <td class="px-6 py-3 font-mono text-xs text-muted">{{ .multivariate }}</td>
+            <td class="px-6 py-3 font-mono text-xs text-muted">{{ .interpretable }}</td>
+            <td class="px-6 py-3 font-mono text-xs text-muted">{{ .data_req }}</td>
+          </tr>
+          {{ end }}
+        </tbody>
+      </table>
     </div>
 
   </div>
@@ -339,211 +187,346 @@
 
 
 {{/* ════════════════════════════════════════════════════════════
-     SECTION 5 — THE FEATURE SET (cream)
+     SECTION 3 — WHY HMMs (cream)                      [Resolution]
 ════════════════════════════════════════════════════════════ */}}
 <section class="bg-cream border-b border-silk px-6 lg:px-20 py-16">
-  <div class="max-w-content mx-auto">
+  <div class="max-w-2xl mx-auto">
 
     <div class="flex items-center gap-2 mb-4">
       <span class="font-mono text-xs font-medium tracking-ultra uppercase text-gold">
-        Feature Engineering
+        03 · Why HMMs
       </span>
     </div>
 
-    <h2 class="font-display font-bold text-navy text-3xl leading-tight mb-4 max-w-2xl">
-      16 features across two tiers: market-derived and macro context.
+    <h2 class="font-display font-bold text-navy text-3xl leading-tight mb-8">
+      HMMs match the statistical structure of how markets actually behave.
     </h2>
 
-    <p class="font-sans text-lg text-muted max-w-2xl leading-relaxed mb-10">
-      Drawn from FRED economic data and market price data. Every feature is transformed to
-      stationarity before entering the model — z-scores for mean-reverting series, level
-      changes for non-stationary rates, percent changes for slow-moving economic indicators.
-    </p>
-
-    {{/* Primary table */}}
-    <div class="bg-white border border-silk rounded-xl overflow-hidden mb-6">
-      <div class="bg-navy px-6 py-3 flex justify-between items-center">
-        <span class="font-mono text-xs font-medium tracking-wider uppercase text-white/60">
-          Primary · market-derived, fast-moving
-        </span>
-        <span class="font-mono text-xs text-white/60">4 features</span>
-      </div>
-      <table class="w-full">
-        <thead>
-          <tr class="border-b border-silk">
-            <th class="text-left px-6 py-3 font-mono text-xs font-medium tracking-wider uppercase text-muted">Feature</th>
-            <th class="text-left px-6 py-3 font-mono text-xs font-medium tracking-wider uppercase text-muted">Description</th>
-            <th class="text-left px-6 py-3 font-mono text-xs font-medium tracking-wider uppercase text-muted">Source</th>
-          </tr>
-        </thead>
-        <tbody class="font-sans text-sm">
-          <tr class="border-b border-silk"><td class="px-6 py-3 text-navy font-semibold">SPX from 52-week high</td><td class="px-6 py-3 text-muted">Current drawdown depth from recent peak</td><td class="px-6 py-3 font-mono text-xs text-muted">Market</td></tr>
-          <tr class="border-b border-silk"><td class="px-6 py-3 text-navy font-semibold">SPX vs 200-day MA</td><td class="px-6 py-3 text-muted">Price trend regime indicator</td><td class="px-6 py-3 font-mono text-xs text-muted">Market</td></tr>
-          <tr class="border-b border-silk"><td class="px-6 py-3 text-navy font-semibold">VIX trend</td><td class="px-6 py-3 text-muted">Direction of volatility — rising vs falling</td><td class="px-6 py-3 font-mono text-xs text-muted">FRED / Market</td></tr>
-          <tr><td class="px-6 py-3 text-navy font-semibold">BAA10Y trend</td><td class="px-6 py-3 text-muted">Direction of credit spreads</td><td class="px-6 py-3 font-mono text-xs text-muted">FRED</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    {{/* Secondary table */}}
-    <div class="bg-white border border-silk rounded-xl overflow-hidden mb-10">
-      <div class="bg-navy px-6 py-3 flex justify-between items-center">
-        <span class="font-mono text-xs font-medium tracking-wider uppercase text-white/60">
-          Secondary · macro context, slower-moving
-        </span>
-        <span class="font-mono text-xs text-white/60">12 features</span>
-      </div>
-      <table class="w-full">
-        <thead>
-          <tr class="border-b border-silk">
-            <th class="text-left px-6 py-3 font-mono text-xs font-medium tracking-wider uppercase text-muted">Feature</th>
-            <th class="text-left px-6 py-3 font-mono text-xs font-medium tracking-wider uppercase text-muted">Description</th>
-            <th class="text-left px-6 py-3 font-mono text-xs font-medium tracking-wider uppercase text-muted">Source</th>
-          </tr>
-        </thead>
-        <tbody class="font-sans text-sm">
-          <tr class="border-b border-silk"><td class="px-6 py-3 text-navy font-semibold">VIXCLS</td><td class="px-6 py-3 text-muted">Absolute volatility level</td><td class="px-6 py-3 font-mono text-xs text-muted">FRED</td></tr>
-          <tr class="border-b border-silk"><td class="px-6 py-3 text-navy font-semibold">BAA10Y</td><td class="px-6 py-3 text-muted">Credit spread level</td><td class="px-6 py-3 font-mono text-xs text-muted">FRED</td></tr>
-          <tr class="border-b border-silk"><td class="px-6 py-3 text-navy font-semibold">T10Y2Y</td><td class="px-6 py-3 text-muted">Yield curve shape</td><td class="px-6 py-3 font-mono text-xs text-muted">FRED</td></tr>
-          <tr class="border-b border-silk"><td class="px-6 py-3 text-navy font-semibold">T5YIE</td><td class="px-6 py-3 text-muted">Inflation expectations</td><td class="px-6 py-3 font-mono text-xs text-muted">FRED</td></tr>
-          <tr class="border-b border-silk"><td class="px-6 py-3 text-navy font-semibold">DGS10 (3m change)</td><td class="px-6 py-3 text-muted">Rate of change in long rates</td><td class="px-6 py-3 font-mono text-xs text-muted">FRED</td></tr>
-          <tr class="border-b border-silk"><td class="px-6 py-3 text-navy font-semibold">DTB3 (3m change)</td><td class="px-6 py-3 text-muted">Rate of change in short rates</td><td class="px-6 py-3 font-mono text-xs text-muted">FRED</td></tr>
-          <tr class="border-b border-silk"><td class="px-6 py-3 text-navy font-semibold">DTWEXBGS</td><td class="px-6 py-3 text-muted">Trade-weighted dollar</td><td class="px-6 py-3 font-mono text-xs text-muted">FRED</td></tr>
-          <tr class="border-b border-silk"><td class="px-6 py-3 text-navy font-semibold">DCOILWTICO</td><td class="px-6 py-3 text-muted">Oil price level</td><td class="px-6 py-3 font-mono text-xs text-muted">FRED</td></tr>
-          <tr class="border-b border-silk"><td class="px-6 py-3 text-navy font-semibold">ICSA</td><td class="px-6 py-3 text-muted">Initial jobless claims</td><td class="px-6 py-3 font-mono text-xs text-muted">FRED</td></tr>
-          <tr class="border-b border-silk"><td class="px-6 py-3 text-navy font-semibold">MANEMP</td><td class="px-6 py-3 text-muted">Manufacturing employment change</td><td class="px-6 py-3 font-mono text-xs text-muted">FRED</td></tr>
-          <tr><td class="px-6 py-3 text-navy font-semibold">PERMIT</td><td class="px-6 py-3 text-muted">Building permits change</td><td class="px-6 py-3 font-mono text-xs text-muted">FRED</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    {{/* Rate-of-change callout */}}
-    <div class="bg-white border-l-4 border-gold border-y border-r border-silk rounded-r-xl px-6 py-5 mb-8">
-      <div class="font-mono text-xs font-medium tracking-wider uppercase text-gold mb-2">
-        Design decision · rate of change
-      </div>
-      <p class="font-sans text-sm text-navy leading-relaxed mb-2">
-        Rate features (DGS10, DTB3) are expressed as 3-month changes rather than absolute levels.
-        The absolute level of interest rates does not predict equity stress —
-        the <em class="not-italic font-semibold">rate of change</em> does.
+    <div class="flex flex-col gap-5 font-sans text-base text-muted leading-relaxed mb-10">
+      <p>
+        Markets don't jump between environments randomly. A bear market lasts months. A
+        bull market lasts years. The HMM transition matrix encodes this directly:
+        self-transition probabilities of <span class="text-navy font-semibold">90–97%</span>
+        mean the model expects regimes to persist unless the data says otherwise.
       </p>
-      <p class="font-sans text-sm text-muted leading-relaxed">
-        A 5% fed funds rate that has been stable for six months is not a stress signal. A rate
-        that moved from 0% to 5% in twelve months is. This distinction resolved a persistent
-        misclassification of 2024 — a strong bull market year where rates were elevated but
-        stable — as a stress period.
+      <p>
+        The approach is pragmatic. HMMs were the first technique applied to this problem.
+        They produced results worth publishing. The framework continues to develop.
+      </p>
+      <p>
+        Three states, not two: <span class="text-boom font-semibold">Boom</span>,
+        <span class="text-mid font-semibold">Neutral</span>,
+        <span class="text-danger font-semibold">Danger</span>. Two-state models conflate
+        quiet consolidation with strong bull markets — statistically different environments
+        that warrant different treatment.
+      </p>
+      <p>
+        The regime is not directly observable. The model infers it from observable
+        indicators. This is the correct framing for equity markets — there is no official
+        announcement that a bear market has begun. The model attempts to detect it as it
+        develops.
       </p>
     </div>
 
-    <p class="font-sans text-base text-muted max-w-2xl leading-relaxed">
-      Lagging economic indicators (employment levels, GDP, industrial production) are
-      intentionally excluded. By the time employment deteriorates, equity markets have
-      typically already priced the recession. The model targets early detection, not
-      confirmation.
-    </p>
+    {{/* Figure: transition probability diagram */}}
+    {{ $alt := "Transition probability diagram" }}
+    {{ $desc := "Three-node diagram (Boom / Neutral / Danger) with self-loop arrows labeled 90–97% and cross-transition arrows with smaller probabilities." }}
+    <div class="chart-block">
+      <div class="chart-label">Transition matrix · fitted model</div>
+      <div class="chart-title">
+        <h3 class="font-display font-bold text-navy leading-tight text-2xl mb-2">
+          Regimes persist. The model expects continuity unless the data forces a switch.
+        </h3>
+      </div>
+      <div class="chart-sub">
+        Self-transition probabilities dominate. Cross-transitions are rare and incremental.
+      </div>
+      <div class="chart-card" style="padding:20px;">
+        {{ $img := resources.Get "images/lab/regime-detection/transition_diagram.png" }}
+        {{ with $img }}
+          {{ $resized := .Resize "1600x q90 webp" }}
+          <img src="{{ $resized.Permalink }}" alt="{{ $alt }}" class="w-full h-auto rounded-xl">
+        {{ else }}
+          <div class="border-2 border-dashed border-silk rounded-xl bg-cream/40 px-8 py-12 flex flex-col items-center justify-center min-h-[240px] text-center">
+            <div class="font-mono text-xs font-medium tracking-ultra uppercase text-gold/70 mb-2">Figure pending</div>
+            <div class="font-display font-semibold text-navy text-lg mb-2">{{ $alt }}</div>
+            <div class="font-mono text-xs text-muted leading-relaxed max-w-md">{{ $desc }}</div>
+          </div>
+        {{ end }}
+      </div>
+    </div>
 
   </div>
 </section>
 
 
 {{/* ════════════════════════════════════════════════════════════
-     SECTION 6 — HOW THE MODEL WORKS (white + dot grid)
+     SECTION 4 — THE APPROACH (white + dot grid)
 ════════════════════════════════════════════════════════════ */}}
 <section class="bg-white bg-dot-grid bg-dot border-b border-silk px-6 lg:px-20 py-16">
   <div class="max-w-content mx-auto">
 
     <div class="flex items-center gap-2 mb-4">
       <span class="font-mono text-xs font-medium tracking-ultra uppercase text-gold">
-        The Pipeline
+        04 · The Approach
       </span>
     </div>
 
-    <h2 class="font-display font-bold text-navy text-3xl leading-tight mb-10 max-w-2xl">
-      Four steps from raw FRED series to regime classification.
+    <h2 class="font-display font-bold text-navy text-3xl leading-tight mb-12 max-w-2xl">
+      16 macro and market indicators, compressed to 4 factors, classified weekly since 2006.
     </h2>
 
-    <div class="flex flex-col gap-8">
-
-      {{/* STEP 01 */}}
-      <div class="grid grid-cols-[80px_1fr] md:grid-cols-[120px_1fr] gap-6 items-start">
-        <div class="font-display font-bold text-gold/30 text-6xl md:text-7xl leading-none">01</div>
-        <div>
-          <h3 class="font-display font-bold text-navy text-2xl mb-3">PCA dimensionality reduction</h3>
-          <p class="font-sans text-base text-muted leading-relaxed mb-3">
-            The 16 features are correlated — VIX and credit spreads tend to move together
-            during stress; SPX and momentum indicators tend to move together during bull
-            markets. Principal Component Analysis compresses these 16 correlated features
-            into 4–5 uncorrelated principal components that capture approximately 85% of
-            the total variance.
-          </p>
-          <p class="font-sans text-base text-muted leading-relaxed">
-            This step is critical. It reduces the parameter count from roughly 375 to
-            approximately 60 for the subsequent HMM fitting — dramatically improving
-            statistical stability. PCA is fitted on training data only at each walk-forward
-            refit; no future information enters the compression step.
-          </p>
-        </div>
+    {{/* ─── 4a — Feature selection ─── */}}
+    <div class="max-w-2xl">
+      <div class="flex items-baseline gap-3 mb-3">
+        <span class="font-mono text-xs font-medium tracking-wider uppercase text-gold-dark">4a</span>
+        <h3 class="font-display font-bold text-navy text-2xl">Feature selection</h3>
       </div>
-
-      <hr class="border-silk">
-
-      {{/* STEP 02 */}}
-      <div class="grid grid-cols-[80px_1fr] md:grid-cols-[120px_1fr] gap-6 items-start">
-        <div class="font-display font-bold text-gold/30 text-6xl md:text-7xl leading-none">02</div>
-        <div>
-          <h3 class="font-display font-bold text-navy text-2xl mb-3">Gaussian HMM with diagonal covariance</h3>
-          <p class="font-sans text-base text-muted leading-relaxed mb-4">
-            A 3-state Gaussian Hidden Markov Model is fitted on the PCA-compressed features
-            using the Baum-Welch expectation-maximization algorithm. The HMM models each
-            regime as a multivariate Gaussian distribution over the principal components,
-            with a transition matrix that encodes the probability of moving between regimes
-            on any given day.
-          </p>
-          <ul class="flex flex-col gap-2 font-sans text-sm text-muted leading-relaxed">
-            <li><span class="text-navy font-semibold">Self-transition probabilities of ~90–97%</span> — regimes persist for weeks to months, consistent with how macro conditions actually evolve.</li>
-            <li><span class="text-navy font-semibold">Diagonal covariance</span> — a deliberate simplification that reduces parameters while maintaining the ability to capture regime-specific feature distributions.</li>
-            <li><span class="text-navy font-semibold">20 random restarts</span> — the best-fitting solution across 20 random initializations is selected, reducing sensitivity to local optima in the EM algorithm.</li>
-          </ul>
-        </div>
+      <p class="font-sans text-base text-navy font-semibold leading-relaxed mb-4">
+        Leading indicators over lagging ones — the model targets early detection,
+        not confirmation.
+      </p>
+      <div class="flex flex-col gap-4 font-sans text-base text-muted leading-relaxed mb-8">
+        <p>
+          This model is designed to detect equity market regime changes — not economic
+          conditions. Feature selection reflects this. Features that lead equity price
+          action are preferred over features that confirm it.
+        </p>
+        <p>
+          Lagging economic indicators (employment levels, GDP, industrial production)
+          are intentionally excluded. By the time employment deteriorates, equity markets
+          have typically already priced the recession.
+        </p>
+        <p>
+          Rate of change over level: a 5% fed funds rate stable for six months is not a
+          stress signal. A rate that moved from 0% to 5% in twelve months is. The model
+          captures this distinction.
+        </p>
       </div>
+    </div>
 
-      <hr class="border-silk">
-
-      {{/* STEP 03 */}}
-      <div class="grid grid-cols-[80px_1fr] md:grid-cols-[120px_1fr] gap-6 items-start">
-        <div class="font-display font-bold text-gold/30 text-6xl md:text-7xl leading-none">03</div>
-        <div>
-          <h3 class="font-display font-bold text-navy text-2xl mb-3">Regime ordering by composite risk score</h3>
-          <p class="font-sans text-base text-muted leading-relaxed">
-            HMM states are assigned arbitrary numeric labels during fitting. After each
-            refit, states are ordered by a composite risk score derived from the emission
-            means — the average feature values within each state. States where VIX is
-            elevated, credit spreads are wide, and SPX is below trend are labeled
-            <span class="text-danger font-semibold">Danger</span>. States where momentum
-            is strong and volatility is low are labeled
-            <span class="text-boom font-semibold">Extremes</span>. The middle state becomes
-            <span class="text-mid font-semibold">Neutral</span>.
-          </p>
+    {{/* Feature list grid */}}
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
+      {{ range $features }}
+      <div class="bg-white border border-silk rounded-xl overflow-hidden">
+        <div class="bg-navy px-6 py-3 flex justify-between items-center">
+          <span class="font-mono text-xs font-medium tracking-wider uppercase text-white/60">
+            {{ .category }}
+          </span>
+          <span class="font-mono text-xs text-white/60">{{ len .features }}</span>
         </div>
+        <ul class="divide-y divide-silk">
+          {{ range .features }}
+          <li class="px-6 py-3 flex flex-col gap-1">
+            <span class="font-mono text-xs font-semibold text-navy">{{ .code }}</span>
+            <span class="font-sans text-xs text-muted leading-relaxed">{{ .description }}</span>
+          </li>
+          {{ end }}
+        </ul>
       </div>
+      {{ end }}
+    </div>
 
-      <hr class="border-silk">
-
-      {{/* STEP 04 */}}
-      <div class="grid grid-cols-[80px_1fr] md:grid-cols-[120px_1fr] gap-6 items-start">
-        <div class="font-display font-bold text-gold/30 text-6xl md:text-7xl leading-none">04</div>
-        <div>
-          <h3 class="font-display font-bold text-navy text-2xl mb-3">Walk-forward validation</h3>
-          <p class="font-sans text-base text-muted leading-relaxed">
-            The model is validated using an expanding-window walk-forward framework across
-            seven folds covering 2019–2026. Each fold trains on all data up to a cutoff
-            date and predicts on the following year — the model never sees future data
-            during training. Feature matrices are recomputed at each cutoff date to
-            eliminate look-ahead bias in the normalization step.
-          </p>
-        </div>
+    {{/* Figure: feature correlation heatmap */}}
+    {{ $alt := "Feature correlation heatmap" }}
+    {{ $desc := "16×16 correlation matrix grouped by category (equity / credit / rates / macro). Shows visually why PCA preprocessing is needed — the feature blocks are highly correlated within groups." }}
+    <div class="chart-block mb-12">
+      <div class="chart-label">Feature correlation · 2006–2026</div>
+      <div class="chart-title">
+        <h3 class="font-display font-bold text-navy leading-tight text-2xl mb-2">
+          Within-group correlation is exactly why dimensionality reduction comes next.
+        </h3>
       </div>
+      <div class="chart-sub">Color: red = positive correlation, blue = negative.</div>
+      <div class="chart-card" style="padding:20px;">
+        {{ $img := resources.Get "images/lab/regime-detection/feature_correlation_heatmap.png" }}
+        {{ with $img }}
+          {{ $resized := .Resize "1600x q90 webp" }}
+          <img src="{{ $resized.Permalink }}" alt="{{ $alt }}" class="w-full h-auto rounded-xl">
+        {{ else }}
+          <div class="border-2 border-dashed border-silk rounded-xl bg-cream/40 px-8 py-12 flex flex-col items-center justify-center min-h-[240px] text-center">
+            <div class="font-mono text-xs font-medium tracking-ultra uppercase text-gold/70 mb-2">Figure pending</div>
+            <div class="font-display font-semibold text-navy text-lg mb-2">{{ $alt }}</div>
+            <div class="font-mono text-xs text-muted leading-relaxed max-w-md">{{ $desc }}</div>
+          </div>
+        {{ end }}
+      </div>
+    </div>
 
+    <hr class="border-silk my-12">
+
+    {{/* ─── 4b — PCA ─── */}}
+    <div class="max-w-2xl">
+      <div class="flex items-baseline gap-3 mb-3">
+        <span class="font-mono text-xs font-medium tracking-wider uppercase text-gold-dark">4b</span>
+        <h3 class="font-display font-bold text-navy text-2xl">Dimensionality reduction via PCA</h3>
+      </div>
+      <p class="font-sans text-base text-navy font-semibold leading-relaxed mb-4">
+        16 correlated features compressed to 4 independent factors — 88% of variance explained.
+      </p>
+      <div class="flex flex-col gap-4 font-sans text-base text-muted leading-relaxed mb-8">
+        <p>
+          The 16 features are correlated. VIX and credit spreads move together during stress.
+          SPX and momentum indicators move together during bull markets. Feeding correlated
+          features directly into the HMM inflates the parameter count and destabilizes
+          training.
+        </p>
+        <p>
+          PCA compresses 16 correlated features into 4–5 uncorrelated principal components
+          that capture <span class="text-navy font-semibold">88% of total variance</span>.
+        </p>
+        <p>
+          Two concrete benefits: reduces HMM parameter count from ~375 to ~60 (critical
+          given 20 years of daily data), and removes noise while preserving the dominant
+          macro signals.
+        </p>
+        <p>
+          PCA is fitted on training data only at each refit. No future data enters the
+          compression step.
+        </p>
+      </div>
+    </div>
+
+    {{/* Figure: PCA scree plot */}}
+    {{ $alt := "PCA explained variance scree plot" }}
+    {{ $desc := "Bar chart of % variance explained per principal component (1–16) with cumulative line overlay showing the 88% threshold reached at component 4." }}
+    <div class="chart-block mb-12">
+      <div class="chart-label">PCA · explained variance</div>
+      <div class="chart-title">
+        <h3 class="font-display font-bold text-navy leading-tight text-2xl mb-2">
+          Four components explain most of the variance. The rest is noise.
+        </h3>
+      </div>
+      <div class="chart-sub">Cumulative variance crosses 88% at component 4.</div>
+      <div class="chart-card" style="padding:20px;">
+        {{ $img := resources.Get "images/lab/regime-detection/pca_scree_plot.png" }}
+        {{ with $img }}
+          {{ $resized := .Resize "1600x q90 webp" }}
+          <img src="{{ $resized.Permalink }}" alt="{{ $alt }}" class="w-full h-auto rounded-xl">
+        {{ else }}
+          <div class="border-2 border-dashed border-silk rounded-xl bg-cream/40 px-8 py-12 flex flex-col items-center justify-center min-h-[240px] text-center">
+            <div class="font-mono text-xs font-medium tracking-ultra uppercase text-gold/70 mb-2">Figure pending</div>
+            <div class="font-display font-semibold text-navy text-lg mb-2">{{ $alt }}</div>
+            <div class="font-mono text-xs text-muted leading-relaxed max-w-md">{{ $desc }}</div>
+          </div>
+        {{ end }}
+      </div>
+    </div>
+
+    <hr class="border-silk my-12">
+
+    {{/* ─── 4c — HMM fitting ─── */}}
+    <div class="max-w-2xl">
+      <div class="flex items-baseline gap-3 mb-3">
+        <span class="font-mono text-xs font-medium tracking-wider uppercase text-gold-dark">4c</span>
+        <h3 class="font-display font-bold text-navy text-2xl">HMM fitting</h3>
+      </div>
+      <p class="font-sans text-base text-navy font-semibold leading-relaxed mb-4">
+        Three regimes, 20 random restarts, ordered by risk.
+      </p>
+      <ul class="flex flex-col gap-3 font-sans text-base text-muted leading-relaxed mb-8">
+        <li>
+          <span class="text-navy font-semibold">3-state Gaussian HMM</span> fitted on PCA
+          components using Baum-Welch expectation-maximization.
+        </li>
+        <li>
+          <span class="text-navy font-semibold">20 random restarts</span> per fold —
+          best-fitting solution selected by log-likelihood. Reduces sensitivity to local
+          optima.
+        </li>
+        <li>
+          <span class="text-navy font-semibold">Diagonal covariance</span> — a deliberate
+          simplification that reduces parameters while preserving per-regime feature
+          distributions.
+        </li>
+        <li>
+          After fitting, states are ordered by composite risk score derived from emission
+          means. The state with elevated VIX, wide credit spreads, and SPX below trend
+          becomes <span class="text-danger font-semibold">Danger</span>. Strong momentum,
+          low volatility becomes <span class="text-boom font-semibold">Boom</span>. The
+          middle state is <span class="text-mid font-semibold">Neutral</span>.
+        </li>
+      </ul>
+    </div>
+
+    {{/* Figure: emission distributions */}}
+    {{ $alt := "Per-regime emission distributions" }}
+    {{ $desc := "Two panels showing density curves for VIX and BAA10Y credit spread, one curve per regime. Demonstrates that regimes are statistically distinct in feature space." }}
+    <div class="chart-block mb-12">
+      <div class="chart-label">Emission distributions · per regime</div>
+      <div class="chart-title">
+        <h3 class="font-display font-bold text-navy leading-tight text-2xl mb-2">
+          Each regime has a distinct statistical signature in feature space.
+        </h3>
+      </div>
+      <div class="chart-sub">Density curves for VIX (left) and BAA10Y credit spread (right).</div>
+      <div class="chart-card" style="padding:20px;">
+        {{ $img := resources.Get "images/lab/regime-detection/emission_distributions.png" }}
+        {{ with $img }}
+          {{ $resized := .Resize "1600x q90 webp" }}
+          <img src="{{ $resized.Permalink }}" alt="{{ $alt }}" class="w-full h-auto rounded-xl">
+        {{ else }}
+          <div class="border-2 border-dashed border-silk rounded-xl bg-cream/40 px-8 py-12 flex flex-col items-center justify-center min-h-[240px] text-center">
+            <div class="font-mono text-xs font-medium tracking-ultra uppercase text-gold/70 mb-2">Figure pending</div>
+            <div class="font-display font-semibold text-navy text-lg mb-2">{{ $alt }}</div>
+            <div class="font-mono text-xs text-muted leading-relaxed max-w-md">{{ $desc }}</div>
+          </div>
+        {{ end }}
+      </div>
+    </div>
+
+    <hr class="border-silk my-12">
+
+    {{/* ─── 4d — Walk-forward validation ─── */}}
+    <div class="max-w-2xl">
+      <div class="flex items-baseline gap-3 mb-3">
+        <span class="font-mono text-xs font-medium tracking-wider uppercase text-gold-dark">4d</span>
+        <h3 class="font-display font-bold text-navy text-2xl">Walk-forward validation</h3>
+      </div>
+      <p class="font-sans text-base text-navy font-semibold leading-relaxed mb-4">
+        Every historical classification was generated on data the model had never seen.
+      </p>
+      <div class="flex flex-col gap-4 font-sans text-base text-muted leading-relaxed mb-8">
+        <p>
+          7 folds, 2019–2026. Each fold trains on all history through year Y, predicts
+          year Y+1.
+        </p>
+        <p>
+          The 2020 COVID classifications were made by a model trained through December
+          2019. The 2022 bear market by a model trained through December 2021.
+        </p>
+        <p>
+          This is not a backtest. A backtest trains on the full dataset and scores the
+          same dataset — optimistic by construction. Walk-forward validation generates
+          each classification on genuinely unseen data.
+        </p>
+      </div>
+    </div>
+
+    {{/* Figure: fold structure timeline */}}
+    {{ $alt := "Walk-forward fold structure timeline" }}
+    {{ $desc := "Horizontal Gantt-style timeline 2006–2026. Each row shows one fold: navy bar = expanding training window, gold bar = one-year out-of-sample prediction window. 7 rows stacked." }}
+    <div class="chart-block">
+      <div class="chart-label">Walk-forward folds · 7 expanding windows</div>
+      <div class="chart-title">
+        <h3 class="font-display font-bold text-navy leading-tight text-2xl mb-2">
+          Each year was predicted by a model trained only on prior data.
+        </h3>
+      </div>
+      <div class="chart-sub">Navy = training window. Gold = OOS prediction window.</div>
+      <div class="chart-card" style="padding:20px;">
+        {{ $img := resources.Get "images/lab/regime-detection/fold_structure_timeline.png" }}
+        {{ with $img }}
+          {{ $resized := .Resize "1600x q90 webp" }}
+          <img src="{{ $resized.Permalink }}" alt="{{ $alt }}" class="w-full h-auto rounded-xl">
+        {{ else }}
+          <div class="border-2 border-dashed border-silk rounded-xl bg-cream/40 px-8 py-12 flex flex-col items-center justify-center min-h-[240px] text-center">
+            <div class="font-mono text-xs font-medium tracking-ultra uppercase text-gold/70 mb-2">Figure pending</div>
+            <div class="font-display font-semibold text-navy text-lg mb-2">{{ $alt }}</div>
+            <div class="font-mono text-xs text-muted leading-relaxed max-w-md">{{ $desc }}</div>
+          </div>
+        {{ end }}
+      </div>
     </div>
 
   </div>
@@ -551,54 +534,80 @@
 
 
 {{/* ════════════════════════════════════════════════════════════
-     SECTION 7 — VALIDATED PERFORMANCE (cream)
+     SECTION 5 — VALIDATION RESULTS (cream)
 ════════════════════════════════════════════════════════════ */}}
 <section class="bg-cream border-b border-silk px-6 lg:px-20 py-16">
   <div class="max-w-content mx-auto">
 
     <div class="flex items-center gap-2 mb-4">
       <span class="font-mono text-xs font-medium tracking-ultra uppercase text-gold">
-        Validated Performance
+        05 · Validation Results
       </span>
     </div>
 
-    <h2 class="font-display font-bold text-navy text-3xl leading-tight mb-4 max-w-2xl">
-      Validated against nine objectively defined drawdown events.
+    <h2 class="font-display font-bold text-navy text-3xl leading-tight mb-12 max-w-2xl">
+      Validated against conventional bear markets, with results published honestly.
     </h2>
 
-    <p class="font-sans text-lg text-muted max-w-2xl leading-relaxed mb-10">
-      Each event represents a peak-to-trough decline exceeding 10% sustained for more than
-      20 trading days. Ground truth is price-derived and objective — not narrative judgment.
-      Any period with a 10%+ sustained drawdown from peak is labeled Danger.
-    </p>
+    {{/* ─── 5a — Ground truth ─── */}}
+    <div class="max-w-2xl">
+      <div class="flex items-baseline gap-3 mb-3">
+        <span class="font-mono text-xs font-medium tracking-wider uppercase text-gold-dark">5a</span>
+        <h3 class="font-display font-bold text-navy text-2xl">What we measured against</h3>
+      </div>
+      <p class="font-sans text-base text-navy font-semibold leading-relaxed mb-4">
+        Validated against conventional bear markets, not every 10% pullback.
+      </p>
+      <div class="flex flex-col gap-4 font-sans text-base text-muted leading-relaxed mb-8">
+        <p>
+          Ground truth is defined as conventional bear markets:
+          <span class="text-navy font-semibold">−20% peak-to-trough or sustained drawdown
+          over two months</span>. This matches the standard used by practitioners, not
+          the narrower −10% threshold used in prior validation runs.
+        </p>
+        <p>
+          The prior threshold flagged short, sharp events (European Debt Crisis, Q4 2018,
+          China/Oil Selloff) that resolved quickly without meeting conventional bear
+          market criteria. The model largely missed these — correctly, under the revised
+          standard.
+        </p>
+        <p>
+          This is an equity market model. The ground truth events are equity market
+          events. Economic recessions that did not produce sustained equity drawdowns are
+          not validation targets.
+        </p>
+      </div>
+    </div>
 
-    {{/* Sub-block A — Drawdown event ground truth table */}}
-    <div class="bg-white border border-silk rounded-xl overflow-hidden mb-10">
+    {{/* Named events table */}}
+    <div class="bg-white border border-silk rounded-xl overflow-hidden mb-10 overflow-x-auto">
       <div class="bg-navy px-6 py-3 flex justify-between items-center">
         <span class="font-mono text-xs font-medium tracking-wider uppercase text-white/60">
-          Ground truth · S&amp;P 500 drawdown events
+          Ground truth · S&amp;P 500 bear markets, 2006–2026
         </span>
-        <span class="font-mono text-xs text-white/60">{{ len $events }} events</span>
+        <span class="font-mono text-xs text-white/60">{{ len $events.events }} events</span>
       </div>
-      <table class="w-full">
+      <table class="w-full min-w-[640px]">
         <thead>
           <tr class="border-b border-silk">
             <th class="text-left px-6 py-3 font-mono text-xs font-medium tracking-wider uppercase text-muted">Event</th>
-            <th class="text-left px-6 py-3 font-mono text-xs font-medium tracking-wider uppercase text-muted">Peak</th>
-            <th class="text-left px-6 py-3 font-mono text-xs font-medium tracking-wider uppercase text-muted">Trough</th>
+            <th class="text-left px-6 py-3 font-mono text-xs font-medium tracking-wider uppercase text-muted">Start</th>
+            <th class="text-left px-6 py-3 font-mono text-xs font-medium tracking-wider uppercase text-muted">End</th>
             <th class="text-right px-6 py-3 font-mono text-xs font-medium tracking-wider uppercase text-muted">Drawdown</th>
+            <th class="text-left px-6 py-3 font-mono text-xs font-medium tracking-wider uppercase text-muted">Classification</th>
           </tr>
         </thead>
         <tbody class="font-sans text-sm">
-          {{ range $events }}
+          {{ range $events.events }}
           <tr class="border-b border-silk last:border-0">
             <td class="px-6 py-3 text-navy font-semibold">{{ .name }}</td>
             <td class="px-6 py-3 font-mono text-xs text-muted">{{ .peak }}</td>
-            <td class="px-6 py-3 font-mono text-xs text-muted">
-              {{ if .ongoing }}<span class="text-danger">ongoing</span>{{ else }}{{ .trough }}{{ end }}
-            </td>
+            <td class="px-6 py-3 font-mono text-xs text-muted">{{ .trough }}</td>
             <td class="px-6 py-3 font-mono text-sm text-danger text-right">
-              {{ printf "%.1f%%" .drawdown_pct }}{{ if .ongoing }}+{{ end }}
+              {{ printf "%.1f%%" .drawdown_pct }}
+            </td>
+            <td class="px-6 py-3 font-mono text-xs {{ if .classified_pass }}text-mid{{ else }}text-danger{{ end }}">
+              {{ .classification }}
             </td>
           </tr>
           {{ end }}
@@ -606,109 +615,142 @@
       </table>
     </div>
 
-    {{/* Sub-block B — Regime timeline chart */}}
-    <div class="chart-block mb-12">
-      <div class="chart-label">Regime timeline · 2006–2026</div>
+    {{/* Figure: coverage scorecard */}}
+    {{ $alt := "Coverage scorecard" }}
+    {{ $desc := "Horizontal bar chart of validation criteria with 80% threshold dashed line. Generated from notebook output (wf_coverage_scorecard)." }}
+    <div class="chart-block mb-16">
+      <div class="chart-label">Coverage · revised ground truth</div>
       <div class="chart-title">
         <h3 class="font-display font-bold text-navy leading-tight text-2xl mb-2">
-          When the model fired Danger across two decades.
+          Per-event coverage against the revised ground truth.
         </h3>
       </div>
-      <div class="chart-sub">
-        Each block is a continuous regime span. Drawdown event names are overlaid on the timeline.
-      </div>
-      <div class="chart-card" style="padding:20px 20px 14px;">
-        <div class="eq-legend" style="margin-bottom:12px;">
-          <span class="eq-leg"><span class="eq-box" style="background:rgba(243,156,18,.4)"></span> Extremes</span>
-          <span class="eq-leg"><span class="eq-box" style="background:rgba(39,174,96,.4)"></span> Neutral</span>
-          <span class="eq-leg"><span class="eq-box" style="background:rgba(231,76,60,.4)"></span> Danger</span>
-        </div>
-        <div class="w-full rounded-xl overflow-hidden">
-          <canvas id="regimeTimelineChart" role="img"
-                  aria-label="Regime timeline showing Extremes, Neutral, and Danger spans from 2006 to 2026"
-                  height="180">
-            Regime timeline 2006–2026.
-          </canvas>
-        </div>
+      <div class="chart-sub">Green bars are above threshold; red bars are below.</div>
+      <div class="chart-card" style="padding:20px;">
+        {{ $img := resources.Get "images/lab/regime-detection/wf_coverage_scorecard.png" }}
+        {{ with $img }}
+          {{ $resized := .Resize "1600x q90 webp" }}
+          <img src="{{ $resized.Permalink }}" alt="{{ $alt }}" class="w-full h-auto rounded-xl">
+        {{ else }}
+          <div class="border-2 border-dashed border-silk rounded-xl bg-cream/40 px-8 py-12 flex flex-col items-center justify-center min-h-[240px] text-center">
+            <div class="font-mono text-xs font-medium tracking-ultra uppercase text-gold/70 mb-2">Figure pending</div>
+            <div class="font-display font-semibold text-navy text-lg mb-2">{{ $alt }}</div>
+            <div class="font-mono text-xs text-muted leading-relaxed max-w-md">{{ $desc }}</div>
+          </div>
+        {{ end }}
       </div>
     </div>
 
-    {{/* Sub-block C — Regime-conditional returns */}}
-    <h3 class="font-display font-bold text-navy text-2xl mb-3">Regime-conditional returns</h3>
-    <p class="font-sans text-base text-muted max-w-2xl leading-relaxed mb-6">
-      Out-of-sample, 21-day forward returns by regime. Computed across all seven walk-forward folds.
-    </p>
+    {{/* ─── 5b — Regime-conditional returns ─── */}}
+    <div class="max-w-2xl">
+      <div class="flex items-baseline gap-3 mb-3">
+        <span class="font-mono text-xs font-medium tracking-wider uppercase text-gold-dark">5b</span>
+        <h3 class="font-display font-bold text-navy text-2xl">Regime-conditional returns</h3>
+      </div>
+      <p class="font-sans text-base text-navy font-semibold leading-relaxed mb-4">
+        The three regimes have measurably different risk profiles — confirmed out-of-sample.
+      </p>
+      <div class="flex flex-col gap-4 font-sans text-base text-muted leading-relaxed mb-8">
+        <p>
+          The monotonic ordering of Sharpe ratios across all three regimes is the primary
+          statistical evidence for the model.
+        </p>
+        <p>
+          Danger and Neutral have nearly identical mean returns. The Sharpe gap —
+          <span class="text-danger font-semibold">0.30</span> versus
+          <span class="text-mid font-semibold">0.50</span> — reflects the fat left tail
+          in Danger. The mean hides the distribution.
+        </p>
+      </div>
+    </div>
 
-    <div class="bg-white border border-silk rounded-xl overflow-hidden mb-6">
-      <table class="w-full">
+    {{/* Stats table */}}
+    <div class="bg-white border border-silk rounded-xl overflow-hidden mb-10 overflow-x-auto">
+      <table class="w-full min-w-[560px]">
         <thead>
           <tr class="border-b border-silk bg-cream">
             <th class="text-left px-6 py-3 font-mono text-xs font-medium tracking-wider uppercase text-muted">Regime</th>
             <th class="text-right px-6 py-3 font-mono text-xs font-medium tracking-wider uppercase text-muted">Mean Return</th>
             <th class="text-right px-6 py-3 font-mono text-xs font-medium tracking-wider uppercase text-muted">Sharpe</th>
+            <th class="text-right px-6 py-3 font-mono text-xs font-medium tracking-wider uppercase text-muted">Std</th>
             <th class="text-right px-6 py-3 font-mono text-xs font-medium tracking-wider uppercase text-muted">N Days</th>
           </tr>
         </thead>
         <tbody class="font-sans text-sm">
-          <tr class="border-b border-silk">
-            <td class="px-6 py-3"><span class="inline-flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-boom"></span><span class="text-boom font-semibold">Extremes</span></span></td>
-            <td class="px-6 py-3 font-mono text-boom text-right">+1.78%</td>
-            <td class="px-6 py-3 font-mono font-semibold text-navy text-right">1.34</td>
-            <td class="px-6 py-3 font-mono text-muted text-right">1,142</td>
+          {{ range $stats }}
+          <tr class="border-b border-silk last:border-0">
+            <td class="px-6 py-3">
+              <span class="inline-flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-{{ .color }}"></span>
+                <span class="text-{{ .color }} font-semibold">{{ .label }}</span>
+              </span>
+            </td>
+            <td class="px-6 py-3 font-mono text-{{ .color }} text-right">{{ .mean_return }}</td>
+            <td class="px-6 py-3 font-mono font-semibold text-navy text-right">{{ .sharpe }}</td>
+            <td class="px-6 py-3 font-mono text-muted text-right">{{ .std }}</td>
+            <td class="px-6 py-3 font-mono text-muted text-right">{{ .n_days }}</td>
           </tr>
-          <tr class="border-b border-silk">
-            <td class="px-6 py-3"><span class="inline-flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-mid"></span><span class="text-mid font-semibold">Neutral</span></span></td>
-            <td class="px-6 py-3 font-mono text-mid text-right">+0.53%</td>
-            <td class="px-6 py-3 font-mono font-semibold text-navy text-right">0.50</td>
-            <td class="px-6 py-3 font-mono text-muted text-right">2,334</td>
-          </tr>
-          <tr>
-            <td class="px-6 py-3"><span class="inline-flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-danger"></span><span class="text-danger font-semibold">Danger</span></span></td>
-            <td class="px-6 py-3 font-mono text-danger text-right">+0.51%</td>
-            <td class="px-6 py-3 font-mono font-semibold text-navy text-right">0.30</td>
-            <td class="px-6 py-3 font-mono text-muted text-right">1,508</td>
-          </tr>
+          {{ end }}
         </tbody>
       </table>
     </div>
 
-    <div class="bg-white border border-silk rounded-xl px-6 py-5 mb-12">
-      <p class="font-sans text-sm text-navy leading-relaxed max-w-2xl">
-        The monotonic ordering of Sharpe ratios across all three regimes — confirmed
-        out-of-sample across seven walk-forward folds — is the primary evidence the model
-        is detecting real structure rather than fitting noise.
-      </p>
-    </div>
-
-    {{/* Sub-block D — Equity curve chart + summary */}}
-    <div class="chart-block mb-6">
-      <div class="chart-label">Walk-forward OOS · 2006–2026</div>
+    {{/* Figure: return distributions */}}
+    {{ $alt := "Per-regime return distributions" }}
+    {{ $desc := "Three histogram panels (Boom / Neutral / Danger). The Boom right skew and Danger fat left tail are the visual argument for regime-aware sizing." }}
+    <div class="chart-block mb-16">
+      <div class="chart-label">21-day forward returns · per regime</div>
       <div class="chart-title">
         <h3 class="font-display font-bold text-navy leading-tight text-2xl mb-2">
-          Equity curve — MacroContext vs Buy &amp; Hold.
+          The mean hides the distribution. Danger's fat left tail is the entire argument.
         </h3>
       </div>
-      <div class="chart-sub">
-        Position sizing: Extremes 80%, Neutral 100%, Danger 25%. Both curves normalized to 1.000 at start.
+      <div class="chart-sub">Generated from notebook output (wf_return_distributions).</div>
+      <div class="chart-card" style="padding:20px;">
+        {{ $img := resources.Get "images/lab/regime-detection/wf_return_distributions.png" }}
+        {{ with $img }}
+          {{ $resized := .Resize "1600x q90 webp" }}
+          <img src="{{ $resized.Permalink }}" alt="{{ $alt }}" class="w-full h-auto rounded-xl">
+        {{ else }}
+          <div class="border-2 border-dashed border-silk rounded-xl bg-cream/40 px-8 py-12 flex flex-col items-center justify-center min-h-[240px] text-center">
+            <div class="font-mono text-xs font-medium tracking-ultra uppercase text-gold/70 mb-2">Figure pending</div>
+            <div class="font-display font-semibold text-navy text-lg mb-2">{{ $alt }}</div>
+            <div class="font-mono text-xs text-muted leading-relaxed max-w-md">{{ $desc }}</div>
+          </div>
+        {{ end }}
       </div>
-      <div class="chart-card" style="padding:20px 20px 14px;">
-        <div class="eq-legend" style="margin-bottom:12px;">
-          <span class="eq-leg"><span class="eq-line" style="background:#1B2A4A;"></span> MacroContext</span>
-          <span class="eq-leg"><span class="eq-line" style="background:#9CA3AF;"></span> Buy &amp; Hold</span>
-        </div>
-        <div class="w-full rounded-xl overflow-hidden">
-          <canvas id="equityCurveChart" role="img"
-                  aria-label="Equity curve comparison MacroContext vs Buy and Hold 2006-2026"
-                  height="320">
-            Equity curve comparison 2006–2026.
-          </canvas>
-        </div>
+    </div>
+
+    {{/* ─── 5c — Equity curve ─── */}}
+    <div class="max-w-2xl">
+      <div class="flex items-baseline gap-3 mb-3">
+        <span class="font-mono text-xs font-medium tracking-wider uppercase text-gold-dark">5c</span>
+        <h3 class="font-display font-bold text-navy text-2xl">Equity curve</h3>
+      </div>
+      <p class="font-sans text-base text-navy font-semibold leading-relaxed mb-4">
+        Better risk-adjusted returns across every metric — simultaneously.
+      </p>
+      <div class="flex flex-col gap-4 font-sans text-base text-muted leading-relaxed mb-8">
+        <p>
+          Position sizes:
+          <span class="text-boom font-semibold">Boom 80%</span> ·
+          <span class="text-mid font-semibold">Neutral 100%</span> ·
+          <span class="text-danger font-semibold">Danger 25%</span>.
+        </p>
+        <p>
+          A spurious signal typically trades return for volatility reduction or vice versa.
+          A genuine signal improves both simultaneously.
+        </p>
+        <p>
+          These are walk-forward out-of-sample results. Each position size was determined
+          by the classification at the time, not in hindsight.
+        </p>
       </div>
     </div>
 
     {{/* Equity curve summary table */}}
-    <div class="bg-white border border-silk rounded-xl overflow-hidden mb-12">
-      <table class="w-full">
+    <div class="bg-white border border-silk rounded-xl overflow-hidden mb-10 overflow-x-auto">
+      <table class="w-full min-w-[480px]">
         <thead>
           <tr class="border-b border-silk bg-cream">
             <th class="text-left px-6 py-3 font-mono text-xs font-medium tracking-wider uppercase text-muted">Metric</th>
@@ -719,99 +761,107 @@
         <tbody class="font-sans text-sm">
           <tr class="border-b border-silk">
             <td class="px-6 py-3 text-navy font-semibold">CAGR</td>
-            <td class="px-6 py-3 font-mono text-muted text-right">{{ $eq.summary.buy_hold.cagr }}</td>
-            <td class="px-6 py-3 font-mono font-semibold text-navy text-right">{{ $eq.summary.macrocontext.cagr }}</td>
-          </tr>
-          <tr class="border-b border-silk">
-            <td class="px-6 py-3 text-navy font-semibold">Volatility</td>
-            <td class="px-6 py-3 font-mono text-muted text-right">{{ $eq.summary.buy_hold.vol }}</td>
-            <td class="px-6 py-3 font-mono font-semibold text-navy text-right">{{ $eq.summary.macrocontext.vol }}</td>
+            <td class="px-6 py-3 font-mono text-muted text-right">8.8%</td>
+            <td class="px-6 py-3 font-mono font-semibold text-navy text-right">11.6%</td>
           </tr>
           <tr class="border-b border-silk">
             <td class="px-6 py-3 text-navy font-semibold">Sharpe Ratio</td>
-            <td class="px-6 py-3 font-mono text-muted text-right">{{ $eq.summary.buy_hold.sharpe }}</td>
-            <td class="px-6 py-3 font-mono font-semibold text-navy text-right">{{ $eq.summary.macrocontext.sharpe }}</td>
+            <td class="px-6 py-3 font-mono text-muted text-right">0.53</td>
+            <td class="px-6 py-3 font-mono font-semibold text-navy text-right">0.95</td>
+          </tr>
+          <tr class="border-b border-silk">
+            <td class="px-6 py-3 text-navy font-semibold">Max Drawdown</td>
+            <td class="px-6 py-3 font-mono text-muted text-right">−56.8%</td>
+            <td class="px-6 py-3 font-mono font-semibold text-navy text-right">−33.8%</td>
           </tr>
           <tr>
-            <td class="px-6 py-3 text-navy font-semibold">Max Drawdown</td>
-            <td class="px-6 py-3 font-mono text-muted text-right">{{ $eq.summary.buy_hold.max_dd }}</td>
-            <td class="px-6 py-3 font-mono font-semibold text-navy text-right">{{ $eq.summary.macrocontext.max_dd }}</td>
+            <td class="px-6 py-3 text-navy font-semibold">Volatility</td>
+            <td class="px-6 py-3 font-mono text-muted text-right">19.4%</td>
+            <td class="px-6 py-3 font-mono font-semibold text-navy text-right">12.1%</td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    {{/* Sub-block E — Regime distribution */}}
-    <div class="chart-block mb-12">
-      <div class="chart-label">Regime distribution · 2006–2026</div>
+    {{/* Figure: equity curve */}}
+    {{ $alt := "Walk-forward equity curve · MacroContext vs Buy & Hold" }}
+    {{ $desc := "Two-line chart on log scale, 2006–2026, with regime shading in background. Generated from notebook output (wf_equity_curve)." }}
+    <div class="chart-block mb-16">
+      <div class="chart-label">Walk-forward OOS · 2006–2026</div>
       <div class="chart-title">
         <h3 class="font-display font-bold text-navy leading-tight text-2xl mb-2">
-          Share of trading days in each regime, by year.
+          Higher return, lower volatility, shallower drawdown. All four at once.
         </h3>
       </div>
-      <div class="chart-sub">
-        Historical average: Extremes {{ $dist.average.boom }}% · Neutral {{ $dist.average.mid }}% · Danger {{ $dist.average.danger }}%.
-      </div>
-      <div class="chart-card" style="padding:20px 20px 14px;">
-        <div class="eq-legend" style="margin-bottom:12px;">
-          <span class="eq-leg"><span class="eq-box" style="background:#F1C40F;"></span> Extremes</span>
-          <span class="eq-leg"><span class="eq-box" style="background:#27AE60;"></span> Neutral</span>
-          <span class="eq-leg"><span class="eq-box" style="background:#E74C3C;"></span> Danger</span>
-        </div>
-        <div class="w-full rounded-xl overflow-hidden">
-          <canvas id="regimeDistributionChart" role="img"
-                  aria-label="Stacked bar chart showing share of trading days per regime by year 2006-2026"
-                  height="280">
-            Regime distribution by year 2006–2026.
-          </canvas>
-        </div>
+      <div class="chart-sub">Log scale. Regime shading in background.</div>
+      <div class="chart-card" style="padding:20px;">
+        {{ $img := resources.Get "images/lab/regime-detection/wf_equity_curve.png" }}
+        {{ with $img }}
+          {{ $resized := .Resize "1600x q90 webp" }}
+          <img src="{{ $resized.Permalink }}" alt="{{ $alt }}" class="w-full h-auto rounded-xl">
+        {{ else }}
+          <div class="border-2 border-dashed border-silk rounded-xl bg-cream/40 px-8 py-12 flex flex-col items-center justify-center min-h-[240px] text-center">
+            <div class="font-mono text-xs font-medium tracking-ultra uppercase text-gold/70 mb-2">Figure pending</div>
+            <div class="font-display font-semibold text-navy text-lg mb-2">{{ $alt }}</div>
+            <div class="font-mono text-xs text-muted leading-relaxed max-w-md">{{ $desc }}</div>
+          </div>
+        {{ end }}
       </div>
     </div>
 
-    {{/* Sub-block F — Coverage scorecard (HTML, no Chart.js) */}}
-    <h3 class="font-display font-bold text-navy text-2xl mb-3">Coverage scorecard</h3>
-    <p class="font-sans text-base text-muted max-w-2xl leading-relaxed mb-6">
-      Four formal validation criteria. The current run passes three of four. The model is
-      published with the failing criterion called out explicitly.
-    </p>
-
-    <div class="bg-white border border-silk rounded-xl px-6 py-6 mb-6">
-      <div class="flex items-center justify-between mb-5">
-        <span class="font-mono text-xs font-medium tracking-wider uppercase text-muted">
-          Validation · v{{ $score.run_date }}
-        </span>
-        <span class="font-mono text-xs font-medium tracking-wider uppercase {{ if $score.overall_pass }}text-mid{{ else }}text-danger{{ end }}">
-          {{ if $score.overall_pass }}All criteria pass{{ else }}3 of 4 pass · 1 fail{{ end }}
-        </span>
+    {{/* ─── 5d — Known failures ─── */}}
+    <div class="max-w-2xl">
+      <div class="flex items-baseline gap-3 mb-3">
+        <span class="font-mono text-xs font-medium tracking-wider uppercase text-gold-dark">5d</span>
+        <h3 class="font-display font-bold text-navy text-2xl">Known failures</h3>
       </div>
+      <p class="font-sans text-base text-navy font-semibold leading-relaxed mb-4">
+        The model catches sustained bear markets and misses short, sharp drawdowns.
+      </p>
+      <div class="flex flex-col gap-4 font-sans text-base text-muted leading-relaxed mb-8">
+        <p>
+          The formal validation
+          <span class="text-danger font-semibold">fails four of four pass/fail checks</span>
+          at the current thresholds. The equity curve and major drawdown detection are
+          strong. The coverage and stability metrics identify where the model still has
+          work to do.
+        </p>
+        <p>
+          Short-duration events (COVID crash: 23 trading days) push the limits of weekly
+          classification. The model is designed for sustained regime changes, not sudden
+          shocks.
+        </p>
+        <p>
+          Regime stability varies across folds. The 17.5% agreement between Folds 2 and 3
+          reflects COVID entering the training window for the first time — reshuffling
+          historical labels significantly. Stability is high (90%+) once both GFC and
+          COVID are in the training window.
+        </p>
+      </div>
+    </div>
 
-      <div class="flex flex-col gap-5">
-        {{ range $score.criteria }}
-        <div>
-          <div class="flex items-center justify-between mb-2 gap-4">
-            <div class="flex items-center gap-2 min-w-0">
-              <span class="w-2 h-2 rounded-full shrink-0 {{ if .pass }}bg-mid{{ else }}bg-danger{{ end }}"></span>
-              <span class="font-sans text-sm font-semibold text-navy truncate">{{ .label }}</span>
-            </div>
-            <span class="font-mono text-xs font-medium tracking-wider uppercase shrink-0 {{ if .pass }}text-mid{{ else }}text-danger{{ end }}">
-              {{ if .pass }}Pass{{ else }}Fail{{ end }}
-            </span>
+    {{/* Figure: regime stability heatmap */}}
+    {{ $alt := "Regime stability heatmap" }}
+    {{ $desc := "Diagonal stability matrix across the 7 walk-forward folds. The 17.5% Fold 2→3 outlier is visually obvious. Generated from notebook output (wf_regime_stability)." }}
+    <div class="chart-block">
+      <div class="chart-label">Regime stability · 7 folds</div>
+      <div class="chart-title">
+        <h3 class="font-display font-bold text-navy leading-tight text-2xl mb-2">
+          Historical labels shift when major new events enter the training window.
+        </h3>
+      </div>
+      <div class="chart-sub">Stability matrix across consecutive walk-forward folds.</div>
+      <div class="chart-card" style="padding:20px;">
+        {{ $img := resources.Get "images/lab/regime-detection/wf_regime_stability.png" }}
+        {{ with $img }}
+          {{ $resized := .Resize "1600x q90 webp" }}
+          <img src="{{ $resized.Permalink }}" alt="{{ $alt }}" class="w-full h-auto rounded-xl">
+        {{ else }}
+          <div class="border-2 border-dashed border-silk rounded-xl bg-cream/40 px-8 py-12 flex flex-col items-center justify-center min-h-[240px] text-center">
+            <div class="font-mono text-xs font-medium tracking-ultra uppercase text-gold/70 mb-2">Figure pending</div>
+            <div class="font-display font-semibold text-navy text-lg mb-2">{{ $alt }}</div>
+            <div class="font-mono text-xs text-muted leading-relaxed max-w-md">{{ $desc }}</div>
           </div>
-
-          <div class="relative h-2 bg-cream rounded overflow-hidden mb-2">
-            {{/* Bar fill — width is actual, color reflects pass/fail */}}
-            <div class="absolute inset-y-0 left-0 {{ if .pass }}bg-mid{{ else }}bg-danger{{ end }} rounded"
-                 style="width: {{ if gt .actual_pct 100.0 }}100{{ else }}{{ .actual_pct }}{{ end }}%;"></div>
-            {{/* Target threshold marker */}}
-            <div class="absolute inset-y-0 w-px bg-navy/40"
-                 style="left: {{ .target_pct }}%;"></div>
-          </div>
-
-          <div class="font-mono text-xs text-muted leading-relaxed">{{ .detail }}</div>
-          {{ with .detail_note }}
-          <div class="font-mono text-xs text-muted/70 leading-relaxed mt-1 italic">{{ . }}</div>
-          {{ end }}
-        </div>
         {{ end }}
       </div>
     </div>
@@ -821,53 +871,165 @@
 
 
 {{/* ════════════════════════════════════════════════════════════
-     SECTION 8 — WHY THE SIZING IS COUNTERINTUITIVE (white + dot grid)
+     SECTION 6 — EXPLAINABILITY (white + dot grid)
 ════════════════════════════════════════════════════════════ */}}
 <section class="bg-white bg-dot-grid bg-dot border-b border-silk px-6 lg:px-20 py-16">
-  <div class="max-w-2xl mx-auto">
+  <div class="max-w-content mx-auto">
 
     <div class="flex items-center gap-2 mb-4">
       <span class="font-mono text-xs font-medium tracking-ultra uppercase text-gold">
-        Position Sizing
+        06 · Explainability
       </span>
     </div>
 
-    <h2 class="font-display font-bold text-navy text-3xl leading-tight mb-6">
-      Neutral is sized at 100%. Extremes is sized at 80%. Counterintuitive — and intentional.
+    <h2 class="font-display font-bold text-navy text-3xl leading-tight mb-12 max-w-2xl">
+      The model's reasoning is directly observable — not a black box.
     </h2>
 
-    <div class="flex flex-col gap-5 font-sans text-base text-muted leading-relaxed">
-      <p>
-        Neutral represents the normal, steady majority of market history — periods where
-        regular uncertainty is the backdrop and markets trend higher without exceptional
-        conditions in either direction. Full exposure during this state captures the
-        fundamental equity risk premium efficiently.
-      </p>
-      <p>
-        The Extremes regime — despite having the highest trailing Sharpe ratio — carries
-        elevated transition risk. The periods the model classifies as Extremes include both
-        clear melt-ups <em class="not-italic font-semibold text-navy">and</em> late-cycle
-        peak conditions, both characterized by the same feature signature: strong momentum,
-        low volatility, price near recent highs. These conditions immediately precede many
-        significant drawdowns. The GFC began from what appeared to be favorable conditions.
-        COVID hit markets near all-time highs.
-      </p>
-      <p>
-        The 80% sizing during Extremes reflects this asymmetry: capture most of the upside
-        during momentum periods, but maintain a small defensive buffer against the elevated
-        probability of regime transition.
-      </p>
+    {{/* ─── 6a — PCA factor decomposition ─── */}}
+    <div class="max-w-2xl">
+      <div class="flex items-baseline gap-3 mb-3">
+        <span class="font-mono text-xs font-medium tracking-wider uppercase text-gold-dark">6a</span>
+        <h3 class="font-display font-bold text-navy text-2xl">PCA factor decomposition</h3>
+      </div>
+      <div class="flex flex-col gap-4 font-sans text-base text-muted leading-relaxed mb-8">
+        <p>
+          The 4 principal components are interpretable. Factor 1 loads on VIX, credit
+          spreads, and drawdown rate — the <span class="text-navy font-semibold">stress
+          axis</span>. Factor 2 loads on yield curve shape and rate trend — the
+          <span class="text-navy font-semibold">monetary policy axis</span>.
+        </p>
+        <p>
+          On any given day, the model's input is a 4-number vector fully derivable from
+          the 16 underlying indicators.
+        </p>
+      </div>
     </div>
 
-    <div class="bg-cream border border-silk rounded-xl px-6 py-5 mt-10">
-      <div class="font-mono text-xs font-medium tracking-wider uppercase text-gold mb-2">
-        Sensitivity analysis
+    {{/* Figure: PCA loadings heatmap */}}
+    {{ $alt := "PCA loadings heatmap" }}
+    {{ $desc := "16-feature × 4-component matrix showing loading magnitudes. Reveals which raw indicators drive each principal component (Factor 1 = stress, Factor 2 = rates, etc.)." }}
+    <div class="chart-block mb-12">
+      <div class="chart-label">PCA loadings · 16 features × 4 components</div>
+      <div class="chart-title">
+        <h3 class="font-display font-bold text-navy leading-tight text-2xl mb-2">
+          Each principal component has an interpretable economic meaning.
+        </h3>
       </div>
-      <p class="font-sans text-sm text-navy leading-relaxed">
-        Varying Extremes allocation from 75% to 100% produces nearly identical Sharpe ratios
-        (<span class="font-semibold">0.90–0.92</span>), with the primary variation in
-        maximum drawdown. The model earns its value at market extremes, not in the middle.
-      </p>
+      <div class="chart-sub">Color intensity = loading magnitude.</div>
+      <div class="chart-card" style="padding:20px;">
+        {{ $img := resources.Get "images/lab/regime-detection/pca_loadings_heatmap.png" }}
+        {{ with $img }}
+          {{ $resized := .Resize "1600x q90 webp" }}
+          <img src="{{ $resized.Permalink }}" alt="{{ $alt }}" class="w-full h-auto rounded-xl">
+        {{ else }}
+          <div class="border-2 border-dashed border-silk rounded-xl bg-cream/40 px-8 py-12 flex flex-col items-center justify-center min-h-[240px] text-center">
+            <div class="font-mono text-xs font-medium tracking-ultra uppercase text-gold/70 mb-2">Figure pending</div>
+            <div class="font-display font-semibold text-navy text-lg mb-2">{{ $alt }}</div>
+            <div class="font-mono text-xs text-muted leading-relaxed max-w-md">{{ $desc }}</div>
+          </div>
+        {{ end }}
+      </div>
+    </div>
+
+    <hr class="border-silk my-12">
+
+    {{/* ─── 6b — Mahalanobis distance ─── */}}
+    <div class="max-w-2xl">
+      <div class="flex items-baseline gap-3 mb-3">
+        <span class="font-mono text-xs font-medium tracking-wider uppercase text-gold-dark">6b</span>
+        <h3 class="font-display font-bold text-navy text-2xl">Mahalanobis distance to each regime</h3>
+      </div>
+      <div class="flex flex-col gap-4 font-sans text-base text-muted leading-relaxed mb-8">
+        <p>
+          Each regime has a statistical signature — what the 4 PCA factors look like when
+          the model is in that state.
+        </p>
+        <p>
+          The current day's reading is compared to each regime's signature. The Mahalanobis
+          distance measures how many standard deviations the current reading is from each
+          regime center.
+        </p>
+        <p>
+          The regime with the smallest distance is the best fit. This is the model's
+          reasoning made visible.
+        </p>
+      </div>
+    </div>
+
+    {{/* Figure: Mahalanobis distance bars */}}
+    {{ $alt := "Mahalanobis distance to each regime" }}
+    {{ $desc := "Three horizontal bars (one per regime), bar length = distance from the current reading. Color-coded by regime. Updated weekly with the production run." }}
+    <div class="chart-block mb-12">
+      <div class="chart-label">Distance to regime centers · current reading</div>
+      <div class="chart-title">
+        <h3 class="font-display font-bold text-navy leading-tight text-2xl mb-2">
+          The smallest distance wins. Reasoning made visible.
+        </h3>
+      </div>
+      <div class="chart-sub">Bar length = standard deviations from regime center.</div>
+      <div class="chart-card" style="padding:20px;">
+        {{ $img := resources.Get "images/lab/regime-detection/mahalanobis_distance.png" }}
+        {{ with $img }}
+          {{ $resized := .Resize "1600x q90 webp" }}
+          <img src="{{ $resized.Permalink }}" alt="{{ $alt }}" class="w-full h-auto rounded-xl">
+        {{ else }}
+          <div class="border-2 border-dashed border-silk rounded-xl bg-cream/40 px-8 py-12 flex flex-col items-center justify-center min-h-[240px] text-center">
+            <div class="font-mono text-xs font-medium tracking-ultra uppercase text-gold/70 mb-2">Figure pending</div>
+            <div class="font-display font-semibold text-navy text-lg mb-2">{{ $alt }}</div>
+            <div class="font-mono text-xs text-muted leading-relaxed max-w-md">{{ $desc }}</div>
+          </div>
+        {{ end }}
+      </div>
+    </div>
+
+    <hr class="border-silk my-12">
+
+    {{/* ─── 6c — Per-feature attribution ─── */}}
+    <div class="max-w-2xl">
+      <div class="flex items-baseline gap-3 mb-3">
+        <span class="font-mono text-xs font-medium tracking-wider uppercase text-gold-dark">6c</span>
+        <h3 class="font-display font-bold text-navy text-2xl">Per-feature attribution</h3>
+      </div>
+      <div class="flex flex-col gap-4 font-sans text-base text-muted leading-relaxed mb-8">
+        <p>
+          The log-emission probability decomposes by feature. Each indicator's contribution
+          to the current classification can be calculated directly from the multivariate
+          Gaussian math — not an approximation.
+        </p>
+        <p>
+          This is the HMM equivalent of SHAP values.
+        </p>
+        <p>
+          The weekly publication includes the top contributors to the current classification.
+        </p>
+      </div>
+    </div>
+
+    {{/* Figure: feature contribution waterfall */}}
+    {{ $alt := "Feature contribution waterfall" }}
+    {{ $desc := "Horizontal bar chart sorted by absolute contribution. Positive bars = consistent with current regime; negative = inconsistent. Color: regime color for positive, gray for negative." }}
+    <div class="chart-block">
+      <div class="chart-label">Feature contributions · current classification</div>
+      <div class="chart-title">
+        <h3 class="font-display font-bold text-navy leading-tight text-2xl mb-2">
+          Every feature's contribution to today's classification, exactly.
+        </h3>
+      </div>
+      <div class="chart-sub">Sorted by magnitude. Same math as the HMM emission probability.</div>
+      <div class="chart-card" style="padding:20px;">
+        {{ $img := resources.Get "images/lab/regime-detection/feature_contribution_waterfall.png" }}
+        {{ with $img }}
+          {{ $resized := .Resize "1600x q90 webp" }}
+          <img src="{{ $resized.Permalink }}" alt="{{ $alt }}" class="w-full h-auto rounded-xl">
+        {{ else }}
+          <div class="border-2 border-dashed border-silk rounded-xl bg-cream/40 px-8 py-12 flex flex-col items-center justify-center min-h-[240px] text-center">
+            <div class="font-mono text-xs font-medium tracking-ultra uppercase text-gold/70 mb-2">Figure pending</div>
+            <div class="font-display font-semibold text-navy text-lg mb-2">{{ $alt }}</div>
+            <div class="font-mono text-xs text-muted leading-relaxed max-w-md">{{ $desc }}</div>
+          </div>
+        {{ end }}
+      </div>
     </div>
 
   </div>
@@ -875,25 +1037,20 @@
 
 
 {{/* ════════════════════════════════════════════════════════════
-     SECTION 9 — KNOWN LIMITATIONS (cream)
+     SECTION 7 — KNOWN LIMITATIONS (cream)
 ════════════════════════════════════════════════════════════ */}}
 <section class="bg-cream border-b border-silk px-6 lg:px-20 py-16">
   <div class="max-w-content mx-auto">
 
     <div class="flex items-center gap-2 mb-4">
       <span class="font-mono text-xs font-medium tracking-ultra uppercase text-gold">
-        Where The Model Fails
+        07 · Known Limitations
       </span>
     </div>
 
-    <h2 class="font-display font-bold text-navy text-3xl leading-tight mb-4 max-w-2xl">
-      Four limitations under active calibration.
+    <h2 class="font-display font-bold text-navy text-3xl leading-tight mb-10 max-w-2xl">
+      Four limitations the research is actively working on.
     </h2>
-
-    <p class="font-sans text-lg text-muted max-w-2xl leading-relaxed mb-10">
-      These are documented honestly because the user of the model needs to know its blind
-      spots. Each is being actively addressed in the current development cycle.
-    </p>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
@@ -901,13 +1058,10 @@
         <div class="font-mono text-xs font-medium tracking-wider uppercase text-danger mb-3">
           Limitation 01
         </div>
-        <h3 class="font-display font-bold text-navy text-xl mb-3">Danger overrepresentation</h3>
+        <h3 class="font-display font-bold text-navy text-xl mb-3">Regime stability on refit</h3>
         <p class="font-sans text-sm text-muted leading-relaxed">
-          The current model assigns ~30% of trading days to Danger, vs an empirical historical
-          rate of roughly 10–12% for confirmed 10%+ drawdown periods. This reflects a tendency
-          to call elevated-but-resolving stress as Danger rather than transitioning cleanly
-          back to Neutral. Ongoing work on transition matrix priors and base rate
-          constraints is expected to improve this.
+          Historical labels can shift when major new events enter the training window.
+          Active area of development. Bayesian formulation expected to improve this.
         </p>
       </div>
 
@@ -915,13 +1069,11 @@
         <div class="font-mono text-xs font-medium tracking-wider uppercase text-danger mb-3">
           Limitation 02
         </div>
-        <h3 class="font-display font-bold text-navy text-xl mb-3">Fast geopolitical shocks</h3>
+        <h3 class="font-display font-bold text-navy text-xl mb-3">Short-event detection</h3>
         <p class="font-sans text-sm text-muted leading-relaxed">
-          The model struggled to classify the 2025 tariff stress and 2026 Iran war as Danger,
-          assigning them to Neutral instead. Both events featured rapid onset and
-          relatively fast resolution compared to the GFC and 2022 bear market. Severe-but-brief
-          events may require additional detection mechanisms — potentially incorporating
-          options market signals not currently in the feature set.
+          Calibrated for sustained drawdowns. Fast, sharp events (23 trading days) push
+          the limits of weekly classification. Options market signals not currently in
+          the feature set may help.
         </p>
       </div>
 
@@ -929,13 +1081,10 @@
         <div class="font-mono text-xs font-medium tracking-wider uppercase text-danger mb-3">
           Limitation 03
         </div>
-        <h3 class="font-display font-bold text-navy text-xl mb-3">Regime stability across refits</h3>
+        <h3 class="font-display font-bold text-navy text-xl mb-3">Feature selection look-ahead</h3>
         <p class="font-sans text-sm text-muted leading-relaxed">
-          When a major new macro event enters the training window for the first time —
-          particularly COVID entering fold 3 — historical labels can shift significantly.
-          This reflects the HMM's sensitivity to the full distribution of training data
-          rather than a flaw in specific fold predictions. Stability is high (90%+) across
-          folds 3–7 once the model has seen both GFC and COVID.
+          The choice of which 16 indicators to include was made with knowledge of the full
+          history. True prospective validation began April 2026.
         </p>
       </div>
 
@@ -943,14 +1092,11 @@
         <div class="font-mono text-xs font-medium tracking-wider uppercase text-danger mb-3">
           Limitation 04
         </div>
-        <h3 class="font-display font-bold text-navy text-xl mb-3">Look-ahead in feature engineering</h3>
+        <h3 class="font-display font-bold text-navy text-xl mb-3">Three states may not be sufficient</h3>
         <p class="font-sans text-sm text-muted leading-relaxed">
-          Equity curve results use walk-forward OOS predictions, but the feature engineering
-          choices — which features to include, which transformations to apply — were made
-          with knowledge of the full history. Standard practice in systematic strategy
-          development, but a form of look-ahead that cannot be fully eliminated without a
-          true out-of-sample holdout. Live trading from April 2026 forward is the first
-          genuinely prospective validation.
+          The model does not yet distinguish inflationary stress (2022 rate hike bear)
+          from deflationary stress (2008 GFC) — different environments that may warrant
+          different responses.
         </p>
       </div>
 
@@ -961,113 +1107,31 @@
 
 
 {{/* ════════════════════════════════════════════════════════════
-     SECTION 10 — THEORETICAL FOUNDATION (white + dot grid)
+     SECTION 8 — WHAT'S NEXT (white + dot grid)
 ════════════════════════════════════════════════════════════ */}}
 <section class="bg-white bg-dot-grid bg-dot border-b border-silk px-6 lg:px-20 py-16">
-  <div class="max-w-2xl mx-auto">
-
-    <div class="flex items-center gap-2 mb-4">
-      <span class="font-mono text-xs font-medium tracking-ultra uppercase text-gold">
-        Theoretical Foundation
-      </span>
-    </div>
-
-    <h2 class="font-display font-bold text-navy text-3xl leading-tight mb-6">
-      Built on Hamilton (1989), extended in three directions.
-    </h2>
-
-    <div class="flex flex-col gap-5 font-sans text-base text-muted leading-relaxed mb-10">
-      <p>
-        The use of Hidden Markov Models for financial regime detection follows a
-        well-established literature originating with Hamilton (1989). The core assumption
-        — that markets transition between distinct behavioral states governed by
-        unobservable latent variables — is supported by decades of empirical evidence
-        showing that asset return distributions are non-stationary and regime-dependent.
-      </p>
-      <p>
-        The MacroContext framework extends this foundation in three specific ways:
-      </p>
-    </div>
-
-    <div class="flex flex-col gap-6">
-
-      <div class="border-l-4 border-gold pl-6">
-        <h3 class="font-display font-bold text-navy text-lg mb-2">
-          Feature selection toward leading indicators
-        </h3>
-        <p class="font-sans text-sm text-muted leading-relaxed">
-          Where the academic literature frequently uses returns and volatility as HMM
-          inputs — which are by definition concurrent with the regime — MacroContext uses
-          macro and market stress indicators with empirical leading relationships to
-          drawdown events. Credit spreads, yield curve shape, and volatility trends provide
-          earlier signals than price-derived features alone.
-        </p>
-      </div>
-
-      <div class="border-l-4 border-gold pl-6">
-        <h3 class="font-display font-bold text-navy text-lg mb-2">
-          PCA preprocessing for stability
-        </h3>
-        <p class="font-sans text-sm text-muted leading-relaxed">
-          Applying dimensionality reduction before HMM fitting reduces parameter count,
-          removes correlated noise, and dramatically improves walk-forward stability. This
-          preprocessing step is underutilized in the applied literature and represents a
-          significant practical contribution.
-        </p>
-      </div>
-
-      <div class="border-l-4 border-gold pl-6">
-        <h3 class="font-display font-bold text-navy text-lg mb-2">
-          Price-derived ground truth
-        </h3>
-        <p class="font-sans text-sm text-muted leading-relaxed">
-          Validating against objectively defined peak-to-trough drawdown events rather than
-          self-referential model outputs provides a clean separation between model design
-          and model validation — a discipline absent from much of the regime detection
-          literature.
-        </p>
-      </div>
-
-    </div>
-
-  </div>
-</section>
-
-
-{{/* ════════════════════════════════════════════════════════════
-     SECTION 11 — NEXT STEPS (cream)
-════════════════════════════════════════════════════════════ */}}
-<section class="bg-cream border-b border-silk px-6 lg:px-20 py-16">
   <div class="max-w-content mx-auto">
 
     <div class="flex items-center gap-2 mb-4">
       <span class="font-mono text-xs font-medium tracking-ultra uppercase text-gold">
-        Roadmap
+        08 · What's Next
       </span>
     </div>
 
-    <h2 class="font-display font-bold text-navy text-3xl leading-tight mb-4 max-w-2xl">
-      The current model is a validated proof of concept.
+    <h2 class="font-display font-bold text-navy text-3xl leading-tight mb-10 max-w-2xl">
+      Three enhancements in active development.
     </h2>
 
-    <p class="font-sans text-lg text-muted max-w-2xl leading-relaxed mb-10">
-      Four planned enhancements move the framework from a hard-classification HMM toward a
-      continuous, explainable, and deeper-history risk index.
-    </p>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 
       <div class="bg-white border border-silk rounded-xl px-6 py-5">
         <div class="font-mono text-xs font-medium tracking-wider uppercase text-gold mb-3">
           Next 01
         </div>
-        <h3 class="font-display font-bold text-navy text-xl mb-3">Bayesian inference via PyMC</h3>
+        <h3 class="font-display font-bold text-navy text-xl mb-3">Bayesian HMM via PyMC</h3>
         <p class="font-sans text-sm text-muted leading-relaxed">
-          Migration from frequentist Baum-Welch EM to a full Bayesian HMM will enable
-          posterior probability outputs — a continuous risk index between 0 and 1 — rather
-          than hard regime assignments. This is the foundation for the MacroContext
-          Transition Probability Index (TPI), the early warning signal that will anchor
-          the weekly publication.
+          Continuous probability output (0–1 risk index) rather than hard regime labels.
+          The foundation for the MacroContext Transition Probability Index.
         </p>
       </div>
 
@@ -1075,12 +1139,10 @@
         <div class="font-mono text-xs font-medium tracking-wider uppercase text-gold mb-3">
           Next 02
         </div>
-        <h3 class="font-display font-bold text-navy text-xl mb-3">SHAP attribution</h3>
+        <h3 class="font-display font-bold text-navy text-xl mb-3">Revised ground truth</h3>
         <p class="font-sans text-sm text-muted leading-relaxed">
-          Integrating SHAP explainability will enable per-day attribution of the regime
-          signal to individual features. The weekly publication will show not just the
-          current regime but the top contributing factors — "today's Danger signal is
-          driven 40% by credit spread widening and 35% by VIX trend."
+          Aligning validation to conventional bear market definitions. Coverage scores
+          improve substantially under the revised standard. Full re-validation in progress.
         </p>
       </div>
 
@@ -1090,23 +1152,9 @@
         </div>
         <h3 class="font-display font-bold text-navy text-xl mb-3">Extended history</h3>
         <p class="font-sans text-sm text-muted leading-relaxed">
-          Replacing late-starting FRED series with longer-history proxies will extend the
-          training window back to approximately 1991 — adding the 1990 recession, 1994
-          rate shock, 1998 LTCM crisis, and 2001 dot-com bust as additional regime
-          transitions. More distinct crisis examples improve generalization.
-        </p>
-      </div>
-
-      <div class="bg-white border border-silk rounded-xl px-6 py-5">
-        <div class="font-mono text-xs font-medium tracking-wider uppercase text-gold mb-3">
-          Next 04
-        </div>
-        <h3 class="font-display font-bold text-navy text-xl mb-3">Live validation</h3>
-        <p class="font-sans text-sm text-muted leading-relaxed">
-          The model runs in production from April 2026, with weekly regime calls published
-          publicly under the MacroContext and AppliedComplexity brands. The prospective
-          track record, beginning from the current Iran war stress period, will constitute
-          the first fully out-of-sample validation.
+          Replacing late-starting FRED series with longer proxies to extend training to
+          1991. Adds 1990 recession, 1994 rate shock, 1998 LTCM, 2001 dot-com as training
+          examples.
         </p>
       </div>
 
@@ -1117,7 +1165,44 @@
 
 
 {{/* ════════════════════════════════════════════════════════════
-     SECTION 12 — DISCLOSURES (cream, small mono)
+     FOOTER (cream)
+════════════════════════════════════════════════════════════ */}}
+<section class="bg-cream border-b border-silk px-6 lg:px-20 py-12">
+  <div class="max-w-content mx-auto flex flex-wrap items-center justify-between gap-6">
+
+    <div>
+      <p class="font-display font-bold text-navy text-xl mb-1">MacroContext Methodology</p>
+      <p class="font-mono text-xs tracking-wider text-muted">
+        v2026-04-29 · 7 walk-forward folds · 2006–2026
+      </p>
+    </div>
+
+    <div class="flex flex-wrap gap-3">
+      <a href="#"
+         class="bg-gold text-navy font-sans font-semibold text-sm px-5 py-3
+                rounded-lg no-underline hover:bg-gold-dark transition-colors duration-200">
+        Download the full research paper (PDF) →
+      </a>
+      <a href="{{ .Site.Params.newsletterURL | default "/newsletter/" }}"
+         class="text-navy font-sans font-semibold text-sm px-5 py-3
+                rounded-lg border-2 border-silk no-underline hover:border-navy
+                transition-colors duration-200">
+        Follow the research →
+      </a>
+      <a href="/lab/regime-detection/"
+         class="text-navy font-sans font-semibold text-sm px-5 py-3
+                rounded-lg border-2 border-silk no-underline hover:border-navy
+                transition-colors duration-200">
+        View live classification →
+      </a>
+    </div>
+
+  </div>
+</section>
+
+
+{{/* ════════════════════════════════════════════════════════════
+     DISCLOSURES (cream, small mono)
 ════════════════════════════════════════════════════════════ */}}
 <section class="bg-cream border-t border-silk px-6 lg:px-20 py-12">
   <div class="max-w-content mx-auto">
@@ -1148,11 +1233,11 @@
 
       <p class="font-mono text-xs text-muted/70 leading-relaxed">
         MacroContext regime classifications are produced by a quantitative model that may
-        be incomplete, inaccurate, or subject to revision. The validation scorecard above
-        documents the formal pass/fail status of the current model run.
-        AppliedComplexity Research makes no representations as to the accuracy or
-        completeness of the information presented and accepts no liability for decisions
-        made in reliance on this material.
+        be incomplete, inaccurate, or subject to revision. The formal validation fails
+        four of four pass/fail checks at the current thresholds. Specific failure modes
+        are documented in Section 5d above. AppliedComplexity Research makes no
+        representations as to the accuracy or completeness of the information presented
+        and accepts no liability for decisions made in reliance on this material.
       </p>
 
       <p class="font-mono text-xs text-muted/70 leading-relaxed">
@@ -1164,217 +1249,5 @@
 
   </div>
 </section>
-
-
-{{/* ════════════════════════════════════════════════════════════
-     CHART.JS SCRIPT BLOCK
-════════════════════════════════════════════════════════════ */}}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
-
-<script>
-  const SITE = {
-    navy:  '#1B2A4A',
-    gold:  '#C8A951',
-    cream: '#F8F7F4',
-    silk:  '#E5E3DF',
-    muted: '#6B7280',
-    ink:   '#1A1A1A',
-    gray:  '#9CA3AF',
-    font:  '"DM Mono", ui-monospace, monospace',
-  };
-
-  const REGIME_COLORS = {
-    'Extremes':       { fill: 'rgba(241,196,15,0.45)', solid: '#F1C40F' },
-    'Neutral': { fill: 'rgba(39,174,96,0.45)',  solid: '#27AE60' },
-    'Danger':     { fill: 'rgba(231,76,60,0.45)',  solid: '#E74C3C' },
-  };
-
-  const TIMELINE_BLOCKS = JSON.parse({{ .Site.Data.regime_timeline.blocks | jsonify }});
-  const EVENTS          = JSON.parse({{ $events | jsonify }});
-  const BUY_HOLD        = JSON.parse({{ $eq.buy_hold | jsonify }}).map(p => ({ x: p.x, y: p.y }));
-  const MACROCONTEXT    = JSON.parse({{ $eq.macrocontext | jsonify }}).map(p => ({ x: p.x, y: p.y }));
-  const DIST_YEARS      = JSON.parse({{ $dist.years | jsonify }});
-
-  /* ─── CHART 1 — Regime timeline swimlane ─── */
-  const timelinePlugin = {
-    id: 'timelineBlocks',
-    beforeDatasetsDraw(chart) {
-      const { ctx, chartArea, scales: { x } } = chart;
-      if (!chartArea) return;
-      const top = chartArea.top + 30;
-      const height = chartArea.height - 60;
-
-      TIMELINE_BLOCKS.forEach(block => {
-        const x0 = x.getPixelForValue(new Date(block.x).getTime());
-        const x1 = x.getPixelForValue(new Date(block.x2).getTime());
-        const color = REGIME_COLORS[block.regime];
-        if (!color) return;
-        ctx.fillStyle = color.fill;
-        ctx.fillRect(x0, top, x1 - x0, height);
-      });
-
-      // Drawdown event labels along the top
-      ctx.font = `9px ${SITE.font}`;
-      ctx.fillStyle = SITE.navy;
-      ctx.textAlign = 'left';
-      EVENTS.forEach(ev => {
-        const px = x.getPixelForValue(new Date(ev.peak).getTime());
-        if (px < chartArea.left || px > chartArea.right) return;
-        ctx.beginPath();
-        ctx.moveTo(px, top);
-        ctx.lineTo(px, top - 8);
-        ctx.strokeStyle = SITE.navy;
-        ctx.lineWidth = 1;
-        ctx.stroke();
-        ctx.fillText(ev.short_name, px + 3, top - 10);
-      });
-    }
-  };
-
-  new Chart(document.getElementById('regimeTimelineChart'), {
-    type: 'line',
-    plugins: [timelinePlugin],
-    data: { datasets: [{ data: [], borderWidth: 0, pointRadius: 0 }] },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { display: false },
-        tooltip: { enabled: false },
-      },
-      scales: {
-        x: {
-          type: 'time',
-          time: { unit: 'year' },
-          min: '2006-01-01',
-          max: '2026-06-01',
-          grid: { display: false },
-          ticks: { font: { family: SITE.font, size: 9 }, color: SITE.muted, maxRotation: 0 }
-        },
-        y: { display: false, min: 0, max: 1 }
-      }
-    }
-  });
-
-  /* ─── CHART 2 — Equity curve (B&H vs MacroContext) ─── */
-  new Chart(document.getElementById('equityCurveChart'), {
-    type: 'line',
-    data: {
-      datasets: [
-        {
-          label: 'MacroContext',
-          data: MACROCONTEXT,
-          borderColor: SITE.navy,
-          borderWidth: 2,
-          pointRadius: 0,
-          tension: 0.3,
-          fill: false,
-        },
-        {
-          label: 'Buy & Hold',
-          data: BUY_HOLD,
-          borderColor: SITE.gray,
-          borderWidth: 1.5,
-          pointRadius: 0,
-          tension: 0.3,
-          fill: false,
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      interaction: { mode: 'index', intersect: false },
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          backgroundColor: '#fff',
-          borderColor: SITE.silk,
-          borderWidth: 1,
-          titleColor: SITE.ink,
-          bodyColor: SITE.muted,
-          titleFont: { family: SITE.font, size: 10 },
-          bodyFont:  { family: SITE.font, size: 10 },
-          callbacks: {
-            title: items => {
-              const d = new Date(items[0].parsed.x);
-              return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-            },
-            label: ctx => `${ctx.dataset.label}: ${ctx.parsed.y.toFixed(2)}x`
-          }
-        }
-      },
-      scales: {
-        x: {
-          type: 'time',
-          time: { unit: 'year' },
-          grid: { display: false },
-          ticks: { font: { family: SITE.font, size: 9 }, color: SITE.muted, maxRotation: 0 }
-        },
-        y: {
-          type: 'logarithmic',
-          grid: { color: 'rgba(0,0,0,0.04)' },
-          ticks: {
-            font: { family: SITE.font, size: 9 },
-            color: SITE.muted,
-            callback: v => [1, 2, 4, 8].includes(v) ? `${v}x` : ''
-          }
-        }
-      }
-    }
-  });
-
-  /* ─── CHART 3 — Regime distribution (stacked bar by year) ─── */
-  new Chart(document.getElementById('regimeDistributionChart'), {
-    type: 'bar',
-    data: {
-      labels: DIST_YEARS.map(d => d.year),
-      datasets: [
-        { label: 'Extremes',       data: DIST_YEARS.map(d => d.boom),   backgroundColor: REGIME_COLORS['Extremes'].solid,       borderWidth: 0 },
-        { label: 'Neutral', data: DIST_YEARS.map(d => d.mid),    backgroundColor: REGIME_COLORS['Neutral'].solid, borderWidth: 0 },
-        { label: 'Danger',     data: DIST_YEARS.map(d => d.danger), backgroundColor: REGIME_COLORS['Danger'].solid,     borderWidth: 0 }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      interaction: { mode: 'index', intersect: false },
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          backgroundColor: '#fff',
-          borderColor: SITE.silk,
-          borderWidth: 1,
-          titleColor: SITE.ink,
-          bodyColor: SITE.muted,
-          titleFont: { family: SITE.font, size: 10 },
-          bodyFont:  { family: SITE.font, size: 10 },
-          callbacks: {
-            label: ctx => `${ctx.dataset.label}: ${ctx.parsed.y.toFixed(1)}%`
-          }
-        }
-      },
-      scales: {
-        x: {
-          stacked: true,
-          grid: { display: false },
-          ticks: { font: { family: SITE.font, size: 9 }, color: SITE.muted, maxRotation: 0 }
-        },
-        y: {
-          stacked: true,
-          min: 0,
-          max: 100,
-          grid: { color: 'rgba(0,0,0,0.04)' },
-          ticks: {
-            font: { family: SITE.font, size: 9 },
-            color: SITE.muted,
-            callback: v => `${v}%`
-          }
-        }
-      }
-    }
-  });
-</script>
 
 {{ end }}

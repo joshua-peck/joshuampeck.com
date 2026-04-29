@@ -1,0 +1,42 @@
+# Comparison of candidate modeling approaches considered for regime detection.
+# Used by Section 2 — The Options.
+#
+# `selected: true` flags the chosen approach (HMM) for highlight styling.
+# Static content — does not need notebook regeneration.
+
+approaches:
+  - name: "Threshold rules"
+    temporal_memory: "No"
+    multivariate: "No"
+    interpretable: "Yes"
+    data_req: "None"
+    note: "Single-indicator thresholds (VIX > 30) are simple and interpretable. They fail because regimes are multivariate — no single indicator reliably discriminates environments across 20 years."
+
+  - name: "Regime-switching regression"
+    temporal_memory: "Yes"
+    multivariate: "Limited"
+    interpretable: "Yes"
+    data_req: "Low"
+    note: "Hamilton (1989). The classical econometric approach. Well-studied two-state model. Typically applied to returns directly, which limits early detection. Binary — no distinction between stressed and neutral."
+
+  - name: "Clustering (k-means, GMM)"
+    temporal_memory: "No"
+    multivariate: "Yes"
+    interpretable: "Partial"
+    data_req: "Low"
+    note: "Unsupervised, no temporal structure. Treats each day as independent. Markets have memory — regimes persist for weeks to months — and clustering ignores this entirely."
+
+  - name: "Hidden Markov Model"
+    temporal_memory: "Yes"
+    multivariate: "Yes"
+    interpretable: "Yes"
+    data_req: "Low"
+    note: "Designed for latent-state time series. Encodes persistence directly in the transition matrix. Principled probabilistic framework. Standard tool for this class of problem."
+    selected: true
+
+  - name: "Deep learning (LSTM, Transformer)"
+    temporal_memory: "Yes"
+    multivariate: "Yes"
+    interpretable: "No"
+    data_req: "High"
+    note: "Powerful but requires far more data than a 20-year daily history provides. Black-box by nature — difficult to explain to clients or regulators. High overfitting risk with small samples."

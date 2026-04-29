@@ -1,0 +1,32 @@
+# 16 input features grouped by category.
+# Used by Section 4a — Feature selection.
+# Static content — does not need notebook regeneration.
+
+groups:
+  - category: "Equity market"
+    features:
+      - { code: "SPX",                description: "Index level — primary variable being classified" }
+      - { code: "SPX_from_52w_high",  description: "Distance from 52-week high — drawdown pressure" }
+      - { code: "SPX_200d_ma_spread", description: "Trend strength relative to long-run average" }
+      - { code: "VIXCLS",             description: "Implied volatility — fear gauge" }
+      - { code: "VIX_trend",          description: "Direction of volatility change" }
+
+  - category: "Credit"
+    features:
+      - { code: "BAA10Y",             description: "Corporate credit spread — stress indicator" }
+      - { code: "BAA10Y_trend",       description: "Direction of credit spread movement" }
+
+  - category: "Rates"
+    features:
+      - { code: "DGS10",              description: "10-year Treasury yield" }
+      - { code: "DTB3",               description: "3-month T-bill rate" }
+      - { code: "T10Y2Y",             description: "Yield curve slope (inversion signal)" }
+      - { code: "T5YIE",              description: "5-year inflation expectations" }
+
+  - category: "Macro"
+    features:
+      - { code: "DTWEXBGS",           description: "Dollar index — global risk appetite" }
+      - { code: "DCOILWTICO",         description: "Oil price — growth proxy" }
+      - { code: "ICSA",               description: "Initial jobless claims — earliest labor signal" }
+      - { code: "MANEMP",             description: "Manufacturing employment" }
+      - { code: "PERMIT",             description: "Building permits — leading economic activity" }

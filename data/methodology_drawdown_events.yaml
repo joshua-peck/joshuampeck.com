@@ -1,5 +1,10 @@
-# Objectively defined S&P 500 drawdown events: 10%+ peak-to-trough,
-# sustained for >20 trading days. Ground truth for model validation.
+# Revised ground truth: conventional bear-market definition.
+# >= 20% peak-to-trough OR sustained drawdown over 2 months.
+# 4 events under the revised standard.
+#
+# STUB DATA — replace with notebook output.
+
+ground_truth_definition: ">= 20% peak-to-trough OR sustained drawdown over 2 months"
 
 events:
   - name: "Global Financial Crisis"
@@ -7,52 +12,29 @@ events:
     peak: "2007-10-09"
     trough: "2009-03-09"
     drawdown_pct: -56.8
-
-  - name: "European Debt Crisis"
-    short_name: "Eurozone"
-    peak: "2010-04-23"
-    trough: "2010-07-02"
-    drawdown_pct: -16.0
-
-  - name: "US Debt Downgrade"
-    short_name: "Downgrade"
-    peak: "2011-04-29"
-    trough: "2011-10-03"
-    drawdown_pct: -19.4
-
-  - name: "China / Oil Selloff"
-    short_name: "China/Oil"
-    peak: "2015-05-21"
-    trough: "2016-02-11"
-    drawdown_pct: -14.2
-
-  - name: "Q4 QT / Trade War"
-    short_name: "QT/Trade"
-    peak: "2018-09-20"
-    trough: "2018-12-24"
-    drawdown_pct: -19.8
+    classification: "Danger ✓"
+    classified_pass: true
 
   - name: "COVID Crash"
     short_name: "COVID"
     peak: "2020-02-19"
     trough: "2020-03-23"
     drawdown_pct: -33.9
+    classification: "Danger ✓"
+    classified_pass: true
 
   - name: "Rate Hike Bear Market"
     short_name: "Rate Hike"
     peak: "2022-01-03"
     trough: "2022-10-12"
     drawdown_pct: -25.4
+    classification: "Danger ✓"
+    classified_pass: true
 
   - name: "Tariff Stress"
     short_name: "Tariff"
     peak: "2025-02-19"
     trough: "2025-04-08"
     drawdown_pct: -18.9
-
-  - name: "Iran War"
-    short_name: "Iran"
-    peak: "2026-02-28"
-    trough: null
-    drawdown_pct: -10.5
-    ongoing: true
+    classification: "Partial"
+    classified_pass: false
