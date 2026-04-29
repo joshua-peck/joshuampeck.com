@@ -10,9 +10,9 @@ module.exports = {
     // Regime section — classes set dynamically via data/regime.yaml
     // Danger
     'border-danger', 'bg-danger/10', 'border-danger/30', 'bg-danger', 'text-danger',
-    // Boom
-    'border-boom',   'bg-boom/10',   'border-boom/30',   'bg-boom',   'text-boom',
-    // Mid-Market
+    // Extremes (boom)
+    'border-extremes',   'bg-extremes/10',   'border-extremes/30',   'bg-extremes',   'text-extremes',
+    // Neutral (mid)
     'border-mid', 'bg-mid/10', 'border-mid/30', 'bg-mid', 'text-mid',
   ],
 

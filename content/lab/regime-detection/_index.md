@@ -5,13 +5,13 @@ eyebrow:     "MacroContext · Lab"
 layout:      "regime-detection"
 ---
 
-MacroContext is a quantitative framework that classifies every trading day into one of three macro regimes — Boom, Mid-Market, or Danger — using 16 macro and market stress indicators. By systematically reducing equity exposure during confirmed stress periods, the framework has historically produced nearly double the Sharpe ratio with 38% less volatility than buy-and-hold.
+MacroContext is a quantitative framework that classifies every trading day into one of three macro regimes — Extremes, Neutral, or Danger — using 16 macro and market stress indicators. By systematically reducing equity exposure during confirmed stress periods, the framework has historically produced nearly double the Sharpe ratio with 38% less volatility than buy-and-hold.
 
 ## The three regimes
 
-**Boom** — Strong directional momentum with compressing volatility. SPX near recent highs, VIX low and falling, credit spreads tight. Historically ~23% of trading days. 1.34 Sharpe on forward 21-day returns.
+**Extremes** — Strong directional momentum with compressing volatility. SPX near recent highs, VIX low and falling, credit spreads tight. Historically ~23% of trading days. 1.34 Sharpe on forward 21-day returns.
 
-**Mid-Market** — Normal market conditions. The baseline state that describes the unremarkable majority of market history. Historically ~47% of trading days. 0.50 Sharpe.
+**Neutral** — Normal market conditions. The baseline state that describes the unremarkable majority of market history. Historically ~47% of trading days. 0.50 Sharpe.
 
 **Danger** — Active drawdown conditions. Multiple stress signals aligned simultaneously. Historically ~30% of trading days in the current model (a known overestimate under active calibration). 0.30 Sharpe.
 
@@ -28,7 +28,7 @@ The model runs in four steps. First, 16 correlated features are compressed into 
 | Sharpe Ratio | 0.51 | 0.92 |
 | Max Drawdown | -56.8% | -33.8% |
 
-Walk-forward out-of-sample results, 2006–2026. Position sizing: Boom 80%, Mid-Market 100%, Danger 25%.
+Walk-forward out-of-sample results, 2006–2026. Position sizing: Extremes 80%, Neutral 100%, Danger 25%.
 
 ## Known limitations
 

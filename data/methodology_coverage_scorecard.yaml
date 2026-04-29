@@ -7,8 +7,8 @@ overall_pass: false
 
 criteria:
   - id: sharpe_ordering
-    label: "Mid-Market Sharpe materially exceeds Danger"
-    detail: "Mid-Market 0.52 vs Danger 0.30 — gap of 0.22"
+    label: "Neutral Sharpe materially exceeds Danger"
+    detail: "Neutral 0.52 vs Danger 0.30 — gap of 0.22"
     actual_pct: 100
     target_pct: 100
     pass: true

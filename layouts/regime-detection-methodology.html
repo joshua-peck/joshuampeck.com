@@ -61,7 +61,7 @@
     </div>
 
     <p class="font-sans text-lg text-muted max-w-2xl leading-relaxed mb-8">
-      Walk-forward out-of-sample, 2006–2026. Position sizing: Boom 80%, Mid-Market 100%, Danger 25%.
+      Walk-forward out-of-sample, 2006–2026. Position sizing: Extremes 80%, Neutral 100%, Danger 25%.
       All four metrics improve simultaneously — the strongest evidence for the model's validity.
     </p>
 
@@ -194,8 +194,8 @@
     </h2>
 
     <p class="font-sans text-lg text-muted max-w-2xl leading-relaxed mb-10">
-      The return ordering is monotonic and economically sensible: Boom produces the best
-      risk-adjusted returns, Mid-Market is solidly positive, Danger produces the weakest.
+      The return ordering is monotonic and economically sensible: The Extremes regime produces the best
+      risk-adjusted returns, Neutral is solidly positive, Danger produces the weakest.
       This ordering is data-derived, not imposed — it emerges from unsupervised learning
       of feature structure.
     </p>
@@ -208,7 +208,7 @@
 
           <div class="flex items-center gap-2 mb-4">
             <span class="w-2.5 h-2.5 rounded-full bg-boom shrink-0"></span>
-            <span class="font-mono text-lg font-medium tracking-ultra uppercase text-boom">Boom</span>
+            <span class="font-mono text-lg font-medium tracking-ultra uppercase text-boom">Extremes</span>
           </div>
 
           <p class="font-sans text-sm text-muted leading-relaxed mb-6">
@@ -249,7 +249,7 @@
 
           <div class="flex items-center gap-2 mb-4">
             <span class="w-2.5 h-2.5 rounded-full bg-mid shrink-0"></span>
-            <span class="font-mono text-lg font-medium tracking-ultra uppercase text-mid">Mid-Market</span>
+            <span class="font-mono text-lg font-medium tracking-ultra uppercase text-mid">Neutral</span>
           </div>
 
           <p class="font-sans text-sm text-muted leading-relaxed mb-6">
@@ -317,7 +317,7 @@
           </div>
 
           <p class="font-sans text-xs text-muted leading-relaxed mt-5 pt-5 border-t border-silk italic">
-            Same average return as Mid-Market. Twice the downside risk. Currently
+            Same average return as Neutral. Twice the downside risk. Currently
             overrepresented at 30% of days vs a 10–12% empirical base rate.
           </p>
         </div>
@@ -327,7 +327,7 @@
 
     <div class="bg-cream border border-silk rounded-xl px-6 py-5">
       <p class="font-sans text-sm text-navy leading-relaxed max-w-2xl">
-        The mean return in Danger is nearly identical to Mid-Market. The Sharpe ratio is
+        The mean return in Danger is nearly identical to Neutral. The Sharpe ratio is
         not. That gap — <span class="font-semibold">0.30 versus 0.50</span> — confirmed
         out-of-sample across seven walk-forward folds, is the primary evidence the model
         is detecting real structure rather than fitting noise.
@@ -521,8 +521,8 @@
             elevated, credit spreads are wide, and SPX is below trend are labeled
             <span class="text-danger font-semibold">Danger</span>. States where momentum
             is strong and volatility is low are labeled
-            <span class="text-boom font-semibold">Boom</span>. The middle state becomes
-            <span class="text-mid font-semibold">Mid-Market</span>.
+            <span class="text-boom font-semibold">Extremes</span>. The middle state becomes
+            <span class="text-mid font-semibold">Neutral</span>.
           </p>
         </div>
       </div>
@@ -619,13 +619,13 @@
       </div>
       <div class="chart-card" style="padding:20px 20px 14px;">
         <div class="eq-legend" style="margin-bottom:12px;">
-          <span class="eq-leg"><span class="eq-box" style="background:rgba(243,156,18,.4)"></span> Boom</span>
-          <span class="eq-leg"><span class="eq-box" style="background:rgba(39,174,96,.4)"></span> Mid-Market</span>
+          <span class="eq-leg"><span class="eq-box" style="background:rgba(243,156,18,.4)"></span> Extremes</span>
+          <span class="eq-leg"><span class="eq-box" style="background:rgba(39,174,96,.4)"></span> Neutral</span>
           <span class="eq-leg"><span class="eq-box" style="background:rgba(231,76,60,.4)"></span> Danger</span>
         </div>
         <div class="w-full rounded-xl overflow-hidden">
           <canvas id="regimeTimelineChart" role="img"
-                  aria-label="Regime timeline showing Boom, Mid-Market, and Danger spans from 2006 to 2026"
+                  aria-label="Regime timeline showing Extremes, Neutral, and Danger spans from 2006 to 2026"
                   height="180">
             Regime timeline 2006–2026.
           </canvas>
@@ -651,13 +651,13 @@
         </thead>
         <tbody class="font-sans text-sm">
           <tr class="border-b border-silk">
-            <td class="px-6 py-3"><span class="inline-flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-boom"></span><span class="text-boom font-semibold">Boom</span></span></td>
+            <td class="px-6 py-3"><span class="inline-flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-boom"></span><span class="text-boom font-semibold">Extremes</span></span></td>
             <td class="px-6 py-3 font-mono text-boom text-right">+1.78%</td>
             <td class="px-6 py-3 font-mono font-semibold text-navy text-right">1.34</td>
             <td class="px-6 py-3 font-mono text-muted text-right">1,142</td>
           </tr>
           <tr class="border-b border-silk">
-            <td class="px-6 py-3"><span class="inline-flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-mid"></span><span class="text-mid font-semibold">Mid-Market</span></span></td>
+            <td class="px-6 py-3"><span class="inline-flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-mid"></span><span class="text-mid font-semibold">Neutral</span></span></td>
             <td class="px-6 py-3 font-mono text-mid text-right">+0.53%</td>
             <td class="px-6 py-3 font-mono font-semibold text-navy text-right">0.50</td>
             <td class="px-6 py-3 font-mono text-muted text-right">2,334</td>
@@ -689,7 +689,7 @@
         </h3>
       </div>
       <div class="chart-sub">
-        Position sizing: Boom 80%, Mid-Market 100%, Danger 25%. Both curves normalized to 1.000 at start.
+        Position sizing: Extremes 80%, Neutral 100%, Danger 25%. Both curves normalized to 1.000 at start.
       </div>
       <div class="chart-card" style="padding:20px 20px 14px;">
         <div class="eq-legend" style="margin-bottom:12px;">
@@ -750,12 +750,12 @@
         </h3>
       </div>
       <div class="chart-sub">
-        Historical average: Boom {{ $dist.average.boom }}% · Mid-Market {{ $dist.average.mid }}% · Danger {{ $dist.average.danger }}%.
+        Historical average: Extremes {{ $dist.average.boom }}% · Neutral {{ $dist.average.mid }}% · Danger {{ $dist.average.danger }}%.
       </div>
       <div class="chart-card" style="padding:20px 20px 14px;">
         <div class="eq-legend" style="margin-bottom:12px;">
-          <span class="eq-leg"><span class="eq-box" style="background:#F1C40F;"></span> Boom</span>
-          <span class="eq-leg"><span class="eq-box" style="background:#27AE60;"></span> Mid-Market</span>
+          <span class="eq-leg"><span class="eq-box" style="background:#F1C40F;"></span> Extremes</span>
+          <span class="eq-leg"><span class="eq-box" style="background:#27AE60;"></span> Neutral</span>
           <span class="eq-leg"><span class="eq-box" style="background:#E74C3C;"></span> Danger</span>
         </div>
         <div class="w-full rounded-xl overflow-hidden">
@@ -833,19 +833,19 @@
     </div>
 
     <h2 class="font-display font-bold text-navy text-3xl leading-tight mb-6">
-      Mid-Market gets 100%. Boom gets 80%. Counterintuitive — and intentional.
+      Neutral is sized at 100%. Extremes is sized at 80%. Counterintuitive — and intentional.
     </h2>
 
     <div class="flex flex-col gap-5 font-sans text-base text-muted leading-relaxed">
       <p>
-        Mid-Market represents the normal, steady majority of market history — periods where
+        Neutral represents the normal, steady majority of market history — periods where
         regular uncertainty is the backdrop and markets trend higher without exceptional
         conditions in either direction. Full exposure during this state captures the
         fundamental equity risk premium efficiently.
       </p>
       <p>
-        The Boom regime — despite having the highest trailing Sharpe ratio — carries
-        elevated transition risk. The periods the model classifies as Boom include both
+        The Extremes regime — despite having the highest trailing Sharpe ratio — carries
+        elevated transition risk. The periods the model classifies as Extremes include both
         clear melt-ups <em class="not-italic font-semibold text-navy">and</em> late-cycle
         peak conditions, both characterized by the same feature signature: strong momentum,
         low volatility, price near recent highs. These conditions immediately precede many
@@ -853,7 +853,7 @@
         COVID hit markets near all-time highs.
       </p>
       <p>
-        The 80% sizing during Boom reflects this asymmetry: capture most of the upside
+        The 80% sizing during Extremes reflects this asymmetry: capture most of the upside
         during momentum periods, but maintain a small defensive buffer against the elevated
         probability of regime transition.
       </p>
@@ -864,9 +864,9 @@
         Sensitivity analysis
       </div>
       <p class="font-sans text-sm text-navy leading-relaxed">
-        Sizing Boom anywhere from 75% to 100% produces nearly identical Sharpe ratios
+        Varying Extremes allocation from 75% to 100% produces nearly identical Sharpe ratios
         (<span class="font-semibold">0.90–0.92</span>), with the primary variation in
-        maximum drawdown. The model earns its value at the extremes, not in the middle.
+        maximum drawdown. The model earns its value at market extremes, not in the middle.
       </p>
     </div>
 
@@ -906,7 +906,7 @@
           The current model assigns ~30% of trading days to Danger, vs an empirical historical
           rate of roughly 10–12% for confirmed 10%+ drawdown periods. This reflects a tendency
           to call elevated-but-resolving stress as Danger rather than transitioning cleanly
-          back to Mid-Market. Ongoing work on transition matrix priors and base rate
+          back to Neutral. Ongoing work on transition matrix priors and base rate
           constraints is expected to improve this.
         </p>
       </div>
@@ -918,7 +918,7 @@
         <h3 class="font-display font-bold text-navy text-xl mb-3">Fast geopolitical shocks</h3>
         <p class="font-sans text-sm text-muted leading-relaxed">
           The model struggled to classify the 2025 tariff stress and 2026 Iran war as Danger,
-          assigning them to Mid-Market instead. Both events featured rapid onset and
+          assigning them to Neutral instead. Both events featured rapid onset and
           relatively fast resolution compared to the GFC and 2022 bear market. Severe-but-brief
           events may require additional detection mechanisms — potentially incorporating
           options market signals not currently in the feature set.
@@ -1185,8 +1185,8 @@
   };
 
   const REGIME_COLORS = {
-    'Boom':       { fill: 'rgba(241,196,15,0.45)', solid: '#F1C40F' },
-    'Mid-Market': { fill: 'rgba(39,174,96,0.45)',  solid: '#27AE60' },
+    'Extremes':       { fill: 'rgba(241,196,15,0.45)', solid: '#F1C40F' },
+    'Neutral': { fill: 'rgba(39,174,96,0.45)',  solid: '#27AE60' },
     'Danger':     { fill: 'rgba(231,76,60,0.45)',  solid: '#E74C3C' },
   };
 
@@ -1331,8 +1331,8 @@
     data: {
       labels: DIST_YEARS.map(d => d.year),
       datasets: [
-        { label: 'Boom',       data: DIST_YEARS.map(d => d.boom),   backgroundColor: REGIME_COLORS['Boom'].solid,       borderWidth: 0 },
-        { label: 'Mid-Market', data: DIST_YEARS.map(d => d.mid),    backgroundColor: REGIME_COLORS['Mid-Market'].solid, borderWidth: 0 },
+        { label: 'Extremes',       data: DIST_YEARS.map(d => d.boom),   backgroundColor: REGIME_COLORS['Extremes'].solid,       borderWidth: 0 },
+        { label: 'Neutral', data: DIST_YEARS.map(d => d.mid),    backgroundColor: REGIME_COLORS['Neutral'].solid, borderWidth: 0 },
         { label: 'Danger',     data: DIST_YEARS.map(d => d.danger), backgroundColor: REGIME_COLORS['Danger'].solid,     borderWidth: 0 }
       ]
     },

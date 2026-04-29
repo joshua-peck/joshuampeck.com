@@ -6,7 +6,7 @@ date:  "April 27, 2026"
 week:  "18"
 year:  "2026"
 duration: "63 days"
-prior_regime: "Boom"
+prior_regime: "Extremes"
 boom_sharpe: "1.34"
 mid_sharpe: "0.52"
 danger_sharpe: "0.30"
@@ -31,19 +31,19 @@ regimes:
       as conditions evolve.
   mid:
     status: mid
-    label:  Mid-Market
+    label:  Neutral
     note: >
       No acute stress signals are present. Credit spreads, volatility,
       and price structure are all within normal ranges. The model reads
-      current conditions as Mid-Market — the baseline state that
+      current conditions as Neutral — the baseline state that
       describes the unremarkable majority of market history.
   boom:
     status: boom
-    label:  Boom
+    label:  Extremes
     note: >
       Strong directional momentum with compressing volatility. Price
       near recent highs, credit spreads tight, trend positive. The
-      model reads current conditions as Boom — the state that captures
+      model reads current conditions as Extremes — the state that captures
       both melt-up periods and strong recoveries. Historically the
       highest Sharpe regime, though also the one that immediately
       precedes many major drawdowns.

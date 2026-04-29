@@ -7,7 +7,7 @@
 
 {{/* DANGER is default case */}}
 {{ $tileTitle := "The model is reading Danger." }}
-{{ $tileSub   := "In Danger regimes, average returns match Mid-Market. The distribution does not." }}
+{{ $tileSub   := "In Danger regimes, average returns match Neutral. The distribution does not." }}
 {{ $dotColor    := "bg-danger" }}
 {{ $textColor   := "text-danger" }}
 {{ $badgeBg     := "bg-danger/10" }}
@@ -20,27 +20,27 @@
 
 {{/* BOOM */}}
 {{ if eq $r.current_regime "boom" }}
-  {{ $tileTitle = "The model is reading Boom." }}
-  {{ $tileSub   = "Boom regimes produce the highest risk-adjusted returns in the dataset. Sharpe 1.34." }}
+  {{ $tileTitle = "The model is reading Extremes." }}
+  {{ $tileSub   = "The Extremes regime delivers the highest risk-adjusted returns in the dataset. Sharpe 1.34." }}
   {{ $dotColor    = "bg-boom" }}
   {{ $textColor   = "text-boom" }}
   {{ $badgeBg     = "bg-boom/10" }}
   {{ $badgeBorder = "border-boom/30" }}
   {{ $secBorder   = "border-boom" }}
-  {{ $regimeLabel = "Boom" }}
+  {{ $regimeLabel = "Extremes" }}
   {{ $sharpe_mid_bg = "bg-white" }}
   {{ $sharpe_boom_bg = "bg-boom/10" }}
   {{ $sharpe_danger_bg = "bg-white" }}
 {{/* MID-MARKET */}}
 {{ else if eq $r.current_regime "mid" }}
-  {{ $tileTitle = "The model is reading Mid-Market." }}
-  {{ $tileSub   = "Mid-Market is the baseline state. No acute stress. No strong directional momentum." }}
+  {{ $tileTitle = "The model is reading Neutral." }}
+  {{ $tileSub   = "Neutral is the baseline state. No acute stress. No strong directional momentum." }}
   {{ $dotColor    = "bg-mid" }}
   {{ $textColor   = "text-mid" }}
   {{ $badgeBg     = "bg-mid/10" }}
   {{ $badgeBorder = "border-mid/30" }}
   {{ $secBorder   = "border-mid" }}
-  {{ $regimeLabel = "Mid-Market" }}
+  {{ $regimeLabel = "Neutral" }}
   {{ $sharpe_mid_bg = "bg-mid/10" }}
   {{ $sharpe_boom_bg = "bg-white" }}
   {{ $sharpe_danger_bg = "bg-white" }}
@@ -64,7 +64,7 @@
     </h1>
 
     <p class="font-sans text-lg text-white/45 max-w-lg leading-relaxed mb-8">
-      Applied to the S&P 500 from 2006 to 2026, the model identified three regimes, Boom, Mid-Market, and Danger, each with measurably different risk and return characteristics.
+      Applied to the S&P 500 from 2006 to 2026, the model identified three regimes, Extremes, Neutral, and Danger, each with measurably different risk and return characteristics.
     </p>
 
     <div class="flex items-center gap-6 flex-wrap">
@@ -141,12 +141,12 @@
           <div class="grid grid-cols-3 gap-px bg-silk border-t border-silk">
             <div class="{{ $sharpe_boom_bg }} px-3 py-3 text-center">
               <div class="font-mono text-muted mb-1 uppercase tracking-wider"
-                   style="font-size:8px;">Boom SR</div>
+                   style="font-size:8px;">Extremes SR</div>
               <div class="font-mono text-sm font-medium text-boom">{{ $r.boom_sharpe }}</div>
             </div>
             <div class="{{ $sharpe_mid_bg }} px-3 py-3 text-center">
               <div class="font-mono text-muted mb-1 uppercase tracking-wider"
-                   style="font-size:8px;">Mid SR</div>
+                   style="font-size:8px;">Neutral SR</div>
               <div class="font-mono text-sm font-medium text-mid">{{ $r.mid_sharpe }}</div>
             </div>
             <div class="px-3 py-3 text-center {{ $sharpe_danger_bg }}">
@@ -175,8 +175,8 @@
   </div>
   <div class="chart-card" style="padding:20px 20px 14px;">
     <div class="eq-legend" style="margin-bottom:12px;">
-      <span class="eq-leg"><span class="eq-box" style="background:rgba(243,156,18,.2)"></span> Boom</span>
-      <span class="eq-leg"><span class="eq-box" style="background:rgba(39,174,96,.15)"></span> Mid-Market</span>
+      <span class="eq-leg"><span class="eq-box" style="background:rgba(243,156,18,.2)"></span> Extremes</span>
+      <span class="eq-leg"><span class="eq-box" style="background:rgba(39,174,96,.15)"></span> Neutral</span>
       <span class="eq-leg"><span class="eq-box" style="background:rgba(231,76,60,.15)"></span> Danger</span>
       <span class="eq-leg" style="margin-left:auto;"><span class="eq-line"></span> S&amp;P 500</span>
     </div>
@@ -224,7 +224,7 @@
           <div class="flex items-center gap-2 mb-4">
             <span class="w-2.5 h-2.5 rounded-full bg-boom shrink-0"></span>
             <span class="font-mono text-lg font-medium tracking-ultra uppercase text-boom">
-              Boom
+              Extremes
             </span>
           </div>
 
@@ -267,7 +267,7 @@
           <div class="flex items-center gap-2 mb-4">
             <span class="w-2.5 h-2.5 rounded-full bg-mid shrink-0"></span>
             <span class="font-mono text-lg font-medium tracking-ultra uppercase text-mid">
-              Mid-Market
+              Neutral
             </span>
           </div>
 
@@ -337,7 +337,7 @@
               <span class="font-mono text-sm text-muted">{{ $r.danger_obs }}</span>
             </div>
           </div>
-          <p class="font-sans text-xs text-muted leading-relaxed mt-5 pt-5 border-t border-silk italic">Same average return as Mid-Market. Twice the downside risk. The mean
+          <p class="font-sans text-xs text-muted leading-relaxed mt-5 pt-5 border-t border-silk italic">Same average return as Neutral. Twice the downside risk. The mean
             hides the distribution — Danger periods produce the left tail events
             that define drawdowns.</p>
         </div>
@@ -348,7 +348,7 @@
     {{/* Key insight connector */}}
     <div class="bg-cream border border-silk rounded-xl px-6 py-5">
       <p class="font-sans text-sm text-navy leading-relaxed max-w-2xl">
-        The mean return in Danger is nearly identical to Mid-Market. The Sharpe
+        The mean return in Danger is nearly identical to Neutral. The Sharpe
         ratio is not. That gap — <span class="font-semibold">{{ $r.danger_sharpe }} versus {{ $r.mid_sharpe }}</span>
         — is the entire argument for regime awareness.
       </p>
@@ -418,8 +418,8 @@
 
 <script>
   const REGIME = {
-    boom:   { label: 'Boom',       color: '#F39C12', size: 0.80 },
-    mid:    { label: 'Mid-Market', color: '#27AE60', size: 1.00 },
+    boom:   { label: 'Extremes',       color: '#F39C12', size: 0.80 },
+    mid:    { label: 'Neutral', color: '#27AE60', size: 1.00 },
     danger: { label: 'Danger',     color: '#E74C3C', size: 0.25 },
   };
 
@@ -452,8 +452,8 @@ const SPX_PRICES = JSON.parse({{ .Site.Data.spx.obs | jsonify }})
   .map(p => ({ x: p.x, y: p.y }));
 
 const regimeColors = {
-  'Boom':       'rgba(243,156,18,0.25)',
-  'Mid-Market': 'rgba(39,174,96,0.25)',
+  'Extremes':       'rgba(243,156,18,0.25)',
+  'Neutral': 'rgba(39,174,96,0.25)',
   'Danger':     'rgba(231,76,60,0.25)',
 };
 
@@ -516,7 +516,7 @@ new Chart(document.getElementById('spxChart'), {
           label: ctx => {
             const dateStr = new Date(ctx.parsed.x).toISOString().slice(0, 10);
             const regime  = getRegimeForDate(dateStr);
-            const color   = regime === 'Boom'   ? REGIME.boom.color
+            const color   = regime === 'Extremes'   ? REGIME.boom.color
                           : regime === 'Danger' ? REGIME.danger.color
                           : REGIME.mid.color;
             return [
@@ -556,7 +556,7 @@ new Chart(document.getElementById('spxChart'), {
 //         title:items=>yrs[items[0].dataIndex],
 //         label:ctx=>{
 //           const r=spxRegimes[ctx.dataIndex];
-//           return [`S&P 500: ${ctx.parsed.y.toLocaleString()}`,`Regime: ${r==='Mid'?'Mid-Market':r}`];
+//           return [`S&P 500: ${ctx.parsed.y.toLocaleString()}`,`Regime: ${r==='Mid'?'Neutral':r}`];
 //         }
 //       }
 //     }},
