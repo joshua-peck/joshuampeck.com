@@ -1,5 +1,52 @@
 # TODO
 
+## P0 — Blocking 30-day revenue (this week)
+
+- [ ] Rewrite dashboard validation disclosure
+  - Replace "failed formal validation criteria" language
+  - New criterion: 20% drawdown OR 2+ months sustained
+  - Re-run validation against new criterion
+- [ ] Strip all SHAP claims from dashboard, methodology page, stage gates doc
+  - Replace with "PCA-based feature decomposition + emission distribution analysis"
+- [ ] Set up paid newsletter (Substack or beehiiv)
+  - $10/mo or $100/yr, founding member $200/yr first 100
+  - Write launch post explaining scope and what MacroContext is/isn't
+  - Send to Shrewd Investor list
+
+## P1 — Methodology integrity (next 2 weeks)
+
+- [ ] Write dossier methodology section
+  - HMM specification
+  - PCA feature engineering and loadings
+  - Validation criterion + rationale
+  - Explainability stack (4 methods, what each does/doesn't tell you)
+- [ ] Build emission distribution panels (primary explainability surface)
+- [ ] Build basic posterior decomposition for daily commentary
+
+## P2 — Pro launch prep (weeks 3-6)
+
+- [ ] Define final tier structure
+  - Individual $99: regime probs, emission panels, top posterior contributors, transition alerts, monthly deep-dive, asset-class performance
+  - Institutional $999: + Viterbi analysis, sensitivity tooling, component time series, PCA loadings, API (when built), quarterly call
+  - Skip Professional middle tier at launch
+- [ ] Build Viterbi transition analysis
+- [ ] Build sensitivity/what-if tool
+- [ ] Decide API timeline (gates whether Institutional ships with promise debt)
+
+## P3 — Paper (parallel track, target 6-8 weeks)
+
+- [ ] Reframe paper around scope-corrected validation finding
+- [ ] Section 3: rewrite as "Why HMM, Why PCA-based Structural Attribution"
+- [ ] Generate exhibits from notebook (matplotlib → PDF)
+- [ ] Ship as paid one-off at $99-249 when complete
+
+## Discipline rules going forward
+
+- [ ] Every public claim traces to a documented decision in the dossier
+- [ ] No "SHAP-like" or hedged explainability language — use real method names
+- [ ] Dossier updates first, derivative content (dashboard, paper, newsletter, LinkedIn) updates from it
+
+
 ## INDEX REWRITE - AUTHORITY SITE
 03  PRINCIPLES   — update principles to be more all-encompassing personal statement of principles
 05  CREDIBILITY  — media bar needs logos
