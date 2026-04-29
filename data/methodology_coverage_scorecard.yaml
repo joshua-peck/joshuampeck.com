@@ -1,0 +1,41 @@
+# Validation scorecard for the v2026-04-14 walk-forward run.
+# Criteria are defined in the source spec; actuals are populated from
+# the most recent reports/testing-{DATE}.md output.
+
+run_date: "2026-04-14"
+overall_pass: false
+
+criteria:
+  - id: sharpe_ordering
+    label: "Mid-Market Sharpe materially exceeds Danger"
+    detail: "Mid-Market 0.52 vs Danger 0.30 — gap of 0.22"
+    actual_pct: 100
+    target_pct: 100
+    pass: true
+    color: mid
+
+  - id: drawdown_coverage
+    label: "Danger captures ≥80% of confirmed drawdown days"
+    detail: "Coverage 84.2% — target ≥ 80%"
+    actual_pct: 84.2
+    target_pct: 80
+    pass: true
+    color: mid
+
+  - id: regime_stability
+    label: "Regime stability ≥90% across consecutive folds"
+    detail: "Stability 92.1% across folds 3–7 — target ≥ 90%"
+    detail_note: "Fold 1→2 stability is lower; COVID entering fold 3 shifts historical labels."
+    actual_pct: 92.1
+    target_pct: 90
+    pass: true
+    color: mid
+
+  - id: false_positive_saturation
+    label: "Danger ≤30% of trading days (no false-positive saturation)"
+    detail: "30.4% — target ≤ 30%"
+    detail_note: "Active calibration on transition matrix priors targets a base rate closer to 10–12%."
+    actual_pct: 30.4
+    target_pct: 30
+    pass: false
+    color: danger

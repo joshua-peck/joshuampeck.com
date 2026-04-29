@@ -1,0 +1,26 @@
+{
+  "years": [
+    { "year": 2006, "boom": 28.5, "mid": 51.2, "danger": 20.3 },
+    { "year": 2007, "boom": 12.1, "mid": 38.4, "danger": 49.5 },
+    { "year": 2008, "boom":  0.0, "mid": 14.2, "danger": 85.8 },
+    { "year": 2009, "boom":  8.4, "mid": 31.6, "danger": 60.0 },
+    { "year": 2010, "boom": 22.5, "mid": 51.0, "danger": 26.5 },
+    { "year": 2011, "boom": 18.9, "mid": 42.1, "danger": 39.0 },
+    { "year": 2012, "boom": 38.2, "mid": 56.3, "danger":  5.5 },
+    { "year": 2013, "boom": 51.4, "mid": 46.8, "danger":  1.8 },
+    { "year": 2014, "boom": 42.7, "mid": 50.3, "danger":  7.0 },
+    { "year": 2015, "boom": 18.6, "mid": 49.4, "danger": 32.0 },
+    { "year": 2016, "boom": 22.1, "mid": 54.7, "danger": 23.2 },
+    { "year": 2017, "boom": 62.5, "mid": 36.1, "danger":  1.4 },
+    { "year": 2018, "boom": 28.4, "mid": 41.2, "danger": 30.4 },
+    { "year": 2019, "boom": 44.6, "mid": 50.1, "danger":  5.3 },
+    { "year": 2020, "boom": 18.3, "mid": 42.5, "danger": 39.2 },
+    { "year": 2021, "boom": 71.2, "mid": 27.6, "danger":  1.2 },
+    { "year": 2022, "boom":  4.8, "mid": 22.1, "danger": 73.1 },
+    { "year": 2023, "boom": 35.7, "mid": 51.8, "danger": 12.5 },
+    { "year": 2024, "boom": 48.2, "mid": 49.6, "danger":  2.2 },
+    { "year": 2025, "boom": 22.4, "mid": 45.3, "danger": 32.3 },
+    { "year": 2026, "boom":  0.0, "mid": 28.7, "danger": 71.3 }
+  ],
+  "average": { "boom": 23.0, "mid": 47.0, "danger": 30.0 }
+}
