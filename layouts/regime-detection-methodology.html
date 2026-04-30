@@ -12,28 +12,29 @@
 <header class="bg-navy border-b-4 border-gold px-6 lg:px-20 pt-24 pb-16">
   <div class="max-w-content mx-auto">
 
-    <div class="flex items-center gap-2 mb-6">
+    <!-- <div class="flex items-center gap-2 mb-6">
       <a href="/lab/regime-detection/"
          class="font-mono text-xs font-medium tracking-ultra uppercase text-gold/60 hover:text-gold no-underline transition-colors duration-200">
         ← Lab · Regime Detection
       </a>
-    </div>
+    </div> -->
 
     <div class="flex items-center gap-2 mb-6">
-      <span class="w-6 h-px bg-gold opacity-70"></span>
+      <!-- <span class="w-6 h-px bg-gold opacity-70"></span> -->
       <span class="font-mono text-xs font-medium tracking-ultra uppercase text-gold">
-        MacroContext · Lab · Methodology
+        Lab · Regime Detection · Methodology
       </span>
     </div>
 
     <h1 class="font-display font-bold text-white leading-tight
                text-4xl md:text-5xl mb-5 max-w-3xl">
-      How the model works
+               The methodology behind the regime classifications
     </h1>
 
     <p class="font-sans text-lg text-white/45 max-w-2xl leading-relaxed mb-8">
-      A plain-language account of the methodology, the validation approach, and the known
-      limitations. The full research paper is available separately.
+      A Hidden Markov Model trained on 16 macro and market indicators, validated
+      out-of-sample across seven folds from 2006 to 2026. This page documents
+      the approach, the results, and the known limitations.
     </p>
 
     <div class="flex items-center gap-6 flex-wrap mb-8">
@@ -41,20 +42,8 @@
       <span class="font-mono text-xs text-white/20">·</span>
       <span class="font-mono text-xs text-white/30">Folds: 7</span>
       <span class="font-mono text-xs text-white/20">·</span>
-      <span class="font-mono text-xs text-white/30">Period: 2006–2026</span>
+      <span class="font-mono text-xs text-white/30">Period: 2006-2026</span>
     </div>
-
-    {{/* "Not a recession detector" callout */}}
-    <div class="bg-navy-deep border-l-4 border-gold rounded-r-xl px-6 py-4 max-w-2xl">
-      <div class="font-mono text-xs font-medium tracking-wider uppercase text-gold/80 mb-2">
-        Important framing
-      </div>
-      <p class="font-sans text-base text-white/80 leading-relaxed">
-        This model detects equity market regime changes, not economic recessions.
-        The distinction is deliberate.
-      </p>
-    </div>
-
   </div>
 </header>
 
@@ -66,50 +55,72 @@
   <div class="max-w-2xl mx-auto">
 
     <div class="flex items-center gap-2 mb-4">
-      <span class="font-mono text-xs font-medium tracking-ultra uppercase text-gold">
-        01 · The Problem
+      <span class="font-mono text-sm font-medium tracking-ultra uppercase text-gold">
+        PROBLEM
       </span>
     </div>
 
     <h2 class="font-display font-bold text-navy text-3xl leading-tight mb-8">
       Investors consistently misread which market environment they are operating in.
     </h2>
-
-    <div class="flex flex-col gap-5 font-sans text-base text-muted leading-relaxed">
+    <h3 class="font-sans text-navy text-2xl leading-relaxed mb-8">
+      2025 marked the 15th consecutive year of underperformance for the average
+      equity investor compared to the S&P 500. (DALBAR QAIB, 2025)
+    </h3>
+    <div class="flex flex-col gap-5 font-sans text-lg text-muted leading-relaxed">
       <p>
-        Financial media optimizes for engagement, not accuracy. The result is constant
-        noise — every week is either a buying opportunity or a looming catastrophe. Most
-        of it is neither.
+        The wrong market understanding is more expensive than the wrong stock pick.
       </p>
       <p>
-        The framing matters more than the forecast. An investor who believes they are in
-        a benign market takes on more risk than the environment warrants. An investor
-        convinced a crash is imminent sits in cash through a bull market.
+        The 2008 GFC erased 56.8%. The 2022 bear market erased 25.4%.
+        Both were environment problems, not stock problems.
       </p>
       <p>
-        The consequential question is not which stock to buy. It is which market
-        environment you are currently in. Get that right and most allocation decisions
-        follow.
+        Financial media optimizes for engagement, not accuracy. The result
+        is noise. Every week is either a buying opportunity or a looming
+        catastrophe. Most of it is neither.
+      </p>      
+      <blockquote class="italic border-l-2 border-gold pl-6">
+        In 2024, equity investors pulled the most money out of funds in the
+        quarter immediately before the market's biggest rally of the year — and
+        earned 848 basis points less than the index as a result. The problem is
+        not stock selection. It is environment misreading. (DALBAR QAIB, 2025)
+      </blockquote>  
+      <p>
+        The framing matters more than the forecast. An investor who
+        believes they are in a benign environment takes on more risk than
+        conditions warrant. An investor convinced a crash is imminent sits
+        in cash through a bull market. Both mistakes compound.
       </p>
       <p>
-        Systematic regime detection replaces narrative with measurement. The model asks
-        one question: what is the S&amp;P 500 doing right now, and has it changed?
+        The consequential question is not which stock to own. It is which
+        environment you are currently in.
+      </p>
+      <p> 
+        This model asks one question: what is the S&P 500 doing right now?
+        Not what it will do next. Not what the Fed will decide in September.
+        What behavioral state is the equity market in today?
+      </p>
+      <p>
+        Systematic regime detection replaces the narrative with a
+        classification. Extreme. Neutral. Danger. Updated every Monday.
       </p>
     </div>
 
     {{/* Critical framing callout */}}
     <div class="bg-white border border-silk rounded-xl px-6 py-5 mt-10">
-      <div class="font-mono text-xs font-medium tracking-wider uppercase text-gold mb-3">
-        Critical framing
+      <div class="font-mono text-sm font-medium tracking-wider uppercase text-gold mb-3">
+        Critical Distinction
       </div>
-      <ul class="flex flex-col gap-3 font-sans text-sm text-muted leading-relaxed">
+      <ul class="flex flex-col gap-3 font-sans text-muted leading-relaxed">
         <li>
-          This model does <span class="text-navy font-semibold">not</span> detect economic
-          recessions. It does not measure GDP, employment, or the business cycle.
+          This model does <span class="text-navy font-semibold">not</span>
+          detect economic recessions. It does not measure GDP, employment, or
+          the business cycle in the hopes of gaining some advantage.
         </li>
         <li>
-          It detects regime changes in the S&amp;P 500 index — behavioral shifts in price
-          action, volatility, and the macro indicators that have historically led those
+          It detects regime changes in the S&amp;P 500 index: behavioral shifts in price
+          action, volatility, and the macro indicators that have historically confirmed those
           shifts.
         </li>
         <li>
