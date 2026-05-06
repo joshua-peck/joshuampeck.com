@@ -14,35 +14,35 @@
 {{ $badgeBorder := "border-danger/30" }}
 {{ $secBorder   := "border-danger" }}
 {{ $regimeLabel := "Danger" }}
-{{ $sharpe_mid_bg := "bg-white" }}
-{{ $sharpe_boom_bg := "bg-white" }}
+{{ $sharpe_neutral_bg := "bg-white" }}
+{{ $sharpe_extremes_bg := "bg-white" }}
 {{ $sharpe_danger_bg := "bg-danger/10" }}
 
-{{/* BOOM */}}
-{{ if eq $r.current_regime "boom" }}
+{{/* extremes */}}
+{{ if eq $r.current_regime "extremes" }}
   {{ $tileTitle = "The model is reading Extremes." }}
   {{ $tileSub   = "The Extremes regime delivers the highest risk-adjusted returns in the dataset. Sharpe 1.34." }}
-  {{ $dotColor    = "bg-boom" }}
-  {{ $textColor   = "text-boom" }}
-  {{ $badgeBg     = "bg-boom/10" }}
-  {{ $badgeBorder = "border-boom/30" }}
-  {{ $secBorder   = "border-boom" }}
+  {{ $dotColor    = "bg-extremes" }}
+  {{ $textColor   = "text-extremes" }}
+  {{ $badgeBg     = "bg-extremes/10" }}
+  {{ $badgeBorder = "border-extremes/30" }}
+  {{ $secBorder   = "border-extremes" }}
   {{ $regimeLabel = "Extremes" }}
-  {{ $sharpe_mid_bg = "bg-white" }}
-  {{ $sharpe_boom_bg = "bg-boom/10" }}
+  {{ $sharpe_neutral_bg = "bg-white" }}
+  {{ $sharpe_extremes_bg = "bg-extremes/10" }}
   {{ $sharpe_danger_bg = "bg-white" }}
 {{/* MID-MARKET */}}
-{{ else if eq $r.current_regime "mid" }}
+{{ else if eq $r.current_regime "neutral" }}
   {{ $tileTitle = "The model is reading Neutral." }}
   {{ $tileSub   = "Neutral is the baseline state. No acute stress. No strong directional momentum." }}
-  {{ $dotColor    = "bg-mid" }}
-  {{ $textColor   = "text-mid" }}
-  {{ $badgeBg     = "bg-mid/10" }}
-  {{ $badgeBorder = "border-mid/30" }}
-  {{ $secBorder   = "border-mid" }}
+  {{ $dotColor    = "bg-neutral" }}
+  {{ $textColor   = "text-neutral" }}
+  {{ $badgeBg     = "bg-neutral/10" }}
+  {{ $badgeBorder = "border-neutral/30" }}
+  {{ $secBorder   = "border-neutral" }}
   {{ $regimeLabel = "Neutral" }}
-  {{ $sharpe_mid_bg = "bg-mid/10" }}
-  {{ $sharpe_boom_bg = "bg-white" }}
+  {{ $sharpe_neutral_bg = "bg-neutral/10" }}
+  {{ $sharpe_extremes_bg = "bg-white" }}
   {{ $sharpe_danger_bg = "bg-white" }}
 {{ end }}
 
@@ -139,15 +139,15 @@
           </div>
 
           <div class="grid grid-cols-3 gap-px bg-silk border-t border-silk">
-            <div class="{{ $sharpe_boom_bg }} px-3 py-3 text-center">
+            <div class="{{ $sharpe_extremes_bg }} px-3 py-3 text-center">
               <div class="font-mono text-muted mb-1 uppercase tracking-wider"
                    style="font-size:8px;">Extremes SR</div>
-              <div class="font-mono text-sm font-medium text-boom">{{ $r.boom_sharpe }}</div>
+              <div class="font-mono text-sm font-medium text-extremes">{{ $r.extremes_sharpe }}</div>
             </div>
-            <div class="{{ $sharpe_mid_bg }} px-3 py-3 text-center">
+            <div class="{{ $sharpe_neutral_bg }} px-3 py-3 text-center">
               <div class="font-mono text-muted mb-1 uppercase tracking-wider"
                    style="font-size:8px;">Neutral SR</div>
-              <div class="font-mono text-sm font-medium text-mid">{{ $r.mid_sharpe }}</div>
+              <div class="font-mono text-sm font-medium text-neutral">{{ $r.neutral_sharpe }}</div>
             </div>
             <div class="px-3 py-3 text-center {{ $sharpe_danger_bg }}">
               <div class="font-mono text-muted mb-1 uppercase tracking-wider"
@@ -217,13 +217,13 @@
     {{/* Regime cards — three column */}}
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
 
-      {{/* BOOM */}}
+      {{/* EXTREMES */}}
       <div class="bg-white border border-silk rounded-xl overflow-hidden">
-        <div class="border-t-4 border-boom px-6 pt-6 pb-5">
+        <div class="border-t-4 border-extremes px-6 pt-6 pb-5">
 
           <div class="flex items-center gap-2 mb-4">
-            <span class="w-2.5 h-2.5 rounded-full bg-boom shrink-0"></span>
-            <span class="font-mono text-lg font-medium tracking-ultra uppercase text-boom">
+            <span class="w-2.5 h-2.5 rounded-full bg-extremes shrink-0"></span>
+            <span class="font-mono text-lg font-medium tracking-ultra uppercase text-extremes">
               Extremes
             </span>
           </div>
@@ -236,19 +236,19 @@
           <div class="border-t border-silk pt-5 flex flex-col gap-3">
             <div class="flex justify-between items-baseline">
               <span class="font-mono text-xs text-muted">21-day Sharpe</span>
-              <span class="font-display font-bold text-navy text-2xl">{{ $r.boom_sharpe }}</span>
+              <span class="font-display font-bold text-navy text-2xl">{{ $r.extremes_sharpe }}</span>
             </div>
             <div class="flex justify-between items-baseline">
               <span class="font-mono text-xs text-muted">Mean return (Fwd. 21D)</span>
-              <span class="font-mono text-sm font-medium text-boom">{{ $r.boom_mean }}</span>
+              <span class="font-mono text-sm font-medium text-extremes">{{ $r.extremes_mean }}</span>
             </div>
             <div class="flex justify-between items-baseline">
               <span class="font-mono text-xs text-muted">Volatility (ann.)</span>
-              <span class="font-mono text-sm text-muted">{{ $r.boom_vol }}</span>
+              <span class="font-mono text-sm text-muted">{{ $r.extremes_vol }}</span>
             </div>
             <div class="flex justify-between items-baseline">
               <span class="font-mono text-xs text-muted">Observations</span>
-              <span class="font-mono text-sm text-muted">{{ $r.boom_obs }}</span>
+              <span class="font-mono text-sm text-muted">{{ $r.extremes_obs }}</span>
             </div>
           </div>
 
@@ -262,11 +262,11 @@
 
       {{/* MID-MARKET */}}
       <div class="bg-white border border-silk rounded-xl overflow-hidden">
-        <div class="border-t-4 border-mid px-6 pt-6 pb-5">
+        <div class="border-t-4 border-neutral px-6 pt-6 pb-5">
 
           <div class="flex items-center gap-2 mb-4">
-            <span class="w-2.5 h-2.5 rounded-full bg-mid shrink-0"></span>
-            <span class="font-mono text-lg font-medium tracking-ultra uppercase text-mid">
+            <span class="w-2.5 h-2.5 rounded-full bg-neutral shrink-0"></span>
+            <span class="font-mono text-lg font-medium tracking-ultra uppercase text-neutral">
               Neutral
             </span>
           </div>
@@ -279,19 +279,19 @@
           <div class="border-t border-silk pt-5 flex flex-col gap-3">
             <div class="flex justify-between items-baseline">
               <span class="font-mono text-xs text-muted">21-day Sharpe</span>
-              <span class="font-display font-bold text-navy text-2xl">{{ $r.mid_sharpe }}</span>
+              <span class="font-display font-bold text-navy text-2xl">{{ $r.neutral_sharpe }}</span>
             </div>
             <div class="flex justify-between items-baseline">
               <span class="font-mono text-xs text-muted">Mean return (Fwd. 21D)</span>
-              <span class="font-mono text-sm font-medium text-mid">{{ $r.mid_mean }}</span>
+              <span class="font-mono text-sm font-medium text-neutral">{{ $r.neutral_mean }}</span>
             </div>
             <div class="flex justify-between items-baseline">
               <span class="font-mono text-xs text-muted">Volatility (ann.)</span>
-              <span class="font-mono text-sm text-muted">{{ $r.mid_vol }}</span>
+              <span class="font-mono text-sm text-muted">{{ $r.neutral_vol }}</span>
             </div>
             <div class="flex justify-between items-baseline">
               <span class="font-mono text-xs text-muted">Observations</span>
-              <span class="font-mono text-sm text-muted">{{ $r.mid_obs }}</span>
+              <span class="font-mono text-sm text-muted">{{ $r.neutral_obs }}</span>
             </div>
           </div>
 
@@ -349,7 +349,7 @@
     <div class="bg-cream border border-silk rounded-xl px-6 py-5">
       <p class="font-sans text-sm text-navy leading-relaxed max-w-2xl">
         The mean return in Danger is nearly identical to Neutral. The Sharpe
-        ratio is not. That gap — <span class="font-semibold">{{ $r.danger_sharpe }} versus {{ $r.mid_sharpe }}</span>
+        ratio is not. That gap — <span class="font-semibold">{{ $r.danger_sharpe }} versus {{ $r.neutral_sharpe }}</span>
         — is the entire argument for regime awareness.
       </p>
     </div>
@@ -418,8 +418,8 @@
 
 <script>
   const REGIME = {
-    boom:   { label: 'Extremes',       color: '#F39C12', size: 0.80 },
-    mid:    { label: 'Neutral', color: '#27AE60', size: 1.00 },
+    extremes:   { label: 'Extremes',       color: '#F39C12', size: 0.80 },
+    neutral:    { label: 'Neutral', color: '#27AE60', size: 1.00 },
     danger: { label: 'Danger',     color: '#E74C3C', size: 0.25 },
   };
 
@@ -516,9 +516,9 @@ new Chart(document.getElementById('spxChart'), {
           label: ctx => {
             const dateStr = new Date(ctx.parsed.x).toISOString().slice(0, 10);
             const regime  = getRegimeForDate(dateStr);
-            const color   = regime === 'Extremes'   ? REGIME.boom.color
+            const color   = regime === 'Extremes'   ? REGIME.extremes.color
                           : regime === 'Danger' ? REGIME.danger.color
-                          : REGIME.mid.color;
+                          : REGIME.neutral.color;
             return [
               `S&P 500: ${ctx.parsed.y.toLocaleString()}`,
               `Regime: ${regime}`,

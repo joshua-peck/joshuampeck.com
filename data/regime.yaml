@@ -1,23 +1,23 @@
 # Update current_regime every Monday when you publish the weekly regime call.
-# status: danger | boom | mid
+# status: extremes | neutral | danger
 
-current_regime: mid
-date:  "April 27, 2026"
-week:  "18"
+current_regime: neutral
+date:  "May 4, 2026"
+week:  "19"
 year:  "2026"
-duration: "63 days"
+duration: "70 days"
 prior_regime: "Extremes"
-boom_sharpe: "1.34"
-mid_sharpe: "0.52"
+extremes_sharpe: "1.34"
+neutral_sharpe: "0.54"
 danger_sharpe: "0.30"
-boom_mean: "+1.78%"
-mid_mean: "+0.56%"
+extremes_mean: "+1.78%"
+neutral_mean: "+0.59%"
 danger_mean: "+0.51%"
-boom_obs: "1,142"
-mid_obs: "2,349"
+extremes_obs: "1,142"
+neutral_obs: "2,356"
 danger_obs: "1,508"
-boom_vol: "21.23%"
-mid_vol: "12.14%"
+extremes_vol: "21.23%"
+neutral_vol: "12.19%"
 danger_vol: "26.37%"
 
 regimes:
@@ -29,16 +29,16 @@ regimes:
       Credit stress, volatility trend, and price structure are all
       consistent with the Danger regime. The classification updates
       as conditions evolve.
-  mid:
-    status: mid
+  neutral:
+    status: neutral
     label:  Neutral
     note: >
       No acute stress signals are present. Credit spreads, volatility,
       and price structure are all within normal ranges. The model reads
       current conditions as Neutral — the baseline state that
       describes the unremarkable majority of market history.
-  boom:
-    status: boom
+  extremes:
+    status: extremes
     label:  Extremes
     note: >
       Strong directional momentum with compressing volatility. Price

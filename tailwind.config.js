@@ -10,10 +10,10 @@ module.exports = {
     // Regime section — classes set dynamically via data/regime.yaml
     // Danger
     'border-danger', 'bg-danger/10', 'border-danger/30', 'bg-danger', 'text-danger',
-    // Extremes (boom)
+    // Extremes 
     'border-extremes',   'bg-extremes/10',   'border-extremes/30',   'bg-extremes',   'text-extremes',
-    // Neutral (mid)
-    'border-mid', 'bg-mid/10', 'border-mid/30', 'bg-mid', 'text-mid',
+    // Neutral (neutral)
+    'border-neutral', 'bg-neutral/10', 'border-neutral/30', 'bg-neutral', 'text-neutral',
   ],
 
   theme: {
@@ -26,8 +26,8 @@ module.exports = {
         ink:    '#1A1A1A',
         muted:  '#6B7280',
         danger: '#E74C3C',
-        mid:   '#27AE60',
-        boom:    '#F1C40F',
+        neutral:   '#27AE60',
+        extremes:    '#F1C40F',
       },
       fontFamily: {
         display: ['"Playfair Display"', 'serif'],
