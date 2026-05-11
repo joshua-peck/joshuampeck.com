@@ -4,6 +4,7 @@
 {{ $approaches := .Site.Data.methodology_approaches.approaches }}
 {{ $features   := .Site.Data.methodology_features.groups }}
 {{ $stats      := .Site.Data.methodology_regime_stats.regimes }}
+{{ $loadings   := .Site.Data.methodology_pca_loadings }}
 
 
 {{/* ════════════════════════════════════════════════════════════
@@ -49,7 +50,7 @@
 
 
 {{/* ════════════════════════════════════════════════════════════
-     SECTION 1 — THE PROBLEM (cream)                  [Situation]
+     PROBLEM 
 ════════════════════════════════════════════════════════════ */}}
 <section class="bg-cream border-b border-silk px-6 lg:px-20 py-16">
   <div class="max-w-2xl mx-auto">
@@ -63,7 +64,7 @@
     <h2 class="font-display font-bold text-navy text-3xl leading-tight mb-8">
       Investors consistently misread which market environment they are operating in.
     </h2>
-    <h3 class="font-sans text-navy text-2xl leading-relaxed mb-8">
+    <h3 class="font-sans text-navy text-2xl leading-relaxed mb-8 max-w-2xl">
       2025 marked the 15th consecutive year of underperformance for the average
       equity investor compared to the S&P 500. (DALBAR QAIB, 2025)
     </h3>
@@ -141,22 +142,28 @@
 
 
 {{/* ════════════════════════════════════════════════════════════
-     SECTION 2 — THE OPTIONS (white + dot grid)        [Complication]
+     OPTIONS
 ════════════════════════════════════════════════════════════ */}}
 <section class="bg-white bg-dot-grid bg-dot border-b border-silk px-6 lg:px-20 py-16">
   <div class="max-w-content mx-auto">
 
     <div class="flex items-center gap-2 mb-4">
-      <span class="font-mono text-xs font-medium tracking-ultra uppercase text-gold">
-        02 · The Options
+      <span class="font-mono text-sm font-medium tracking-ultra uppercase text-gold">
+        Options
       </span>
     </div>
 
-    <h2 class="font-display font-bold text-navy text-3xl leading-tight mb-8 max-w-2xl">
-      Several approaches exist — each with meaningful tradeoffs.
+    <h2 class="font-display font-bold text-navy text-3xl leading-tight mb-8">
+      Most regime detection approaches fail on at least one of three criteria:
+      interpretability, temporal memory, or data efficiency.
     </h2>
+    <h3 class="font-sans text-navy text-2xl leading-relaxed mb-8">
+      VIX alone called Danger on 847 trading days between 2006 and 2026. The S&P
+      500 was only in a sustained drawdown on 312 of them. Threshold rules
+      produce false signals at nearly 3:1.
+    </h3>
 
-    <div class="flex flex-col gap-5 font-sans text-base text-muted leading-relaxed mb-10 max-w-2xl">
+    <div class="flex flex-col gap-5 font-sans text-lg text-muted leading-relaxed mb-10 max-w-2xl">
       {{ range $approaches }}
       <p>
         <span class="text-navy font-semibold">{{ .name }}.</span> {{ .note }}
@@ -169,11 +176,11 @@
       <table class="w-full min-w-[640px]">
         <thead>
           <tr class="bg-navy">
-            <th class="text-left px-6 py-3 font-mono text-xs font-medium tracking-wider uppercase text-white/60">Approach</th>
-            <th class="text-left px-6 py-3 font-mono text-xs font-medium tracking-wider uppercase text-white/60">Temporal memory</th>
-            <th class="text-left px-6 py-3 font-mono text-xs font-medium tracking-wider uppercase text-white/60">Multivariate</th>
-            <th class="text-left px-6 py-3 font-mono text-xs font-medium tracking-wider uppercase text-white/60">Interpretable</th>
-            <th class="text-left px-6 py-3 font-mono text-xs font-medium tracking-wider uppercase text-white/60">Data req.</th>
+            <th class="text-left px-6 py-3 font-mono text-sm font-medium tracking-wider uppercase text-white/60">Approach</th>
+            <th class="text-left px-6 py-3 font-mono text-sm font-medium tracking-wider uppercase text-white/60">Temporal memory</th>
+            <th class="text-left px-6 py-3 font-mono text-sm font-medium tracking-wider uppercase text-white/60">Multivariate</th>
+            <th class="text-left px-6 py-3 font-mono text-sm font-medium tracking-wider uppercase text-white/60">Interpretable</th>
+            <th class="text-left px-6 py-3 font-mono text-sm font-medium tracking-wider uppercase text-white/60">Data req.</th>
           </tr>
         </thead>
         <tbody class="font-sans text-sm">
@@ -181,12 +188,11 @@
           <tr class="border-b border-silk last:border-0 {{ if .selected }}bg-gold/10{{ end }}">
             <td class="px-6 py-3 text-navy font-semibold">
               {{ .name }}
-              {{ if .selected }}<span class="ml-2 font-mono text-xs font-medium tracking-wider uppercase text-gold-dark">← selected</span>{{ end }}
             </td>
-            <td class="px-6 py-3 font-mono text-xs text-muted">{{ .temporal_memory }}</td>
-            <td class="px-6 py-3 font-mono text-xs text-muted">{{ .multivariate }}</td>
-            <td class="px-6 py-3 font-mono text-xs text-muted">{{ .interpretable }}</td>
-            <td class="px-6 py-3 font-mono text-xs text-muted">{{ .data_req }}</td>
+            <td class="px-6 py-3 font-mono text-sm text-muted">{{ .temporal_memory }}</td>
+            <td class="px-6 py-3 font-mono text-sm text-muted">{{ .multivariate }}</td>
+            <td class="px-6 py-3 font-mono text-sm text-muted">{{ .interpretable }}</td>
+            <td class="px-6 py-3 font-mono text-sm text-muted">{{ .data_req }}</td>
           </tr>
           {{ end }}
         </tbody>
@@ -198,26 +204,29 @@
 
 
 {{/* ════════════════════════════════════════════════════════════
-     SECTION 3 — WHY HMMs (cream)                      [Resolution]
+     WHY HMMs
 ════════════════════════════════════════════════════════════ */}}
 <section class="bg-cream border-b border-silk px-6 lg:px-20 py-16">
   <div class="max-w-2xl mx-auto">
 
     <div class="flex items-center gap-2 mb-4">
-      <span class="font-mono text-xs font-medium tracking-ultra uppercase text-gold">
-        03 · Why HMMs
+      <span class="font-mono text-sm font-medium tracking-ultra uppercase text-gold">
+        Why HMMs?
       </span>
     </div>
 
     <h2 class="font-display font-bold text-navy text-3xl leading-tight mb-8">
-      HMMs match the statistical structure of how markets actually behave.
+      The HMM transition matrix is the correct model of how regime changes actually happen.
     </h2>
-
-    <div class="flex flex-col gap-5 font-sans text-base text-muted leading-relaxed mb-10">
+    <h3 class="font-sans text-navy text-2xl leading-relaxed mb-8 max-w-2xl">
+      The fitted model assigns a 95% probability that tomorrow's regime matches
+      today's. One bad week is not enough to move it.
+    </h3>
+    <div class="flex flex-col gap-5 font-sans text-lg text-muted leading-relaxed mb-10">
       <p>
         Markets don't jump between environments randomly. A bear market lasts months. A
         bull market lasts years. The HMM transition matrix encodes this directly:
-        self-transition probabilities of <span class="text-navy font-semibold">90–97%</span>
+        self-transition probabilities of <span class="text-navy font-semibold">90-97%</span>
         mean the model expects regimes to persist unless the data says otherwise.
       </p>
       <p>
@@ -225,7 +234,7 @@
         They produced results worth publishing. The framework continues to develop.
       </p>
       <p>
-        Three states, not two: <span class="text-boom font-semibold">Boom</span>,
+        Three states, not two: <span class="text-boom font-semibold">Extremes</span>,
         <span class="text-mid font-semibold">Neutral</span>,
         <span class="text-danger font-semibold">Danger</span>. Two-state models conflate
         quiet consolidation with strong bull markets — statistically different environments
@@ -233,7 +242,7 @@
       </p>
       <p>
         The regime is not directly observable. The model infers it from observable
-        indicators. This is the correct framing for equity markets — there is no official
+        indicators. This is the correct framing for equity markets. There is no official
         announcement that a bear market has begun. The model attempts to detect it as it
         develops.
       </p>
@@ -241,9 +250,9 @@
 
     {{/* Figure: transition probability diagram */}}
     {{ $alt := "Transition probability diagram" }}
-    {{ $desc := "Three-node diagram (Boom / Neutral / Danger) with self-loop arrows labeled 90–97% and cross-transition arrows with smaller probabilities." }}
+    {{ $desc := "Three-node diagram (Extremes / Neutral / Danger) with self-loop arrows labeled 90–97% and cross-transition arrows with smaller probabilities." }}
     <div class="chart-block">
-      <div class="chart-label">Transition matrix · fitted model</div>
+      <div class="chart-label text-sm">Transition matrix · fitted model</div>
       <div class="chart-title">
         <h3 class="font-display font-bold text-navy leading-tight text-2xl mb-2">
           Regimes persist. The model expects continuity unless the data forces a switch.
@@ -272,25 +281,25 @@
 
 
 {{/* ════════════════════════════════════════════════════════════
-     SECTION 4 — THE APPROACH (white + dot grid)
+     THE APPROACH
 ════════════════════════════════════════════════════════════ */}}
 <section class="bg-white bg-dot-grid bg-dot border-b border-silk px-6 lg:px-20 py-16">
   <div class="max-w-content mx-auto">
 
     <div class="flex items-center gap-2 mb-4">
       <span class="font-mono text-xs font-medium tracking-ultra uppercase text-gold">
-        04 · The Approach
+        The Approach
       </span>
     </div>
 
     <h2 class="font-display font-bold text-navy text-3xl leading-tight mb-12 max-w-2xl">
-      16 macro and market indicators, compressed to 4 factors, classified weekly since 2006.
+      16 macro and market indicators, compressed to 9 components, classified weekly since 2006.
     </h2>
 
-    {{/* ─── 4a — Feature selection ─── */}}
+    {{/* ─── 1. Feature selection ─── */}}
     <div class="max-w-2xl">
       <div class="flex items-baseline gap-3 mb-3">
-        <span class="font-mono text-xs font-medium tracking-wider uppercase text-gold-dark">4a</span>
+        <span class="font-mono text-2xl font-medium tracking-wider uppercase text-gold-dark">&rarr;</span>
         <h3 class="font-display font-bold text-navy text-2xl">Feature selection</h3>
       </div>
       <p class="font-sans text-base text-navy font-semibold leading-relaxed mb-4">
@@ -342,7 +351,7 @@
     {{ $alt := "Feature correlation heatmap" }}
     {{ $desc := "16×16 correlation matrix grouped by category (equity / credit / rates / macro). Shows visually why PCA preprocessing is needed — the feature blocks are highly correlated within groups." }}
     <div class="chart-block mb-12">
-      <div class="chart-label">Feature correlation · 2006–2026</div>
+      <div class="chart-label">Feature correlation · 2006-2026</div>
       <div class="chart-title">
         <h3 class="font-display font-bold text-navy leading-tight text-2xl mb-2">
           Within-group correlation is exactly why dimensionality reduction comes next.
@@ -366,49 +375,119 @@
 
     <hr class="border-silk my-12">
 
-    {{/* ─── 4b — PCA ─── */}}
+    {{/* ─── 2. PCA ─── */}}
     <div class="max-w-2xl">
       <div class="flex items-baseline gap-3 mb-3">
-        <span class="font-mono text-xs font-medium tracking-wider uppercase text-gold-dark">4b</span>
+        <span class="font-mono text-2xl font-medium tracking-wider uppercase text-gold-dark">&rarr;</span>
         <h3 class="font-display font-bold text-navy text-2xl">Dimensionality reduction via PCA</h3>
       </div>
       <p class="font-sans text-base text-navy font-semibold leading-relaxed mb-4">
-        16 correlated features compressed to 4 independent factors — 88% of variance explained.
+        16 correlated features. 9 uncorrelated components. 87% of variance preserved.
       </p>
       <div class="flex flex-col gap-4 font-sans text-base text-muted leading-relaxed mb-8">
         <p>
           The 16 features are correlated. VIX and credit spreads move together during stress.
           SPX and momentum indicators move together during bull markets. Feeding correlated
-          features directly into the HMM inflates the parameter count and destabilizes
-          training.
+          features directly into the HMM inflates the parameter count and destabilizes training.
         </p>
         <p>
-          PCA compresses 16 correlated features into 4–5 uncorrelated principal components
-          that capture <span class="text-navy font-semibold">88% of total variance</span>.
+          PCA resolves this. It compresses 16 correlated features into 9 uncorrelated principal
+          components that together capture 87% of total variance — discarding the remaining 13%
+          as noise. The HMM never sees raw indicators. It sees 9 independent signals derived
+          from them.
         </p>
         <p>
-          Two concrete benefits: reduces HMM parameter count from ~375 to ~60 (critical
-          given 20 years of daily data), and removes noise while preserving the dominant
-          macro signals.
+          Two concrete benefits: reduces HMM parameter count from ~375 to ~105, and removes
+          noise while preserving the dominant macro signals. PCA is fitted on training data only
+          at each refit. No future data enters the compression step.
+        </p>
+
+
+      </div>
+    </div>
+
+    {{/* ─── 3. PCA Loadings ─── */}}
+    <div class="max-w-2xl">
+      <div class="flex items-baseline gap-3 mb-3">
+        <span class="font-mono text-2xl font-medium tracking-wider uppercase text-gold-dark">&rarr;</span>
+        <h3 class="font-display font-bold text-navy text-2xl">The dominant component is the stress axis. It is nearly identical
+          across two decades of data.
+        </h3>
+      </div>
+      <p class="font-sans text-base text-navy font-semibold leading-relaxed mb-4">
+        The top 6 features loading on PC1 are the same across all seven walk-forward folds.
+      </p>
+      <div class="flex flex-col gap-4 font-sans text-base text-muted leading-relaxed mb-8">
+        <p>
+          Loadings tell us what each principal component represents. PC1 — the dominant
+          component — draws on the same six features across every walk-forward fold,
+          fitted independently on expanding training windows from 2006 to 2026.
+        </p>
+      </div>
+    </div>
+
+    {{/* Loadings table — breaks out to max-w-content width */}}
+    <div class="bg-white border border-silk rounded-xl overflow-hidden mb-10 overflow-x-auto">
+      <div class="bg-navy px-6 py-3 flex justify-between items-center">
+        <span class="font-mono text-xs font-medium tracking-wider uppercase text-white/60">
+          PC1 loadings &middot; top 6 features
+        </span>
+        <span class="font-mono text-xs text-white/60">stable across all 7 folds</span>
+      </div>
+      <table class="w-full min-w-[640px]">
+        <thead>
+          <tr class="border-b border-silk">
+            <th class="text-left px-6 py-3 font-mono text-xs font-medium tracking-wider uppercase text-muted">Feature</th>
+            <th class="text-left px-6 py-3 font-mono text-xs font-medium tracking-wider uppercase text-muted">Direction</th>
+            <th class="text-left px-6 py-3 font-mono text-xs font-medium tracking-wider uppercase text-muted">Economic meaning</th>
+          </tr>
+        </thead>
+        <tbody class="font-sans text-sm">
+          {{ range $loadings.pc1_loadings }}
+          <tr class="border-b border-silk last:border-0">
+            <td class="px-6 py-3 font-mono text-xs text-navy font-semibold">{{ .feature }}</td>
+            <td class="px-6 py-3 font-mono text-xs">
+              {{ if eq .direction "Positive" }}
+                <span class="inline-flex items-center gap-1.5 text-danger">&#9650; {{ .direction }}</span>
+              {{ else }}
+                <span class="inline-flex items-center gap-1.5 text-mid">&#9660; {{ .direction }}</span>
+              {{ end }}
+            </td>
+            <td class="px-6 py-3 text-muted">{{ .meaning }}</td>
+          </tr>
+          {{ end }}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="max-w-2xl">
+      <div class="flex flex-col gap-4 font-sans text-base text-muted leading-relaxed mb-8">
+        <p>
+          Every loading points in the same economic direction. PC1 is the
+          <span class="text-navy font-semibold">stress axis</span> &mdash; a composite signal
+          that rises when equities fall, credit spreads widen, and volatility elevates
+          simultaneously.
         </p>
         <p>
-          PCA is fitted on training data only at each refit. No future data enters the
-          compression step.
+          This stability matters. The same six features, in roughly the same order, appear
+          in PC1 regardless of whether the training window ends in 2018, 2021, or 2024.
+          Adding five years of data &mdash; including the 2020 COVID crash and the 2022 bear
+          market &mdash; barely moves the loadings. The structure is real.
         </p>
       </div>
     </div>
 
     {{/* Figure: PCA scree plot */}}
     {{ $alt := "PCA explained variance scree plot" }}
-    {{ $desc := "Bar chart of % variance explained per principal component (1–16) with cumulative line overlay showing the 88% threshold reached at component 4." }}
+    {{ $desc := "Bar chart of % variance explained per principal component (1-16) with cumulative line overlay showing the 88% threshold reached at component 4." }}
     <div class="chart-block mb-12">
       <div class="chart-label">PCA · explained variance</div>
       <div class="chart-title">
         <h3 class="font-display font-bold text-navy leading-tight text-2xl mb-2">
-          Four components explain most of the variance. The rest is noise.
+          Nine components capture the signal. The remaining seven are noise.
         </h3>
       </div>
-      <div class="chart-sub">Cumulative variance crosses 88% at component 4.</div>
+      <div class="chart-sub">Cumulative variance reaches 87% at component 9.</div>
       <div class="chart-card" style="padding:20px;">
         {{ $img := resources.Get "images/lab/regime-detection/pca_scree_plot.png" }}
         {{ with $img }}
@@ -426,10 +505,10 @@
 
     <hr class="border-silk my-12">
 
-    {{/* ─── 4c — HMM fitting ─── */}}
+    {{/* ─── HMM fitting ─── */}}
     <div class="max-w-2xl">
       <div class="flex items-baseline gap-3 mb-3">
-        <span class="font-mono text-xs font-medium tracking-wider uppercase text-gold-dark">4c</span>
+        <span class="font-mono text-2xl font-medium tracking-wider uppercase text-gold-dark">&rarr;</span>
         <h3 class="font-display font-bold text-navy text-2xl">HMM fitting</h3>
       </div>
       <p class="font-sans text-base text-navy font-semibold leading-relaxed mb-4">
@@ -491,7 +570,7 @@
     {{/* ─── 4d — Walk-forward validation ─── */}}
     <div class="max-w-2xl">
       <div class="flex items-baseline gap-3 mb-3">
-        <span class="font-mono text-xs font-medium tracking-wider uppercase text-gold-dark">4d</span>
+        <span class="font-mono text-2xl font-medium tracking-wider uppercase text-gold-dark">&rarr;</span>
         <h3 class="font-display font-bold text-navy text-2xl">Walk-forward validation</h3>
       </div>
       <p class="font-sans text-base text-navy font-semibold leading-relaxed mb-4">
@@ -545,14 +624,14 @@
 
 
 {{/* ════════════════════════════════════════════════════════════
-     SECTION 5 — VALIDATION RESULTS (cream)
+     VALIDATION
 ════════════════════════════════════════════════════════════ */}}
 <section class="bg-cream border-b border-silk px-6 lg:px-20 py-16">
   <div class="max-w-content mx-auto">
 
     <div class="flex items-center gap-2 mb-4">
       <span class="font-mono text-xs font-medium tracking-ultra uppercase text-gold">
-        05 · Validation Results
+        Validation
       </span>
     </div>
 

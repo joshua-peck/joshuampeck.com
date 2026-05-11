@@ -1,0 +1,31 @@
+# PC1 loadings — features that load most heavily on the dominant principal component.
+# Used by Section 4 · Loadings subsection.
+#
+# `direction` ∈ {Positive, Negative} relative to PC1 (the stress axis).
+# Positive = feature rises when stress rises (VIX, credit spreads).
+# Negative = feature falls when stress rises (SPX, inflation expectations).
+#
+# Top six features are stable across all 7 walk-forward folds — fitted
+# independently on expanding training windows from 2006 to 2026.
+#
+# STUB DATA — replace with notebook output (sort |pca.components_[0]| desc, top 6).
+
+pc1_loadings:
+  - feature: "SPX"
+    direction: "Negative"
+    meaning: "Equity prices falling"
+  - feature: "BAA10Y"
+    direction: "Positive"
+    meaning: "Credit spreads widening"
+  - feature: "BAA10Y_trend"
+    direction: "Positive"
+    meaning: "Spreads accelerating, not just elevated"
+  - feature: "SPX_200d_ma_spread"
+    direction: "Negative"
+    meaning: "Price trend deteriorating"
+  - feature: "VIXCLS"
+    direction: "Positive"
+    meaning: "Implied volatility elevated"
+  - feature: "T5YIE"
+    direction: "Negative"
+    meaning: "Inflation expectations collapsing"
