@@ -5,6 +5,8 @@
 {{ $features   := .Site.Data.methodology_features.groups }}
 {{ $stats      := .Site.Data.methodology_regime_stats.regimes }}
 {{ $loadings   := .Site.Data.methodology_pca_loadings }}
+{{ $transitions := .Site.Data.transition_probs }}
+{{ $regimeColors := dict "Extremes" "extremes" "Neutral" "neutral" "Danger" "danger" }}
 
 
 {{/* ════════════════════════════════════════════════════════════
@@ -12,16 +14,7 @@
 ════════════════════════════════════════════════════════════ */}}
 <header class="bg-navy border-b-4 border-gold px-6 lg:px-20 pt-24 pb-16">
   <div class="max-w-content mx-auto">
-
-    <!-- <div class="flex items-center gap-2 mb-6">
-      <a href="/lab/regime-detection/"
-         class="font-mono text-xs font-medium tracking-ultra uppercase text-gold/60 hover:text-gold no-underline transition-colors duration-200">
-        ← Lab · Regime Detection
-      </a>
-    </div> -->
-
     <div class="flex items-center gap-2 mb-6">
-      <!-- <span class="w-6 h-px bg-gold opacity-70"></span> -->
       <span class="font-mono text-xs font-medium tracking-ultra uppercase text-gold">
         Lab · Regime Detection · Methodology
       </span>
@@ -47,7 +40,6 @@
     </div>
   </div>
 </header>
-
 
 {{/* ════════════════════════════════════════════════════════════
      PROBLEM 
@@ -202,7 +194,6 @@
   </div>
 </section>
 
-
 {{/* ════════════════════════════════════════════════════════════
      WHY HMMs
 ════════════════════════════════════════════════════════════ */}}
@@ -226,7 +217,7 @@
       <p>
         Markets don't jump between environments randomly. A bear market lasts months. A
         bull market lasts years. The HMM transition matrix encodes this directly:
-        self-transition probabilities of <span class="text-navy font-semibold">90-97%</span>
+        self-transition probabilities of <span class="text-navy font-semibold">98-99%</span>
         mean the model expects regimes to persist unless the data says otherwise.
       </p>
       <p>
@@ -234,8 +225,8 @@
         They produced results worth publishing. The framework continues to develop.
       </p>
       <p>
-        Three states, not two: <span class="text-boom font-semibold">Extremes</span>,
-        <span class="text-mid font-semibold">Neutral</span>,
+        Three states, not two: <span class="text-extremes font-semibold">Extremes</span>,
+        <span class="text-neutral font-semibold">Neutral</span>,
         <span class="text-danger font-semibold">Danger</span>. Two-state models conflate
         quiet consolidation with strong bull markets — statistically different environments
         that warrant different treatment.
@@ -248,31 +239,58 @@
       </p>
     </div>
 
-    {{/* Figure: transition probability diagram */}}
-    {{ $alt := "Transition probability diagram" }}
-    {{ $desc := "Three-node diagram (Extremes / Neutral / Danger) with self-loop arrows labeled 90–97% and cross-transition arrows with smaller probabilities." }}
+    {{/* Transition probability table */}}
     <div class="chart-block">
-      <div class="chart-label text-sm">Transition matrix · fitted model</div>
+      <div class="chart-label text-sm">Transition matrix &middot; fitted model &middot; fold {{ $transitions.fold }}</div>
       <div class="chart-title">
         <h3 class="font-display font-bold text-navy leading-tight text-2xl mb-2">
           Regimes persist. The model expects continuity unless the data forces a switch.
         </h3>
       </div>
       <div class="chart-sub">
-        Self-transition probabilities dominate. Cross-transitions are rare and incremental.
+        Self-transition probabilities dominate the diagonal. Cross-transitions are rare and incremental.
       </div>
-      <div class="chart-card" style="padding:20px;">
-        {{ $img := resources.Get "images/lab/regime-detection/transition_diagram.png" }}
-        {{ with $img }}
-          {{ $resized := .Resize "1600x q90 webp" }}
-          <img src="{{ $resized.Permalink }}" alt="{{ $alt }}" class="w-full h-auto rounded-xl">
-        {{ else }}
-          <div class="border-2 border-dashed border-silk rounded-xl bg-cream/40 px-8 py-12 flex flex-col items-center justify-center min-h-[240px] text-center">
-            <div class="font-mono text-xs font-medium tracking-ultra uppercase text-gold/70 mb-2">Figure pending</div>
-            <div class="font-display font-semibold text-navy text-lg mb-2">{{ $alt }}</div>
-            <div class="font-mono text-xs text-muted leading-relaxed max-w-md">{{ $desc }}</div>
-          </div>
-        {{ end }}
+
+      <div class="bg-white border border-silk rounded-xl overflow-hidden overflow-x-auto">
+        <table class="w-full min-w-[480px]">
+          <thead>
+            <tr class="bg-navy">
+              <th class="text-left px-6 py-3 font-mono text-xs font-medium tracking-wider uppercase text-white/60">
+                {{ index $transitions.header 0 }}
+              </th>
+              {{ range (after 1 $transitions.header) }}
+                {{ $color := index $regimeColors . }}
+                <th class="text-right px-6 py-3 font-mono text-xs font-medium tracking-wider uppercase">
+                  <span class="text-{{ $color }}">{{ . }}</span>
+                </th>
+              {{ end }}
+            </tr>
+          </thead>
+          <tbody class="font-sans text-sm">
+            {{ range $rowIdx, $row := $transitions.rows }}
+              {{ $rowLabel := index $row 0 }}
+              {{ $rowColor := index $regimeColors $rowLabel }}
+              <tr class="border-b border-silk last:border-0">
+                <td class="px-6 py-3 font-semibold">
+                  <span class="inline-flex items-center gap-2 text-{{ $rowColor }}">
+                    <span class="w-2 h-2 rounded-full bg-{{ $rowColor }} shrink-0"></span>
+                    {{ $rowLabel }}
+                  </span>
+                </td>
+                {{ range $colIdx, $val := (after 1 $row) }}
+                  <td class="px-6 py-3 text-right font-mono {{ if eq $rowIdx $colIdx }}bg-cream font-semibold text-navy{{ else }}text-xs text-muted{{ end }}">
+                    {{ $val }}
+                  </td>
+                {{ end }}
+              </tr>
+            {{ end }}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="font-mono text-xs text-muted mt-3 leading-relaxed">
+        1-day transition probabilities from the hmmlearn fit. Diagonal cells (highlighted)
+        encode regime persistence; off-diagonal cells encode the rare switching events.
       </div>
     </div>
 
@@ -450,7 +468,7 @@
               {{ if eq .direction "Positive" }}
                 <span class="inline-flex items-center gap-1.5 text-danger">&#9650; {{ .direction }}</span>
               {{ else }}
-                <span class="inline-flex items-center gap-1.5 text-mid">&#9660; {{ .direction }}</span>
+                <span class="inline-flex items-center gap-1.5 text-neutral">&#9660; {{ .direction }}</span>
               {{ end }}
             </td>
             <td class="px-6 py-3 text-muted">{{ .meaning }}</td>
@@ -533,8 +551,8 @@
           After fitting, states are ordered by composite risk score derived from emission
           means. The state with elevated VIX, wide credit spreads, and SPX below trend
           becomes <span class="text-danger font-semibold">Danger</span>. Strong momentum,
-          low volatility becomes <span class="text-boom font-semibold">Boom</span>. The
-          middle state is <span class="text-mid font-semibold">Neutral</span>.
+          low volatility becomes <span class="text-extremes font-semibold">Extremes</span>. The
+          middle state is <span class="text-neutral font-semibold">Neutral</span>.
         </li>
       </ul>
     </div>
