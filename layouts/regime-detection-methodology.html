@@ -377,10 +377,10 @@
       </div>
       <div class="chart-sub">Color: red = positive correlation, blue = negative.</div>
       <div class="chart-card" style="padding:20px;">
-        {{ $img := resources.Get "images/lab/regime-detection/feature_correlation_heatmap.png" }}
+        {{ $img := resources.Get "figures/feature_correlation.png" }}
         {{ with $img }}
           {{ $resized := .Resize "1600x q90 webp" }}
-          <img src="{{ $resized.Permalink }}" alt="{{ $alt }}" class="w-full h-auto rounded-xl">
+          <img src="{{ $resized.Permalink }}" alt="{{ $alt }}" class="w-full h-auto rounded-xl cursor-zoom-in">
         {{ else }}
           <div class="border-2 border-dashed border-silk rounded-xl bg-cream/40 px-8 py-12 flex flex-col items-center justify-center min-h-[240px] text-center">
             <div class="font-mono text-xs font-medium tracking-ultra uppercase text-gold/70 mb-2">Figure pending</div>
@@ -510,7 +510,7 @@
         {{ $img := resources.Get "images/lab/regime-detection/pca_scree_plot.png" }}
         {{ with $img }}
           {{ $resized := .Resize "1600x q90 webp" }}
-          <img src="{{ $resized.Permalink }}" alt="{{ $alt }}" class="w-full h-auto rounded-xl">
+          <img src="{{ $resized.Permalink }}" alt="{{ $alt }}" class="w-full h-auto rounded-xl cursor-zoom-in">
         {{ else }}
           <div class="border-2 border-dashed border-silk rounded-xl bg-cream/40 px-8 py-12 flex flex-col items-center justify-center min-h-[240px] text-center">
             <div class="font-mono text-xs font-medium tracking-ultra uppercase text-gold/70 mb-2">Figure pending</div>
@@ -572,7 +572,7 @@
         {{ $img := resources.Get "images/lab/regime-detection/emission_distributions.png" }}
         {{ with $img }}
           {{ $resized := .Resize "1600x q90 webp" }}
-          <img src="{{ $resized.Permalink }}" alt="{{ $alt }}" class="w-full h-auto rounded-xl">
+          <img src="{{ $resized.Permalink }}" alt="{{ $alt }}" class="w-full h-auto rounded-xl cursor-zoom-in">
         {{ else }}
           <div class="border-2 border-dashed border-silk rounded-xl bg-cream/40 px-8 py-12 flex flex-col items-center justify-center min-h-[240px] text-center">
             <div class="font-mono text-xs font-medium tracking-ultra uppercase text-gold/70 mb-2">Figure pending</div>
@@ -626,7 +626,7 @@
         {{ $img := resources.Get "images/lab/regime-detection/fold_structure_timeline.png" }}
         {{ with $img }}
           {{ $resized := .Resize "1600x q90 webp" }}
-          <img src="{{ $resized.Permalink }}" alt="{{ $alt }}" class="w-full h-auto rounded-xl">
+          <img src="{{ $resized.Permalink }}" alt="{{ $alt }}" class="w-full h-auto rounded-xl cursor-zoom-in">
         {{ else }}
           <div class="border-2 border-dashed border-silk rounded-xl bg-cream/40 px-8 py-12 flex flex-col items-center justify-center min-h-[240px] text-center">
             <div class="font-mono text-xs font-medium tracking-ultra uppercase text-gold/70 mb-2">Figure pending</div>
@@ -738,7 +738,7 @@
         {{ $img := resources.Get "images/lab/regime-detection/wf_coverage_scorecard.png" }}
         {{ with $img }}
           {{ $resized := .Resize "1600x q90 webp" }}
-          <img src="{{ $resized.Permalink }}" alt="{{ $alt }}" class="w-full h-auto rounded-xl">
+          <img src="{{ $resized.Permalink }}" alt="{{ $alt }}" class="w-full h-auto rounded-xl cursor-zoom-in">
         {{ else }}
           <div class="border-2 border-dashed border-silk rounded-xl bg-cream/40 px-8 py-12 flex flex-col items-center justify-center min-h-[240px] text-center">
             <div class="font-mono text-xs font-medium tracking-ultra uppercase text-gold/70 mb-2">Figure pending</div>
@@ -818,7 +818,7 @@
         {{ $img := resources.Get "images/lab/regime-detection/wf_return_distributions.png" }}
         {{ with $img }}
           {{ $resized := .Resize "1600x q90 webp" }}
-          <img src="{{ $resized.Permalink }}" alt="{{ $alt }}" class="w-full h-auto rounded-xl">
+          <img src="{{ $resized.Permalink }}" alt="{{ $alt }}" class="w-full h-auto rounded-xl cursor-zoom-in">
         {{ else }}
           <div class="border-2 border-dashed border-silk rounded-xl bg-cream/40 px-8 py-12 flex flex-col items-center justify-center min-h-[240px] text-center">
             <div class="font-mono text-xs font-medium tracking-ultra uppercase text-gold/70 mb-2">Figure pending</div>
@@ -906,7 +906,7 @@
         {{ $img := resources.Get "images/lab/regime-detection/wf_equity_curve.png" }}
         {{ with $img }}
           {{ $resized := .Resize "1600x q90 webp" }}
-          <img src="{{ $resized.Permalink }}" alt="{{ $alt }}" class="w-full h-auto rounded-xl">
+          <img src="{{ $resized.Permalink }}" alt="{{ $alt }}" class="w-full h-auto rounded-xl cursor-zoom-in">
         {{ else }}
           <div class="border-2 border-dashed border-silk rounded-xl bg-cream/40 px-8 py-12 flex flex-col items-center justify-center min-h-[240px] text-center">
             <div class="font-mono text-xs font-medium tracking-ultra uppercase text-gold/70 mb-2">Figure pending</div>
@@ -963,7 +963,7 @@
         {{ $img := resources.Get "images/lab/regime-detection/wf_regime_stability.png" }}
         {{ with $img }}
           {{ $resized := .Resize "1600x q90 webp" }}
-          <img src="{{ $resized.Permalink }}" alt="{{ $alt }}" class="w-full h-auto rounded-xl">
+          <img src="{{ $resized.Permalink }}" alt="{{ $alt }}" class="w-full h-auto rounded-xl cursor-zoom-in">
         {{ else }}
           <div class="border-2 border-dashed border-silk rounded-xl bg-cream/40 px-8 py-12 flex flex-col items-center justify-center min-h-[240px] text-center">
             <div class="font-mono text-xs font-medium tracking-ultra uppercase text-gold/70 mb-2">Figure pending</div>
@@ -1029,7 +1029,7 @@
         {{ $img := resources.Get "images/lab/regime-detection/pca_loadings_heatmap.png" }}
         {{ with $img }}
           {{ $resized := .Resize "1600x q90 webp" }}
-          <img src="{{ $resized.Permalink }}" alt="{{ $alt }}" class="w-full h-auto rounded-xl">
+          <img src="{{ $resized.Permalink }}" alt="{{ $alt }}" class="w-full h-auto rounded-xl cursor-zoom-in">
         {{ else }}
           <div class="border-2 border-dashed border-silk rounded-xl bg-cream/40 px-8 py-12 flex flex-col items-center justify-center min-h-[240px] text-center">
             <div class="font-mono text-xs font-medium tracking-ultra uppercase text-gold/70 mb-2">Figure pending</div>
@@ -1080,7 +1080,7 @@
         {{ $img := resources.Get "images/lab/regime-detection/mahalanobis_distance.png" }}
         {{ with $img }}
           {{ $resized := .Resize "1600x q90 webp" }}
-          <img src="{{ $resized.Permalink }}" alt="{{ $alt }}" class="w-full h-auto rounded-xl">
+          <img src="{{ $resized.Permalink }}" alt="{{ $alt }}" class="w-full h-auto rounded-xl cursor-zoom-in">
         {{ else }}
           <div class="border-2 border-dashed border-silk rounded-xl bg-cream/40 px-8 py-12 flex flex-col items-center justify-center min-h-[240px] text-center">
             <div class="font-mono text-xs font-medium tracking-ultra uppercase text-gold/70 mb-2">Figure pending</div>
@@ -1129,7 +1129,7 @@
         {{ $img := resources.Get "images/lab/regime-detection/feature_contribution_waterfall.png" }}
         {{ with $img }}
           {{ $resized := .Resize "1600x q90 webp" }}
-          <img src="{{ $resized.Permalink }}" alt="{{ $alt }}" class="w-full h-auto rounded-xl">
+          <img src="{{ $resized.Permalink }}" alt="{{ $alt }}" class="w-full h-auto rounded-xl cursor-zoom-in">
         {{ else }}
           <div class="border-2 border-dashed border-silk rounded-xl bg-cream/40 px-8 py-12 flex flex-col items-center justify-center min-h-[240px] text-center">
             <div class="font-mono text-xs font-medium tracking-ultra uppercase text-gold/70 mb-2">Figure pending</div>
@@ -1357,5 +1357,38 @@
 
   </div>
 </section>
+
+
+{{/* ════════════════════════════════════════════════════════════
+     FIGURE LIGHTBOX — click any embedded figure to expand
+════════════════════════════════════════════════════════════ */}}
+<dialog id="figure-lightbox"
+        class="bg-transparent backdrop:bg-navy/80 p-0 max-w-none w-screen h-screen">
+  <div class="w-full h-full flex items-center justify-center p-6 lg:p-12"
+       onclick="if(event.target===this)this.closest('dialog').close()">
+    <img id="figure-lightbox-img" src="" alt=""
+         class="max-w-full max-h-full object-contain rounded-xl shadow-2xl">
+    <button onclick="this.closest('dialog').close()"
+            class="fixed top-6 right-6 bg-white/90 hover:bg-white
+                   text-navy font-mono text-xs font-medium tracking-wider
+                   uppercase px-4 py-2 rounded-lg transition-colors">
+      Close ✕
+    </button>
+  </div>
+</dialog>
+
+<script>
+  (() => {
+    const dialog = document.getElementById('figure-lightbox');
+    const target = document.getElementById('figure-lightbox-img');
+    document.querySelectorAll('.chart-card img').forEach(img => {
+      img.addEventListener('click', () => {
+        target.src = img.currentSrc || img.src;
+        target.alt = img.alt;
+        dialog.showModal();
+      });
+    });
+  })();
+</script>
 
 {{ end }}
