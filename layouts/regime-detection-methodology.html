@@ -367,7 +367,7 @@
 
     {{/* Figure: feature correlation heatmap */}}
     {{ $alt := "Feature correlation heatmap" }}
-    {{ $desc := "16×16 correlation matrix grouped by category (equity / credit / rates / macro). Shows visually why PCA preprocessing is needed — the feature blocks are highly correlated within groups." }}
+    {{ $desc := "16x16 correlation matrix grouped by category (equity / credit / rates / macro). Shows visually why PCA preprocessing is needed — the feature blocks are highly correlated within groups." }}
     <div class="chart-block mb-12">
       <div class="chart-label">Feature correlation · 2006-2026</div>
       <div class="chart-title">
@@ -507,7 +507,7 @@
       </div>
       <div class="chart-sub">Cumulative variance reaches 87% at component 9.</div>
       <div class="chart-card" style="padding:20px;">
-        {{ $img := resources.Get "images/lab/regime-detection/pca_scree_plot.png" }}
+        {{ $img := resources.Get "figures/pca_scree.png" }}
         {{ with $img }}
           {{ $resized := .Resize "1600x q90 webp" }}
           <img src="{{ $resized.Permalink }}" alt="{{ $alt }}" class="w-full h-auto rounded-xl cursor-zoom-in">
