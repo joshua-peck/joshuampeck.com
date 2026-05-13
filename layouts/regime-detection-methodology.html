@@ -623,7 +623,7 @@
       </div>
       <div class="chart-sub">Navy = training window. Gold = OOS prediction window.</div>
       <div class="chart-card" style="padding:20px;">
-        {{ $img := resources.Get "images/lab/regime-detection/fold_structure_timeline.png" }}
+        {{ $img := resources.Get "figures/wf_fold_structure.png" }}
         {{ with $img }}
           {{ $resized := .Resize "1600x q90 webp" }}
           <img src="{{ $resized.Permalink }}" alt="{{ $alt }}" class="w-full h-auto rounded-xl cursor-zoom-in">
