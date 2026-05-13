@@ -569,7 +569,7 @@
       </div>
       <div class="chart-sub">Density curves for VIX (left) and BAA10Y credit spread (right).</div>
       <div class="chart-card" style="padding:20px;">
-        {{ $img := resources.Get "images/lab/regime-detection/emission_distributions.png" }}
+        {{ $img := resources.Get "figures/emission_distributions.png" }}
         {{ with $img }}
           {{ $resized := .Resize "1600x q90 webp" }}
           <img src="{{ $resized.Permalink }}" alt="{{ $alt }}" class="w-full h-auto rounded-xl cursor-zoom-in">
