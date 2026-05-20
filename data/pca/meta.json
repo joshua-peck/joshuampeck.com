@@ -1,0 +1,9 @@
+{
+  "n_folds": 29,
+  "train_start": "1996",
+  "train_end": "2025",
+  "variance_target": "85%",
+  "run_date": "2025-12-31",
+  "n_components_current": 10,
+  "variance_explained_current": 87.1
+}

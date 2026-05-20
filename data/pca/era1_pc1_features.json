@@ -1,0 +1,7 @@
+[
+  {"feature": "BAA10Y",       "direction": "+", "loading": "0.50"},
+  {"feature": "BAA10Y_trend", "direction": "+", "loading": "0.44"},
+  {"feature": "DTB3",         "direction": "−", "loading": "0.44"},
+  {"feature": "DGS10",        "direction": "−", "loading": "0.41"},
+  {"feature": "T10Y2Y",       "direction": "+", "loading": "0.23"}
+]

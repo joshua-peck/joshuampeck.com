@@ -1,0 +1,72 @@
+[
+  {
+    "pc_label": "PC1",
+    "variance_pct": 22.1,
+    "cumulative_pct": 22.1,
+    "economic_label": "Equity stress",
+    "top_features_display": "SPX_200d_ma_spread (−), SPX (−), BAA10Y (+), BAA10Y_trend (+)"
+  },
+  {
+    "pc_label": "PC2",
+    "variance_pct": 13.1,
+    "cumulative_pct": 35.2,
+    "economic_label": "Economic activity",
+    "top_features_display": "MANEMP (+), SPX_from_52w_high (+), PERMIT (+), BAA10Y_trend (+)"
+  },
+  {
+    "pc_label": "PC3",
+    "variance_pct": 9.9,
+    "cumulative_pct": 45.1,
+    "economic_label": "Rate levels",
+    "top_features_display": "DTB3 (+), DGS10 (+), RVOL_trend (+), SPX_RVOL21 (+)"
+  },
+  {
+    "pc_label": "PC4",
+    "variance_pct": 8.9,
+    "cumulative_pct": 54.0,
+    "economic_label": "Curve shape",
+    "top_features_display": "T10Y2Y (+), DCOILWTICO (+), RVOL_trend (+)"
+  },
+  {
+    "pc_label": "PC5",
+    "variance_pct": 7.2,
+    "cumulative_pct": 61.2,
+    "economic_label": "Dollar / commodity",
+    "top_features_display": "DXY (+), DCOILWTICO (−), ICSA (+), MICH (−)"
+  },
+  {
+    "pc_label": "PC6",
+    "variance_pct": 6.3,
+    "cumulative_pct": 67.5,
+    "economic_label": "Consumer sentiment",
+    "top_features_display": "MICH (+), ICSA (+), MANEMP (+)"
+  },
+  {
+    "pc_label": "PC7",
+    "variance_pct": 5.4,
+    "cumulative_pct": 73.0,
+    "economic_label": "Claims / dollar",
+    "top_features_display": "ICSA (+), DXY (−), MANEMP (+)"
+  },
+  {
+    "pc_label": "PC8",
+    "variance_pct": 5.1,
+    "cumulative_pct": 78.1,
+    "economic_label": "Housing / volatility",
+    "top_features_display": "PERMIT (+), T10Y2Y (+), RVOL_trend (−)"
+  },
+  {
+    "pc_label": "PC9",
+    "variance_pct": 4.9,
+    "cumulative_pct": 82.9,
+    "economic_label": "Commodity / credit",
+    "top_features_display": "DCOILWTICO (+), DTB3 (+), BAA10Y_trend (+)"
+  },
+  {
+    "pc_label": "PC10",
+    "variance_pct": 4.2,
+    "cumulative_pct": 87.1,
+    "economic_label": "Short rates",
+    "top_features_display": "DTB3 (+), MANEMP (−), DXY (−)"
+  }
+]

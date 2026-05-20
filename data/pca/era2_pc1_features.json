@@ -1,0 +1,7 @@
+[
+  {"feature": "SPX_200d_ma_spread", "direction": "−", "loading": "0.40"},
+  {"feature": "SPX",                "direction": "−", "loading": "0.39"},
+  {"feature": "BAA10Y_trend",       "direction": "+", "loading": "0.37"},
+  {"feature": "BAA10Y",             "direction": "+", "loading": "0.36"},
+  {"feature": "SPX_from_52w_high",  "direction": "−", "loading": "0.35"}
+]

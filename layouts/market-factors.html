@@ -1,0 +1,464 @@
+{{ define "main" }}
+
+{{/* ── PCA factor data ── */}}
+{{ $meta        := .Site.Data.pca.meta }}
+{{ $components  := .Site.Data.pca.current_components }}
+{{ $era1        := .Site.Data.pca.era1_pc1_features }}
+{{ $era2        := .Site.Data.pca.era2_pc1_features }}
+{{ $transitions := .Site.Data.pca.transitions }}
+
+{{/* ── Static matplotlib figures (placeholder shown when absent) ── */}}
+{{ $scree := "" }}
+{{ with resources.Get "images/charts/pca_scree.png" }}{{ $scree = .Resize "1200x q90 webp" }}{{ end }}
+{{ $crossover := "" }}
+{{ with resources.Get "images/charts/pca_pc1_crossover.png" }}{{ $crossover = .Resize "1200x q90 webp" }}{{ end }}
+{{ $timeline := "" }}
+{{ with resources.Get "images/charts/pca_era_timeline.png" }}{{ $timeline = .Resize "1200x q90 webp" }}{{ end }}
+{{ $sensitivity_chart := "" }}
+{{ with resources.Get "images/charts/pca_sensitivity_by_year.png" }}{{ $sensitivity_chart = .Resize "1200x q90 webp" }}{{ end }}
+
+
+{{/* ════════════════════════════════════════════════════════════
+     SECTION 1 — HEADER (navy)
+════════════════════════════════════════════════════════════ */}}
+<header class="bg-navy border-b-4 border-gold px-6 lg:px-20 pt-24 pb-16">
+  <div class="max-w-content mx-auto">
+
+    <div class="flex items-center gap-2 mb-6">
+      <span class="font-mono text-xs font-medium tracking-ultra uppercase text-gold">
+        MacroContext · Lab · Factor Analysis
+      </span>
+    </div>
+
+    <h1 class="font-display font-bold text-white leading-tight
+               text-4xl md:text-5xl mb-4">
+      What is moving markets right now
+    </h1>
+
+    <p class="font-sans text-lg text-white/45 max-w-2xl leading-relaxed mb-8">
+      A rolling analysis of the dominant macro factors driving S&amp;P 500 variance.
+      The factors that move markets change over time — sometimes gradually,
+      sometimes abruptly. This page tracks those shifts.
+    </p>
+
+    <div class="flex items-center gap-x-6 gap-y-2 flex-wrap">
+      <span class="font-mono text-xs text-white/30">Training windows: {{ $meta.n_folds }}</span>
+      <span class="font-mono text-xs text-white/20">·</span>
+      <span class="font-mono text-xs text-white/30">History: {{ $meta.train_start }}–{{ $meta.train_end }}</span>
+      <span class="font-mono text-xs text-white/20">·</span>
+      <span class="font-mono text-xs text-white/30">Variance target: {{ $meta.variance_target }}</span>
+      <span class="font-mono text-xs text-white/20">·</span>
+      <span class="font-mono text-xs text-white/30">Updated: {{ $meta.run_date }}</span>
+    </div>
+
+  </div>
+</header>
+
+
+{{/* ════════════════════════════════════════════════════════════
+     SECTION 2 — CURRENT FACTOR STRUCTURE (cream)
+════════════════════════════════════════════════════════════ */}}
+<section class="bg-cream border-b border-silk px-6 lg:px-20 py-16">
+  <div class="max-w-content mx-auto">
+
+    <div class="flex items-center gap-2 mb-4">
+      <span class="w-6 h-px bg-gold opacity-70"></span>
+      <span class="font-mono text-xs font-medium tracking-ultra uppercase text-gold">
+        Current Factor Structure · {{ $meta.train_end }}
+      </span>
+    </div>
+
+    <h2 class="font-display font-bold text-navy text-2xl mb-2">
+      What drives equity markets today
+    </h2>
+
+    <p class="font-sans text-sm text-muted leading-relaxed mb-10 max-w-2xl">
+      The {{ $meta.n_components_current }} principal components of the current
+      training window, ordered by variance explained. Together they capture
+      {{ $meta.variance_explained_current }}% of variance in the 16-indicator
+      dataset.
+    </p>
+
+    {{/* Scree plot */}}
+    <div class="bg-white border border-silk rounded-xl overflow-hidden mb-10">
+      {{ if $scree }}
+        <img src="{{ $scree.Permalink }}"
+             width="{{ $scree.Width }}" height="{{ $scree.Height }}"
+             alt="PCA scree plot showing variance explained per component with cumulative line and 85% threshold"
+             class="w-full h-auto block">
+      {{ else }}
+        <div class="w-full bg-silk flex flex-col items-center justify-center gap-2 py-20">
+          <p class="font-mono text-xs text-muted">Figure pending</p>
+          <p class="font-mono text-xs text-muted/60">
+            → assets/images/charts/pca_scree.png
+          </p>
+        </div>
+      {{ end }}
+    </div>
+
+    {{/* Component interpretation table */}}
+    <div class="bg-white border border-silk rounded-xl overflow-hidden overflow-x-auto">
+      <table class="w-full min-w-[720px]">
+        <thead>
+          <tr class="bg-navy">
+            <th class="text-left  px-5 py-3 font-mono text-xs font-medium tracking-wider uppercase text-white/60">Component</th>
+            <th class="text-right px-5 py-3 font-mono text-xs font-medium tracking-wider uppercase text-white/60">Variance %</th>
+            <th class="text-right px-5 py-3 font-mono text-xs font-medium tracking-wider uppercase text-white/60">Cumulative %</th>
+            <th class="text-left  px-5 py-3 font-mono text-xs font-medium tracking-wider uppercase text-white/60">Economic label</th>
+            <th class="text-left  px-5 py-3 font-mono text-xs font-medium tracking-wider uppercase text-white/60">Top features</th>
+          </tr>
+        </thead>
+        <tbody class="font-sans text-sm">
+          {{ range $components }}
+          <tr class="border-b border-silk last:border-0 {{ if eq .pc_label "PC1" }}bg-gold/10{{ end }}">
+            <td class="px-5 py-3 font-mono text-xs text-navy font-semibold">{{ .pc_label }}</td>
+            <td class="px-5 py-3 font-mono text-sm text-navy text-right">{{ .variance_pct }}</td>
+            <td class="px-5 py-3 font-mono text-sm text-muted text-right">{{ .cumulative_pct }}</td>
+            <td class="px-5 py-3 text-navy">{{ .economic_label }}</td>
+            <td class="px-5 py-3 font-mono text-xs text-muted">{{ .top_features_display }}</td>
+          </tr>
+          {{ end }}
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</section>
+
+
+{{/* ════════════════════════════════════════════════════════════
+     SECTION 3 — STRUCTURAL TRANSITION (white + dot grid)
+════════════════════════════════════════════════════════════ */}}
+<section class="bg-white bg-dot-grid bg-dot border-b border-silk px-6 lg:px-20 py-16">
+  <div class="max-w-content mx-auto">
+
+    <div class="flex items-center gap-2 mb-4">
+      <span class="w-6 h-px bg-gold opacity-70"></span>
+      <span class="font-mono text-xs font-medium tracking-ultra uppercase text-gold">
+        Structural Transition · 2018–2019
+      </span>
+    </div>
+
+    <h2 class="font-display font-bold text-navy text-2xl mb-2">
+      The dominant risk signal changed character around 2018–2019
+    </h2>
+
+    <p class="font-sans text-sm text-muted leading-relaxed mb-10 max-w-2xl">
+      Before 2019, interest rate levels and credit spreads explained the most
+      market variance. After 2019, equity momentum and trend took over. The
+      crossover marks a shift in what markets fear most.
+    </p>
+
+    {{/* Two-era comparison cards */}}
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
+
+      <div class="bg-white border border-silk rounded-xl p-6 border-l-4 border-l-silk">
+        <div class="font-mono text-xs text-muted uppercase tracking-wider mb-3">
+          Era 1 · Folds 1–22 · 1996–2017
+        </div>
+        <div class="font-display font-bold text-navy text-lg mb-5">
+          PC1: The Rates &amp; Credit Axis
+        </div>
+        {{ range $era1 }}
+        <div class="flex justify-between items-baseline py-2 border-b border-silk last:border-b-0">
+          <span class="font-mono text-xs text-navy">{{ .feature }}</span>
+          <span class="font-mono text-xs text-muted">{{ .direction }} {{ .loading }}</span>
+        </div>
+        {{ end }}
+        <p class="font-sans text-xs text-muted mt-5 leading-relaxed italic">
+          Credit spreads and Treasury yields dominate. The primary market fear
+          is rate and credit stress.
+        </p>
+      </div>
+
+      <div class="bg-white border border-silk rounded-xl p-6 border-l-4 border-l-navy">
+        <div class="font-mono text-xs text-muted uppercase tracking-wider mb-3">
+          Era 2 · Folds 23–29 · 2019–2025
+        </div>
+        <div class="font-display font-bold text-navy text-lg mb-5">
+          PC1: The Equity Stress Axis
+        </div>
+        {{ range $era2 }}
+        <div class="flex justify-between items-baseline py-2 border-b border-silk last:border-b-0">
+          <span class="font-mono text-xs text-navy">{{ .feature }}</span>
+          <span class="font-mono text-xs text-muted">{{ .direction }} {{ .loading }}</span>
+        </div>
+        {{ end }}
+        <p class="font-sans text-xs text-muted mt-5 leading-relaxed italic">
+          SPX trend and momentum dominate. The primary fear is equity structure
+          deterioration.
+        </p>
+      </div>
+
+    </div>
+
+    {{/* PC1 crossover chart */}}
+    <div class="bg-white border border-silk rounded-xl overflow-hidden mb-4">
+      {{ if $crossover }}
+        <img src="{{ $crossover.Permalink }}"
+             width="{{ $crossover.Width }}" height="{{ $crossover.Height }}"
+             alt="PC1 loading crossover showing BAA10Y declining and SPX_200d_ma_spread rising across 29 training folds"
+             class="w-full h-auto block">
+      {{ else }}
+        <div class="w-full bg-silk flex flex-col items-center justify-center gap-2 py-20">
+          <p class="font-mono text-xs text-muted">Figure pending</p>
+          <p class="font-mono text-xs text-muted/60">
+            → assets/images/charts/pca_pc1_crossover.png
+          </p>
+        </div>
+      {{ end }}
+    </div>
+    <p class="font-mono text-xs text-muted mb-10">
+      PC1 dominant loading across all 29 training windows, 1996–2025.
+      Gold = BAA10Y (credit spreads). Navy = SPX_200d_ma_spread (equity trend).
+    </p>
+
+    {{/* Explanatory copy */}}
+    <div class="max-w-2xl flex flex-col gap-4">
+      <p class="font-sans text-sm text-muted leading-relaxed">
+        The zero lower bound era (2009–2015) compressed interest rate variance.
+        When rates barely move, they cannot explain much variance — they have
+        almost none. As equity prices became the primary source of market
+        variation, PC1 began loading more heavily on SPX indicators.
+      </p>
+      <p class="font-sans text-sm text-muted leading-relaxed">
+        The 2018 Q4 selloff and rate hiking cycle added a new pattern of
+        equity-led stress. By fold 23, trained through 2019, the covariance
+        structure had tipped.
+      </p>
+      <div class="border-l-2 border-gold/40 pl-5">
+        <p class="font-sans text-sm text-navy leading-relaxed">
+          An investor using credit spread levels as the primary risk signal was
+          correct in 2022 — BAA10Y widening preceded the bear market. The same
+          signal was uninformative in 2024's bull market. The dominant fear had
+          changed.
+        </p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+{{/* ════════════════════════════════════════════════════════════
+     SECTION 4 — HISTORICAL TRANSITION TIMELINE (cream)
+════════════════════════════════════════════════════════════ */}}
+<section class="bg-cream border-b border-silk px-6 lg:px-20 py-16">
+  <div class="max-w-content mx-auto">
+
+    <div class="flex items-center gap-2 mb-4">
+      <span class="w-6 h-px bg-gold opacity-70"></span>
+      <span class="font-mono text-xs font-medium tracking-ultra uppercase text-gold">
+        Factor Era Timeline · {{ $meta.train_start }}–{{ $meta.train_end }}
+      </span>
+    </div>
+
+    <h2 class="font-display font-bold text-navy text-2xl mb-2">
+      Stable within eras. Abrupt at transitions.
+    </h2>
+
+    <p class="font-sans text-sm text-muted leading-relaxed mb-10 max-w-2xl">
+      Named periods where PC1 changed character materially, with economic
+      context for each transition.
+    </p>
+
+    {{/* Era timeline chart */}}
+    <div class="bg-white border border-silk rounded-xl overflow-hidden mb-8">
+      {{ if $timeline }}
+        <img src="{{ $timeline.Permalink }}"
+             width="{{ $timeline.Width }}" height="{{ $timeline.Height }}"
+             alt="Factor era timeline 1996–2025 showing PC1 character and named transition points"
+             class="w-full h-auto block">
+      {{ else }}
+        <div class="w-full bg-silk flex flex-col items-center justify-center gap-2 py-16">
+          <p class="font-mono text-xs text-muted">Figure pending</p>
+          <p class="font-mono text-xs text-muted/60">
+            → assets/images/charts/pca_era_timeline.png
+          </p>
+        </div>
+      {{ end }}
+    </div>
+
+    {{/* Transition detail cards */}}
+    <div class="flex flex-col gap-4">
+      {{ range $transitions }}
+      <div class="bg-white border border-silk rounded-xl p-6">
+        <div class="flex items-start justify-between mb-3">
+          <div>
+            <div class="font-mono text-xs text-gold uppercase tracking-wider mb-1">{{ .period }}</div>
+            <div class="font-display font-bold text-navy text-lg">{{ .title }}</div>
+          </div>
+          <span class="font-mono text-xs text-muted bg-cream rounded-lg px-3 py-1 shrink-0 ml-4">
+            Folds {{ .fold_range }}
+          </span>
+        </div>
+        <p class="font-sans text-sm text-muted leading-relaxed">{{ .description }}</p>
+      </div>
+      {{ end }}
+    </div>
+
+  </div>
+</section>
+
+
+{{/* ════════════════════════════════════════════════════════════
+     SECTION 5 — SENSITIVITY ANALYSIS (white + dot grid)
+════════════════════════════════════════════════════════════ */}}
+<section class="bg-white bg-dot-grid bg-dot border-b border-silk px-6 lg:px-20 py-16">
+  <div class="max-w-content mx-auto">
+
+    <div class="flex items-center gap-2 mb-4">
+      <span class="w-6 h-px bg-gold opacity-70"></span>
+      <span class="font-mono text-xs font-medium tracking-ultra uppercase text-gold">
+        Factor Stability · Configuration Sensitivity
+      </span>
+    </div>
+
+    <h2 class="font-display font-bold text-navy text-2xl mb-2">
+      High disagreement between configurations signals genuine market ambiguity
+    </h2>
+
+    <p class="font-sans text-sm text-muted leading-relaxed mb-10 max-w-2xl">
+      Comparing PCA variance thresholds of 85% vs 90% across 5,119 trading days.
+      When two reasonable configurations disagree about what is driving markets,
+      that disagreement is itself informative.
+    </p>
+
+    {{/* Three headline stats */}}
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
+
+      <div class="bg-cream rounded-xl px-5 py-5">
+        <div class="font-mono text-xs text-muted uppercase tracking-wider mb-2">
+          Steady-state agreement
+        </div>
+        <div class="font-display font-bold text-navy text-3xl mb-1">79.4%</div>
+        <div class="font-mono text-xs text-muted">&gt;5 days from any transition</div>
+      </div>
+
+      <div class="bg-cream rounded-xl px-5 py-5">
+        <div class="font-mono text-xs text-muted uppercase tracking-wider mb-2">
+          Near-transition agreement
+        </div>
+        <div class="font-display font-bold text-navy text-3xl mb-1">51.2%</div>
+        <div class="font-mono text-xs text-muted">Within ±5 days of a transition</div>
+      </div>
+
+      <div class="bg-cream rounded-xl px-5 py-5">
+        <div class="font-mono text-xs text-muted uppercase tracking-wider mb-2">
+          Most stable year
+        </div>
+        <div class="font-display font-bold text-navy text-3xl mb-1">2022</div>
+        <div class="font-mono text-xs text-muted">100% agreement — unambiguous Danger</div>
+      </div>
+
+    </div>
+
+    {{/* Sensitivity by year chart */}}
+    <div class="bg-white border border-silk rounded-xl overflow-hidden mb-4">
+      {{ if $sensitivity_chart }}
+        <img src="{{ $sensitivity_chart.Permalink }}"
+             width="{{ $sensitivity_chart.Width }}" height="{{ $sensitivity_chart.Height }}"
+             alt="Year-by-year classification disagreement between PCA 0.85 and 0.90 configurations, 2006 to 2026"
+             class="w-full h-auto block">
+      {{ else }}
+        <div class="w-full bg-silk flex flex-col items-center justify-center gap-2 py-20">
+          <p class="font-mono text-xs text-muted">Figure pending</p>
+          <p class="font-mono text-xs text-muted/60">
+            → assets/images/charts/pca_sensitivity_by_year.png
+          </p>
+        </div>
+      {{ end }}
+    </div>
+    <p class="font-mono text-xs text-muted mb-10">
+      Green = factor structure unambiguous (&lt;15% disagreement).
+      Yellow = moderate. Red = genuinely uncertain (&gt;40%).
+      Data: PCA=0.85 vs PCA=0.90, 5,119 trading days, 2006–2026.
+    </p>
+
+    {{/* Explanatory copy */}}
+    <div class="max-w-2xl flex flex-col gap-4">
+      <p class="font-sans text-sm text-muted leading-relaxed">
+        2022 produced 100% agreement — the rate-hiking bear market created an
+        unambiguous factor structure. Any reasonable PCA configuration reached
+        the same conclusion about what was driving markets.
+      </p>
+      <p class="font-sans text-sm text-muted leading-relaxed">
+        2020 produced 21% agreement. COVID disrupted the covariance structure
+        temporarily. Different configurations genuinely disagreed about whether
+        credit stress, equity trend, or volatility was the primary driver. That
+        disagreement was correct. It was a genuinely novel factor environment.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+
+{{/* ════════════════════════════════════════════════════════════
+     SECTION 6 — RESEARCH CTA (navy)
+════════════════════════════════════════════════════════════ */}}
+<section class="bg-navy px-6 lg:px-20 py-14">
+  <div class="max-w-content mx-auto flex flex-wrap items-center justify-between gap-8">
+
+    <div class="max-w-sm">
+      <p class="font-display font-bold text-white text-xl mb-3">
+        What Markets Fear
+      </p>
+      <p class="font-sans text-sm text-white/55 leading-relaxed">
+        The academic paper develops the full argument: how the principal
+        dimensions of macro stress have shifted since 1996, why they shift, and
+        what that means for systematic risk detection.
+      </p>
+    </div>
+
+    <div class="flex flex-wrap gap-4">
+      <a href="/newsletter/"
+         class="bg-gold text-navy font-semibold text-sm px-6 py-3 rounded-lg
+                no-underline hover:bg-gold-dark transition-colors duration-200">
+        Follow the research →
+      </a>
+      <a href="/lab/regime-detection/"
+         class="text-gold font-semibold text-sm px-6 py-3 rounded-lg
+                border-2 border-gold/30 no-underline
+                hover:border-gold hover:bg-gold/10 transition-all duration-200">
+        View regime detection →
+      </a>
+    </div>
+
+  </div>
+</section>
+
+
+{{/* ════════════════════════════════════════════════════════════
+     SECTION 7 — DISCLOSURES (cream)
+════════════════════════════════════════════════════════════ */}}
+<section class="bg-cream border-t border-silk px-6 lg:px-20 py-12">
+  <div class="max-w-content mx-auto">
+
+    <p class="font-mono text-xs font-medium tracking-wider uppercase text-muted mb-4">
+      Important disclosures
+    </p>
+
+    <div class="max-w-3xl flex flex-col gap-3">
+      <p class="font-mono text-xs text-muted/70 leading-relaxed">
+        The PCA factor analysis presented on this page is provided for
+        informational and research purposes only. It does not constitute
+        investment advice, a solicitation, or a recommendation to buy or sell
+        any security or financial instrument.
+      </p>
+      <p class="font-mono text-xs text-muted/70 leading-relaxed">
+        Factor analysis results are based on historical data and walk-forward
+        methodology. Past factor structure does not indicate future factor
+        structure. The covariance structure of macro indicators changes over
+        time and may shift materially from the patterns shown.
+      </p>
+      <p class="font-mono text-xs text-muted/70 leading-relaxed">
+        AppliedComplexity Research makes no representations as to the accuracy
+        or completeness of the information presented. For informational use only.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+{{ end }}

@@ -1,0 +1,14 @@
+[
+  {"fold": 1,  "train_end_year": 1996, "baa10y_loading": 0.50, "spx_200d_loading": 0.12},
+  {"fold": 2,  "train_end_year": 1997, "baa10y_loading": 0.50, "spx_200d_loading": 0.11},
+  {"fold": 5,  "train_end_year": 2000, "baa10y_loading": 0.42, "spx_200d_loading": 0.30},
+  {"fold": 10, "train_end_year": 2005, "baa10y_loading": 0.44, "spx_200d_loading": 0.28},
+  {"fold": 15, "train_end_year": 2010, "baa10y_loading": 0.44, "spx_200d_loading": 0.30},
+  {"fold": 20, "train_end_year": 2015, "baa10y_loading": 0.45, "spx_200d_loading": 0.29},
+  {"fold": 22, "train_end_year": 2017, "baa10y_loading": 0.44, "spx_200d_loading": 0.30},
+  {"fold": 23, "train_end_year": 2019, "baa10y_loading": 0.36, "spx_200d_loading": 0.41},
+  {"fold": 24, "train_end_year": 2020, "baa10y_loading": 0.36, "spx_200d_loading": 0.40},
+  {"fold": 26, "train_end_year": 2022, "baa10y_loading": 0.36, "spx_200d_loading": 0.40},
+  {"fold": 28, "train_end_year": 2024, "baa10y_loading": 0.36, "spx_200d_loading": 0.40},
+  {"fold": 29, "train_end_year": 2025, "baa10y_loading": 0.36, "spx_200d_loading": 0.40}
+]
