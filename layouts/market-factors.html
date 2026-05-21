@@ -9,7 +9,7 @@
 
 {{/* ── Static matplotlib figures (placeholder shown when absent) ── */}}
 {{ $scree := "" }}
-{{ with resources.Get "images/charts/pca_scree.png" }}{{ $scree = .Resize "1200x q90 webp" }}{{ end }}
+{{ with resources.Get "figures/pca_scree.png" }}{{ $scree = .Resize "1200x q90 webp" }}{{ end }}
 {{ $crossover := "" }}
 {{ with resources.Get "images/charts/pca_pc1_crossover.png" }}{{ $crossover = .Resize "1200x q90 webp" }}{{ end }}
 {{ $timeline := "" }}
@@ -26,19 +26,18 @@
 
     <div class="flex items-center gap-2 mb-6">
       <span class="font-mono text-xs font-medium tracking-ultra uppercase text-gold">
-        MacroContext · Lab · Factor Analysis
+        Lab · Factor Analysis · S&P 500
       </span>
     </div>
 
     <h1 class="font-display font-bold text-white leading-tight
                text-4xl md:text-5xl mb-4">
-      What is moving markets right now
+      The forces driving equity markets are not constant.
     </h1>
 
     <p class="font-sans text-lg text-white/45 max-w-2xl leading-relaxed mb-8">
-      A rolling analysis of the dominant macro factors driving S&amp;P 500 variance.
-      The factors that move markets change over time — sometimes gradually,
-      sometimes abruptly. This page tracks those shifts.
+      In 30 years of walk-forward data, the dominant factor shifted several
+      times and the magnitude of the shifts were frequent. 
     </p>
 
     <div class="flex items-center gap-x-6 gap-y-2 flex-wrap">
@@ -62,7 +61,6 @@
   <div class="max-w-content mx-auto">
 
     <div class="flex items-center gap-2 mb-4">
-      <span class="w-6 h-px bg-gold opacity-70"></span>
       <span class="font-mono text-xs font-medium tracking-ultra uppercase text-gold">
         Current Factor Structure · {{ $meta.train_end }}
       </span>
@@ -75,7 +73,7 @@
     <p class="font-sans text-sm text-muted leading-relaxed mb-10 max-w-2xl">
       The {{ $meta.n_components_current }} principal components of the current
       training window, ordered by variance explained. Together they capture
-      {{ $meta.variance_explained_current }}% of variance in the 16-indicator
+      {{ $meta.variance_explained_current }}% of variance in the {{ $meta.indicator_count }}-indicator
       dataset.
     </p>
 
@@ -101,20 +99,18 @@
       <table class="w-full min-w-[720px]">
         <thead>
           <tr class="bg-navy">
-            <th class="text-left  px-5 py-3 font-mono text-xs font-medium tracking-wider uppercase text-white/60">Component</th>
-            <th class="text-right px-5 py-3 font-mono text-xs font-medium tracking-wider uppercase text-white/60">Variance %</th>
-            <th class="text-right px-5 py-3 font-mono text-xs font-medium tracking-wider uppercase text-white/60">Cumulative %</th>
-            <th class="text-left  px-5 py-3 font-mono text-xs font-medium tracking-wider uppercase text-white/60">Economic label</th>
+            <th class="text-left  px-5 py-3 font-mono text-xs font-medium tracking-wider uppercase text-white/60">Label</th>
+            <th class="text-right px-5 py-3 font-mono text-xs font-medium tracking-wider uppercase text-white/60">Variance</th>
+            <th class="text-right px-5 py-3 font-mono text-xs font-medium tracking-wider uppercase text-white/60">Cumulative</th>
             <th class="text-left  px-5 py-3 font-mono text-xs font-medium tracking-wider uppercase text-white/60">Top features</th>
           </tr>
         </thead>
         <tbody class="font-sans text-sm">
           {{ range $components }}
           <tr class="border-b border-silk last:border-0 {{ if eq .pc_label "PC1" }}bg-gold/10{{ end }}">
-            <td class="px-5 py-3 font-mono text-xs text-navy font-semibold">{{ .pc_label }}</td>
+            <td class="px-5 py-3 text-navy">{{ .pc_label }} - {{ .economic_label }}</td>
             <td class="px-5 py-3 font-mono text-sm text-navy text-right">{{ .variance_pct }}</td>
             <td class="px-5 py-3 font-mono text-sm text-muted text-right">{{ .cumulative_pct }}</td>
-            <td class="px-5 py-3 text-navy">{{ .economic_label }}</td>
             <td class="px-5 py-3 font-mono text-xs text-muted">{{ .top_features_display }}</td>
           </tr>
           {{ end }}
@@ -129,18 +125,17 @@
 {{/* ════════════════════════════════════════════════════════════
      SECTION 3 — STRUCTURAL TRANSITION (white + dot grid)
 ════════════════════════════════════════════════════════════ */}}
-<section class="bg-white bg-dot-grid bg-dot border-b border-silk px-6 lg:px-20 py-16">
+<!-- <section class="bg-white bg-dot-grid bg-dot border-b border-silk px-6 lg:px-20 py-16">
   <div class="max-w-content mx-auto">
 
     <div class="flex items-center gap-2 mb-4">
-      <span class="w-6 h-px bg-gold opacity-70"></span>
       <span class="font-mono text-xs font-medium tracking-ultra uppercase text-gold">
-        Structural Transition · 2018–2019
+        Structural Transition · 2018&ndash;2019
       </span>
     </div>
 
     <h2 class="font-display font-bold text-navy text-2xl mb-2">
-      The dominant risk signal changed character around 2018–2019
+      The dominant risk signal changed character around 2018&ndash;2019
     </h2>
 
     <p class="font-sans text-sm text-muted leading-relaxed mb-10 max-w-2xl">
@@ -237,13 +232,13 @@
     </div>
 
   </div>
-</section>
+</section> -->
 
 
 {{/* ════════════════════════════════════════════════════════════
      SECTION 4 — HISTORICAL TRANSITION TIMELINE (cream)
 ════════════════════════════════════════════════════════════ */}}
-<section class="bg-cream border-b border-silk px-6 lg:px-20 py-16">
+<!-- <section class="bg-cream border-b border-silk px-6 lg:px-20 py-16">
   <div class="max-w-content mx-auto">
 
     <div class="flex items-center gap-2 mb-4">
@@ -298,13 +293,13 @@
     </div>
 
   </div>
-</section>
+</section> -->
 
 
 {{/* ════════════════════════════════════════════════════════════
      SECTION 5 — SENSITIVITY ANALYSIS (white + dot grid)
 ════════════════════════════════════════════════════════════ */}}
-<section class="bg-white bg-dot-grid bg-dot border-b border-silk px-6 lg:px-20 py-16">
+<!-- <section class="bg-white bg-dot-grid bg-dot border-b border-silk px-6 lg:px-20 py-16">
   <div class="max-w-content mx-auto">
 
     <div class="flex items-center gap-2 mb-4">
@@ -391,13 +386,13 @@
     </div>
 
   </div>
-</section>
+</section> -->
 
 
 {{/* ════════════════════════════════════════════════════════════
      SECTION 6 — RESEARCH CTA (navy)
 ════════════════════════════════════════════════════════════ */}}
-<section class="bg-navy px-6 lg:px-20 py-14">
+<!-- <section class="bg-navy px-6 lg:px-20 py-14">
   <div class="max-w-content mx-auto flex flex-wrap items-center justify-between gap-8">
 
     <div class="max-w-sm">
@@ -426,7 +421,7 @@
     </div>
 
   </div>
-</section>
+</section> -->
 
 
 {{/* ════════════════════════════════════════════════════════════

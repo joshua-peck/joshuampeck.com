@@ -1,4 +1,5 @@
 {
+  "indicator_count": 16,
   "n_folds": 29,
   "train_start": "1996",
   "train_end": "2025",
