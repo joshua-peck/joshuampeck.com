@@ -51,3 +51,5 @@ enableRobotsTXT   = true
   url = "/media/"
   weight = 5
 
+[params]
+  newsletterURL = "https://newsletter.joshuampeck.com/"
