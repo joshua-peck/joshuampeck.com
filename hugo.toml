@@ -53,3 +53,4 @@ enableRobotsTXT   = true
 
 [params]
   newsletterURL = "https://newsletter.joshuampeck.com/"
+  description   = "Quantitative Research | Markets | Frontier Technologies"
