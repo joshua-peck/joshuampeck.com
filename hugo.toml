@@ -38,7 +38,7 @@ enableRobotsTXT   = true
 
 [[menu.main]]
   name = "Newsletter"
-  url = "/newsletter/"
+  url = "https://newsletter.joshuampeck.com/"
   weight = 3
 
 [[menu.main]]

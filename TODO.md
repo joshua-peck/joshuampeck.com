@@ -1,11 +1,5 @@
 # TODO
 
-# Hero
-
- Rewrite identity line from "Quantitative researcher, ML architect... applying classical ML and complexity science to financial systems" to the root-node framing (exponential lens across technology, markets, real estate; quant as pedigree)
- Replace eyebrow "Quantitative Research · Finance · Complexity Science" with a non-finance-only descriptor
- Remove secondary CTA "Explore MacroContext →"
- Set CTAs to: Newsletter (primary), Research/Work (secondary)
 
 # Principles
 
