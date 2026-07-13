@@ -20,12 +20,12 @@
     <div class="animate-fade-4 flex flex-wrap gap-4 items-center">
       <a href="{{ .Site.Params.newsletterURL }}"
          class="bg-gold hover:bg-gold-dark hover:-translate-y-0.5 font-semibold text-sm px-7 py-3 rounded-lg border-none no-underline transition-all duration-200">
-        Follow the Research →
+        Read Exponential Investing →
       </a>
-      <a href="/lab/regime-detection/"
+      <!-- <a href="/lab/regime-detection/"
          class="text-white/80 font-semibold hover:-translate-y-0.5 text-sm px-7 py-3 rounded-lg border-2 border-white/20 hover:border-gold hover:text-gold no-underline transition-all duration-200">
-        Explore MacroContext →
-      </a>
+        The Work →
+      </a> -->
     </div>
 
   </div>
@@ -40,23 +40,25 @@
     <div class="flex items-center gap-2 mb-3">
       <span class="font-mono text-xs font-medium tracking-ultra uppercase text-gold">The Work</span>
     </div>
-    <h2 class="font-display font-bold text-navy text-2xl leading-tight mb-8">How do you apply quantitative methods to systems that can't be predicted?</h2>
+    <h2 class="font-display font-bold text-navy text-2xl leading-tight mb-8">Put Yourself in the Path of Progress</h2>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-px bg-silk rounded-xl overflow-hidden border border-silk">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-silk rounded-xl overflow-hidden border border-silk">
 
       <!-- MacroContext -->
       <div class="bg-white hover:bg-cream transition-colors duration-200 p-8 flex flex-col gap-4">
         <div class="flex items-center gap-2">
-          <span class="w-2 h-2 rounded-full bg-boom animate-pulse-dot"></span>
-          <span class="font-mono text-xs font-medium tracking-widest uppercase text-boom">Live</span>
+          <span class="w-2 h-2 rounded-full bg-neutral animate-pulse-dot"></span>
+          <span class="font-mono text-xs font-medium tracking-widest uppercase text-neutral">Live</span>
         </div>
-        <h3 class="font-display font-bold text-navy text-2xl leading-tight">MacroContext Dashboard</h3>
+        <h3 class="font-display font-bold text-navy text-2xl leading-tight">Exponential Investing</h3>
         <p class="font-sans text-base text-gray-600 leading-relaxed flex-1">
-          A live regime detection platform for financial markets. Most models tell you where the market is going. This one tells you where it is now — Extremes, Neutral, or Danger — updated daily as conditions evolve.
+          Independent research on frontier technology and the industries
+          compounding fastest. Where the curves are bending, and what the
+          consensus hasn't priced yet.
         </p>
-        <a href="/lab/regime-detection/"
+        <a href="{{ .Site.Params.newsletterURL }}"
            class="font-sans text-sm font-semibold text-navy no-underline inline-flex items-center gap-1 border-b-2 border-gold pb-px w-fit hover:text-gold-dark hover:border-gold-dark transition-colors duration-200">
-          Explore MacroContext →
+          Read the Research →
         </a>
       </div>
 
@@ -64,26 +66,49 @@
       <div class="bg-white hover:bg-cream transition-colors duration-200 p-8 flex flex-col gap-4">
         <div class="flex items-center gap-2">
           <span class="w-2 h-2 rounded-full bg-gold animate-pulse-dot"></span>
-          <span class="font-mono text-xs font-medium tracking-widest uppercase text-gold">Weekly</span>
+          <span class="font-mono text-xs font-medium tracking-widest uppercase text-gold">Investing</span>
         </div>
-        <h3 class="font-display font-bold text-navy text-2xl leading-tight">Applied Complexity Newsletter</h3>
+        <h3 class="font-display font-bold text-navy text-2xl leading-tight">TrueCode Capital</h3>
         <p class="font-sans text-base text-gray-600 leading-relaxed flex-1">
-          A weekly research publication on financial systems. The regime call every Monday — which behavioral state markets are currently in, which signals drove the classification, and what the research is showing about how to think about it.
+          The private investment vehicle. Systematic strategies,
+          frontier-technology positions, and income real estate. No outside
+          capital.
         </p>
-        <a href="{{ .Site.Params.newsletterURL }}"
+        <a href="https://truecodecapital.com/"
            class="font-sans text-sm font-semibold text-navy no-underline inline-flex items-center gap-1 border-b-2 border-gold pb-px w-fit hover:text-gold-dark hover:border-gold-dark transition-colors duration-200">
-          Subscribe to the Research →
+          Visit TrueCodeCapital.com →
+        </a>
+      </div>
+
+      <!-- Lab -->
+      <div class="bg-white hover:bg-cream transition-colors duration-200 p-8 flex flex-col gap-4">
+        <div class="flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-navy animate-pulse-dot"></span>
+          <span class="font-mono text-xs font-medium tracking-widest uppercase text-navy">R&D</span>
+        </div>
+        <h3 class="font-display font-bold text-navy text-2xl leading-tight">The Lab</h3>
+        <p class="font-sans text-base text-gray-600 leading-relaxed flex-1">
+          Quantitative tools and technical work — factor decomposition, market
+          structure, and the occasional open-source contribution. Things I've
+          built and things I'm tracking.
+        </p>
+        <a href="/lab/"
+           class="font-sans text-sm font-semibold text-navy no-underline inline-flex items-center gap-1 border-b-2 border-gold pb-px w-fit hover:text-gold-dark hover:border-gold-dark transition-colors duration-200">
+          Explore the Lab →
         </a>
       </div>
 
       <!-- Book -->
       <div class="bg-white hover:bg-cream transition-colors duration-200 p-8 flex flex-col gap-4">
         <div class="flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-muted animate-pulse-dot"></span>
           <span class="font-mono text-xs font-medium tracking-widest uppercase text-muted">Published Work</span>
         </div>
         <h3 class="font-display font-bold text-navy text-2xl leading-tight">Cryptocurrency Risk Management</h3>
         <p class="font-sans text-base text-gray-600 leading-relaxed flex-1">
-          Published 2022. A rigorous risk framework for institutional crypto exposure. Classical models weren't built for this asset class. Written for family offices and wealth managers who needed one that worked.
+          Published 2022. A rigorous risk framework for institutional crypto
+          exposure. Classical models weren't built for this asset class. Written
+          for family offices and wealth managers who needed one that worked.
         </p>
         <a href="/book/"
            class="font-sans text-sm font-semibold text-navy no-underline inline-flex items-center gap-1 border-b-2 border-gold pb-px w-fit hover:text-gold-dark hover:border-gold-dark transition-colors duration-200">
