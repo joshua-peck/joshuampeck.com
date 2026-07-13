@@ -1,0 +1,59 @@
+{{ define "main" }}
+
+<!-- Header -->
+<header class="bg-navy border-b-4 border-gold px-6 lg:px-20 pt-20 pb-16">
+  <div class="max-w-content mx-auto">
+    {{ with .Params.eyebrow }}
+    <div class="flex items-center gap-2 mb-4">
+      <span class="font-mono text-xs font-medium tracking-ultra uppercase text-gold">{{ . }}</span>
+    </div>
+    {{ end }}
+    <h1 class="font-display font-bold text-white leading-tight text-4xl md:text-5xl mb-4">
+      {{ .Title }}
+    </h1>
+    {{ with .Params.description }}
+    <p class="text-white/60 text-lg max-w-xl leading-relaxed">{{ . }}</p>
+    {{ end }}
+  </div>
+</header>
+
+<!-- Project cards -->
+<section class="bg-white bg-dot-grid bg-dot px-6 lg:px-20 py-16">
+  <div class="max-w-6xl mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-silk rounded-xl overflow-hidden border border-silk">
+      {{ range $page := .Pages }}
+      <a href="{{ $page.RelPermalink }}"
+         class="group bg-white hover:bg-cream transition-colors duration-200 flex flex-col no-underline">
+        {{ $img := "" }}
+        {{ with $page.Params.image }}{{ $img = ($page.Resources.GetMatch .) }}{{ end }}
+        {{ if $img }}
+          {{ $banner := $img.Fill "800x450 webp q85" }}
+          <img src="{{ $banner.RelPermalink }}" width="{{ $banner.Width }}" height="{{ $banner.Height }}"
+               alt="{{ $page.Title }}" loading="lazy"
+               class="w-full aspect-[16/9] object-cover" />
+        {{ else }}
+          <div class="w-full aspect-[16/9] bg-navy bg-dot-grid bg-dot flex items-center justify-center">
+            <span class="font-mono text-xs font-medium tracking-ultra uppercase text-gold/70">
+              {{ with $page.Params.eyebrow }}{{ . }}{{ else }}{{ $page.Title }}{{ end }}
+            </span>
+          </div>
+        {{ end }}
+        <div class="p-8 flex flex-col gap-3 flex-1">
+          {{ with $page.Params.eyebrow }}
+          <span class="font-mono text-xs font-medium tracking-widest uppercase text-gold">{{ . }}</span>
+          {{ end }}
+          <h3 class="font-display font-bold text-navy text-2xl leading-tight">{{ $page.Title }}</h3>
+          {{ with $page.Params.description }}
+          <p class="font-sans text-base text-gray-600 leading-relaxed flex-1">{{ . }}</p>
+          {{ end }}
+          <span class="font-sans text-sm font-semibold text-navy inline-flex items-center gap-1 border-b-2 border-gold pb-px w-fit group-hover:text-gold-dark group-hover:border-gold-dark transition-colors duration-200">
+            Explore →
+          </span>
+        </div>
+      </a>
+      {{ end }}
+    </div>
+  </div>
+</section>
+
+{{ end }}
