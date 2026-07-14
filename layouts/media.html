@@ -1,0 +1,184 @@
+{{ define "main" }}
+
+{{ $mentions  := $.Site.Data.media_appearances.mentions }}
+{{ $featured  := where $mentions "featured" true }}
+{{ $dated     := sort (where $mentions "date" "!=" nil) "date" "desc" }}
+{{ $undated   := where $mentions "date" nil }}
+{{ $fmtMap    := dict "video" "Video" "interview" "Interview" "podcast" "Podcast" "event" "Event" "case_study" "Case study" }}
+{{ $headshot  := resources.Get "images/joshua_peck.jpg" }}
+
+<!-- ════════ Header ════════ -->
+<header class="bg-navy border-b-4 border-gold px-6 lg:px-20 pt-20 pb-16">
+  <div class="max-w-content mx-auto">
+    <h1 class="font-display font-bold text-white leading-tight text-4xl md:text-5xl mb-4">{{ .Title }}</h1>
+    {{ with .Params.subhead }}
+    <p class="text-white/60 text-lg max-w-xl leading-relaxed">{{ . }}</p>
+    {{ end }}
+  </div>
+</header>
+
+<!-- ════════ Media inquiries (above the fold, highest priority) ════════ -->
+<section class="bg-cream px-6 lg:px-20 py-14 border-b border-silk">
+  <div class="max-w-content mx-auto">
+    <div class="bg-white border border-silk rounded-xl p-8">
+      <div class="flex items-center gap-2 mb-5">
+        <span class="font-mono text-xs font-medium tracking-ultra uppercase text-gold">Media inquiries</span>
+      </div>
+
+      <p class="font-sans text-lg text-navy leading-relaxed mb-4">
+        Email
+        <a href="mailto:media@truecodecapital.com"
+           class="font-semibold text-navy no-underline border-b-2 border-gold pb-px hover:text-gold-dark hover:border-gold-dark transition-colors duration-200">media@truecodecapital.com</a>.
+      </p>
+
+      <p class="font-mono text-xs font-medium tracking-widest uppercase text-muted mb-2">Topics</p>
+      <ul class="flex flex-wrap gap-2 list-none m-0 p-0 mb-6">
+        {{ range slice
+          "Where AI breaks down and how to fix it"
+          "Quantitative finance, systematic strategies, and why most models fail"
+          "Digital asset risk: wrote the framework before FTX proved it"
+         }}
+        <li class="font-sans text-sm text-navy border border-silk rounded-full px-3 py-1">{{ . }}</li>
+        {{ end }}
+      </ul>
+
+      <a href="#press-kit"
+         class="font-sans text-sm font-semibold text-navy no-underline inline-flex items-center gap-1 border-b-2 border-gold pb-px w-fit hover:text-gold-dark hover:border-gold-dark transition-colors duration-200">
+        Press kit — headshot and bios ↓
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ Featured coverage ════════ -->
+{{ with $featured }}
+<section class="bg-white bg-dot-grid bg-dot px-6 lg:px-20 py-16 border-b border-silk">
+  <div class="max-w-content mx-auto">
+    <h2 class="font-display font-bold text-navy text-2xl leading-tight mb-8">Featured coverage</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {{ range . }}
+      <div class="bg-white border border-silk rounded-xl p-6 flex flex-col gap-3 hover:border-muted transition-colors duration-200">
+        <div class="flex items-center justify-between gap-3">
+          <span class="font-mono text-xs font-medium tracking-widest uppercase text-muted">{{ .publication }}</span>
+          {{ with .date }}<span class="font-mono text-xs text-muted">{{ (time .).Format "January 2006" }}</span>{{ end }}
+        </div>
+        <h3 class="font-display font-bold text-navy text-xl leading-snug">
+          <a href="{{ .url }}" target="_blank" rel="noopener noreferrer"
+             class="text-navy no-underline hover:text-gold-dark transition-colors duration-200">{{ .title }}</a>
+        </h3>
+        {{ with .description }}<p class="font-sans text-sm text-gray-600 leading-relaxed">{{ . }}</p>{{ end }}
+      </div>
+      {{ end }}
+    </div>
+  </div>
+</section>
+{{ end }}
+
+<!-- ════════ Full coverage archive ════════ -->
+<section class="bg-cream px-6 lg:px-20 py-16 border-b border-silk">
+  <div class="max-w-content mx-auto">
+    <h2 class="font-display font-bold text-navy text-2xl leading-tight mb-8">Full coverage</h2>
+    {{ $all := $dated }}
+    {{ range $undated }}{{ $all = $all | append . }}{{ end }}
+    <ul class="list-none m-0 p-0 border-t border-silk">
+      {{ range $all }}
+      <li class="border-b border-silk hover:bg-white transition-colors duration-200">
+        <a href="{{ .url }}" target="_blank" rel="noopener noreferrer"
+           class="group flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-6 py-4 no-underline">
+          <span class="font-mono text-xs text-muted shrink-0 sm:w-28 pt-0.5">
+            {{ with .date }}{{ (time .).Format "Jan 2006" }}{{ else }}—{{ end }}
+          </span>
+          <span class="flex-1">
+            <span class="font-mono text-xs tracking-wider uppercase text-muted">{{ .publication }}</span>
+            {{ $tag := index $fmtMap (.media_type | default "") | default "Article" }}
+            <span class="font-mono text-xs text-muted/70 ml-2">· {{ $tag }}</span>
+            <span class="block font-sans text-base font-semibold text-navy leading-snug mt-0.5 group-hover:text-gold-dark transition-colors duration-200">{{ .title }}</span>
+          </span>
+        </a>
+      </li>
+      {{ end }}
+    </ul>
+  </div>
+</section>
+
+<!-- ════════ Book credibility ════════ -->
+<section class="bg-white px-6 lg:px-20 py-14 border-b border-silk">
+  <div class="max-w-content mx-auto">
+    <p class="font-mono text-xs font-medium tracking-widest uppercase text-gold mb-3">Background</p>
+    <p class="font-sans text-base text-navy leading-relaxed max-w-2xl">
+      Author of <a href="/book/" class="font-semibold text-navy no-underline border-b-2 border-gold pb-px hover:text-gold-dark hover:border-gold-dark transition-colors duration-200"><em>Cryptocurrency Risk Management</em></a>
+      (Rethink Press, 2022) — a systematic risk framework for institutional investors that mapped the
+      counterparty risks exposed by the FTX collapse months before it happened.
+    </p>
+  </div>
+</section>
+
+<!-- ════════ Press kit ════════ -->
+<section id="press-kit" class="bg-cream px-6 lg:px-20 py-16">
+  <div class="max-w-content mx-auto">
+    <div class="flex items-center gap-2 mb-8">
+      <span class="w-6 h-px bg-gold opacity-70"></span>
+      <span class="font-mono text-xs font-medium tracking-ultra uppercase text-gold">Press kit</span>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <!-- Headshot -->
+      {{ with $headshot }}
+      {{ $h := .Fill "480x600 webp q85" }}
+      <div class="md:col-span-1">
+        <img src="{{ $h.RelPermalink }}" width="{{ $h.Width }}" height="{{ $h.Height }}"
+             alt="Joshua M. Peck" loading="lazy"
+             class="w-full rounded-xl border border-silk object-cover" />
+        <a href="{{ .RelPermalink }}" target="_blank" rel="noopener noreferrer"
+           class="font-mono text-xs text-muted no-underline hover:text-navy transition-colors duration-200 inline-block mt-2">Download full resolution →</a>
+      </div>
+      {{ end }}
+
+      <!-- Bios (selectable plain text) -->
+      <div class="md:col-span-2 flex flex-col gap-6">
+        <div>
+          <p class="font-mono text-xs font-medium tracking-widest uppercase text-muted mb-2">Short bio</p>
+          <p class="font-sans text-base text-navy leading-relaxed">
+            Joshua M. Peck is an investor and technologist focused on quantitative finance and frontier
+            technology. He runs TrueCode Capital, a private investment firm, publishes independent research
+            at Exponential Investing, and wrote <em>Cryptocurrency Risk Management</em> (Rethink Press, 2022).
+          </p>
+        </div>
+        <div>
+          <p class="font-mono text-xs font-medium tracking-widest uppercase text-muted mb-2">Long bio</p>
+          <p class="font-sans text-base text-navy leading-relaxed">
+            Joshua M. Peck is an investor and technologist who brings quantitative tools to emerging
+            industries. He is the founder and chief investment officer of TrueCode Capital, a private
+            investment management company that applies systematic strategies to markets and frontier
+            technology. He is the author of <em>Cryptocurrency Risk Management</em> (Rethink Press, 2022),
+            a framework for institutional investors that mapped the counterparty risks exposed by the FTX
+            collapse months before it happened. That timing led outlets including CBS, Reuters, and the
+            Wall Street Journal to seek his commentary during the 2022 crypto crisis. He publishes
+            independent research on markets and frontier technology at Exponential Investing, where he
+            writes about where the curves are bending before the consensus catches up.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{{/* ════════ schema.org/Person structured data ════════ */}}
+{{ $sameAs := slice }}
+{{ range $featured }}{{ $sameAs = $sameAs | append .url }}{{ end }}
+{{ $headshotURL := "" }}
+{{ with $headshot }}{{ $headshotURL = .RelPermalink | absURL }}{{ end }}
+{{ $ld := dict
+  "@context" "https://schema.org"
+  "@type" "Person"
+  "name" "Joshua M. Peck"
+  "url" "https://joshuampeck.com/"
+  "jobTitle" "Investor and technologist"
+  "worksFor" (dict "@type" "Organization" "name" "TrueCode Capital")
+  "image" $headshotURL
+  "sameAs" $sameAs
+  "author" (dict "@type" "Book" "name" "Cryptocurrency Risk Management" "datePublished" "2022")
+}}
+<script type="application/ld+json">{{ $ld | jsonify }}</script>
+
+{{ end }}

@@ -1,0 +1,457 @@
+# Media mentions — Joshua M. Peck
+mentions:
+  # --- Featured ---
+  - date: "2023-11-28"
+    publication: Reuters
+    title: "Cryptoverse: 'Layer two' tokens enjoy new life as bitcoin soars"
+    url: "https://www.reuters.com/technology/cryptoverse-layer-two-tokens-enjoy-new-life-bitcoin-soars-2023-11-28/"
+    description: >-
+      Reuters Cryptoverse column on layer-2 tokens rallying alongside bitcoin,
+      driven by expected easing of U.S. borrowing costs and spot-ETF anticipation.
+      Peck quoted as a market source.
+    featured: true
+
+  - date: null
+    publication: CBS News
+    title: "FTX crypto exchange bankruptcy sends shockwaves across market"
+    url: "https://www.youtube.com/watch?v=l8E6JnHwcPk"
+    description: >-
+      Broadcast interview. Peck, Founder and CIO of TrueCode Capital, joins CBS
+      News' Tony Dokoupil and Lilia Luciano to break down the FTX bankruptcy and
+      Sam Bankman-Fried's resignation.
+    media_type: video
+    featured: true
+
+  - date: null
+    publication: CBS News
+    title: "Fear and doubt shadow cryptocurrency exchanges after FTX's collapse"
+    url: "https://www.cbsnews.com/news/binance-customer-withdrawls-cz-cryptocurrency-exchange/"
+    description: >-
+      Coverage of contagion fears spreading to other exchanges, including Binance
+      withdrawals, following FTX Trading's collapse. Peck cited on exchange risk.
+    featured: true
+
+  - date: null
+    publication: Nasdaq
+    title: "FTX: Hero to Zero in 24 Hours"
+    url: "https://www.nasdaq.com/articles/ftx%3A-hero-to-zero-in-24-hours"
+    description: >-
+      Analysis of FTX's rapid unwind set against a year of crypto blowups from
+      poorly managed projects. Peck quoted on investor takeaways.
+    featured: true
+
+  - date: "2022-11-12"
+    publication: The Guardian
+    title: "'I f****d up': the rise and fall of US crypto king Sam Bankman-Fried"
+    url: "https://www.theguardian.com/business/2022/nov/12/i-fd-up-the-rise-and-fall-of-us-ftx-crypto-king-sam-bankman-fried"
+    description: >-
+      Profile of Sam Bankman-Fried's collapse from multibillionaire to bankruptcy.
+      Peck provides expert commentary.
+    featured: true
+
+  - date: null
+    publication: CNN Business
+    title: "What's next for crypto as FTX collapse triggers 'Lehman moment'?"
+    url: "https://headtopics.com/us/what-s-next-for-crypto-as-ftx-collapse-triggers-lehman-moment-cnn-business-31606504"
+    description: >-
+      CNN Business piece on the fallout from FTX's downfall and where the digital
+      asset market goes next. Peck quoted on investor risk.
+    featured: true
+
+  - date: null
+    publication: The Wall Street Journal
+    title: "FTX Debacle Could Drag Down Decentralized Crypto Too"
+    url: "https://www.wsj.com/articles/ftx-debacle-could-drag-down-decentralized-crypto-too-11668511696"
+    description: >-
+      WSJ argues centralized and decentralized crypto are more intertwined than
+      DeFi proponents admit. Peck quoted on contagion risk.
+    featured: true
+
+  - date: null
+    publication: Cointelegraph
+    title: "3AC: A $10B hedge fund gone bust with founders on the run"
+    url: "https://cointelegraph.com/news/3ac-a-10b-hedge-fund-gone-bust-with-founders-on-the-run"
+    description: >-
+      Post-mortem on Three Arrows Capital, the Singapore crypto hedge fund that
+      collapsed after managing over $10B. Peck quoted on fund risk management.
+    featured: true
+
+  # --- Additional media appearances ---
+  - date: null
+    publication: Medium
+    title: "The Voice of Venture Capital and Private Markets"
+    url: "https://medium.com/@support_34340/the-voice-of-venture-capital-and-private-markets-4b5c931a1691"
+    description: "Feature on venture capital and private markets including Peck's perspective."
+    featured: false
+
+  - date: null
+    publication: Khaleej Times
+    title: "Cryptoverse: Bitcoin investors take control"
+    url: "https://www.khaleejtimes.com/business/cryptoverse-bitcoin-investors-take-control"
+    description: "Syndicated Reuters Cryptoverse column on self-custody rising after FTX. Peck quoted."
+    featured: false
+
+  - date: null
+    publication: The Globe and Mail
+    title: "Bitcoin investors take control after FTX failure"
+    url: "https://www.theglobeandmail.com/investing/investment-ideas/article-bitcoin-investors-take-control-after-ftx-failure/"
+    description: "Syndicated Reuters column on investors moving coins off exchanges post-FTX. Peck quoted."
+    featured: false
+
+  - date: null
+    publication: Zawya
+    title: "Cryptoverse: Bitcoin investors take control"
+    url: "https://www.zawya.com/en/special-coverage/the-future-of-cryptos/cryptoverse-bitcoin-investors-take-control-uth339iy"
+    description: "Syndication of the Reuters Cryptoverse self-custody column featuring Peck."
+    featured: false
+
+  - date: null
+    publication: Axo Trade
+    title: "The History of Bitcoin, the First Cryptocurrency"
+    url: "https://www.axo.trade/newsroom/posts/the-history-of-bitcoin-the-first-cryptocurrency"
+    description: "Explainer on bitcoin's origins and evolution, citing Peck as an expert source."
+    featured: false
+
+  - date: null
+    publication: Crypto News
+    title: "FTX collapse: The crypto industry's Lehman Brothers moment"
+    url: "https://cryptonews.net/news/analytics/15947657/"
+    description: "Syndicated analysis framing FTX as crypto's Lehman moment. Peck quoted."
+    featured: false
+
+  - date: null
+    publication: Yubico
+    title: "Cryptocurrency risk management supported by phishing-resistant multi-factor authentication (MFA)"
+    url: "https://www.yubico.com/resources/reference-customers/cryptocurrency-truecode-capital-yubikey-case-study/"
+    description: >-
+      Yubico customer case study on TrueCode Capital's use of phishing-resistant
+      MFA as part of its cryptocurrency risk management program.
+    media_type: case_study
+    featured: false
+
+  - date: null
+    publication: Entrepreneur
+    title: "Recently Sold Your Business? Consider Creating an Investment Fund Instead of Another Startup"
+    url: "https://www.entrepreneur.com/starting-a-business/recently-sold-your-business-consider-creating-an/438303"
+    description: >-
+      Entrepreneur feature on post-exit founders launching investment funds rather
+      than new startups, drawing on Peck's experience founding TrueCode Capital.
+    featured: false
+
+  - date: null
+    publication: Devdiscourse
+    title: "Cryptoverse: Bitcoin investors take control"
+    url: "https://www.devdiscourse.com/article/headlines/2329898-cryptoverse-bitcoin-investors-take-control"
+    description: "Syndication of the Reuters Cryptoverse self-custody column featuring Peck."
+    featured: false
+
+  - date: null
+    publication: TODAY (Today Online)
+    title: "Cryptoverse: Bitcoin investors take control"
+    url: "https://www.todayonline.com/world/cryptoverse-bitcoin-investors-take-control-2096656"
+    description: "Syndication of the Reuters Cryptoverse self-custody column featuring Peck."
+    featured: false
+
+  - date: "2022-12-04"
+    publication: American JR
+    title: "What Cryptocurrency Investors Need to Know About Latest Market Shakeup"
+    url: "https://americajr.com/news/2022/12/04/what-cryptocurrency-investors-need-to-know-about-latest-market-shakeup/"
+    description: "Investor guidance piece on the post-FTX market shakeup, featuring Peck's commentary."
+    featured: false
+
+  - date: null
+    publication: Mint
+    title: "FTX debacle could drag down decentralized crypto too"
+    url: "https://www.livemint.com/companies/news/ftx-debacle-could-drag-down-decentralized-crypto-too-11668517431075.html"
+    description: "Syndication of the WSJ piece on DeFi contagion risk from FTX. Peck quoted."
+    featured: false
+
+  - date: null
+    publication: Riyadh Daily
+    title: "Cryptoverse: Bitcoin investors take control"
+    url: "http://www.alriyadhdaily.com/article/22ab3b88f6a14bdb9647213a6ce3efbc"
+    description: "Syndication of the Reuters Cryptoverse self-custody column featuring Peck."
+    featured: false
+
+  - date: "2022-12-08"
+    publication: Fintech Connections (Fintech Showcase AU)
+    title: "What cryptocurrency investors need to know about latest market shakeup"
+    url: "https://fintechshowcase.com.au/2022/12/08/what-cryptocurrency-investors-need-to-know-about-latest-market-shakeup/"
+    description: "Syndicated investor guidance on the post-FTX shakeup, featuring Peck."
+    featured: false
+
+  - date: null
+    publication: Datafloq
+    title: "Cryptoverse: Bitcoin investors take control"
+    url: "https://datafloq.com/news/cryptoverse-bitcoin-investors-take-control/"
+    description: "Syndication of the Reuters Cryptoverse self-custody column featuring Peck."
+    featured: false
+
+  - date: null
+    publication: CNBC Africa
+    title: "Cryptoverse: Bitcoin investors take control"
+    url: "https://www.cnbcafrica.com/wire/336415/"
+    description: "Syndication of the Reuters Cryptoverse self-custody column featuring Peck."
+    featured: false
+
+  - date: "2023-01-24"
+    publication: Reuters
+    title: "Cryptoverse: Bitcoin investors take control"
+    url: "https://www.reuters.com/technology/cryptoverse-bitcoin-investors-take-control-2023-01-24/"
+    description: >-
+      Original Reuters Cryptoverse column on investors pulling bitcoin off exchanges
+      into self-custody after the FTX failure. Peck quoted as a market source.
+    featured: false
+
+  - date: null
+    publication: Business Recorder
+    title: "Cryptoverse: Bitcoin investors take control"
+    url: "https://www.brecorder.com/news/40222087/cryptoverse-bitcoin-investors-take-control"
+    description: "Syndication of the Reuters Cryptoverse self-custody column featuring Peck."
+    featured: false
+
+  - date: null
+    publication: Investing.com
+    title: "Cryptoverse: Bitcoin investors take control"
+    url: "https://www.investing.com/news/forex-news/cryptoverse-bitcoin-investors-take-control-2986382"
+    description: "Syndication of the Reuters Cryptoverse self-custody column featuring Peck."
+    featured: false
+
+  - date: "2023-01-24"
+    publication: New Straits Times
+    title: "Cryptoverse: Bitcoin investors take control"
+    url: "https://www.nst.com.my/opinion/columnists/2023/01/873140/cryptoverse-bitcoin-investors-take-control"
+    description: "Syndication of the Reuters Cryptoverse self-custody column featuring Peck."
+    featured: false
+
+  - date: null
+    publication: Paxjones
+    title: "Cryptocurrency Risk Management by Author Joshua Peck Shares a Systematic Approach in Managing Financial Risks"
+    url: "https://paxjones.com/featured/cryptocurrency-risk-management-by-author-joshua-peck-shares-a-systematic-approach-in-managing-financial-risks/"
+    description: "Feature on Peck's book, Cryptocurrency Risk Management, and its systematic risk framework."
+    featured: false
+
+  - date: null
+    publication: Cloud7
+    title: "Interview: Joshua Peck, Founder of TrueCode Capital"
+    url: "https://cloud7.news/interview/interview-joshua-peck-founder-of-truecode-capital/"
+    description: "Long-form interview with Peck on founding TrueCode Capital and managing crypto risk."
+    media_type: interview
+    featured: false
+
+  - date: null
+    publication: iNews Cayman
+    title: "What cryptocurrency investors need to know about latest market shakeup"
+    url: "https://www.ieyenews.com/what-cryptocurrency-investors-need-to-know-about-latest-market-shakeup/"
+    description: "Syndicated investor guidance on the post-FTX market shakeup, featuring Peck."
+    featured: false
+
+  - date: null
+    publication: Boston 25 News
+    title: "What does the recent collapse of a popular currency exchange mean for regular investors?"
+    url: "https://www.boston25news.com/news/what-does-recent-collapse-popular-currency-exchange-mean-regular-investors/91241d22-d959-4c7e-8b3c-225b9d2311e3/"
+    description: "Local broadcast segment on what the FTX collapse means for retail investors. Peck interviewed."
+    media_type: video
+    featured: false
+
+  - date: null
+    publication: FOX 32 Chicago
+    title: "Cryptocurrency market shake-up rattles investors: Here's what you need to know"
+    url: "https://www.fox32chicago.com/video/1143388"
+    description: "Broadcast segment on the crypto market shakeup with Peck as expert guest."
+    media_type: video
+    featured: false
+
+  - date: null
+    publication: Cointelegraph
+    title: "FTX collapse: The crypto industry's Lehman Brothers moment"
+    url: "https://cointelegraph.com/news/ftx-collapse-the-crypto-industry-s-lehman-brothers-moment"
+    description: "Analysis framing FTX as crypto's Lehman Brothers moment, with commentary from Peck."
+    featured: false
+
+  - date: null
+    publication: Forbes Advisor
+    title: "FTX Declares Bankruptcy"
+    url: "https://www.forbes.com/advisor/investing/cryptocurrency/ftx-declares-bankruptcy/"
+    description: "Forbes Advisor explainer on FTX's Chapter 11 filing, citing Peck as an expert source."
+    featured: false
+
+  - date: null
+    publication: Mergermarket
+    title: "FTX collapse likely to spook investors for now, could eventually spur consolidation, experts say"
+    url: "https://www.mergermarket.com/intelligence/view/intelcms-bccgnh"
+    description: "Deal-market analysis on FTX's effect on crypto M&A and consolidation. Peck quoted as an expert."
+    featured: false
+
+  - date: null
+    publication: Forbes Advisor
+    title: "What Happened To FTX?"
+    url: "https://www.forbes.com/advisor/investing/cryptocurrency/what-happened-to-ftx/"
+    description: "Forbes Advisor breakdown of the FTX collapse timeline, citing Peck."
+    featured: false
+
+  - date: "2023-01-24"
+    publication: U.S. News & World Report
+    title: "Cryptoverse: Bitcoin Investors Take Control"
+    url: "https://money.usnews.com/investing/news/articles/2023-01-24/cryptoverse-bitcoin-investors-take-control"
+    description: "Syndication of the Reuters Cryptoverse self-custody column featuring Peck."
+    featured: false
+
+  - date: null
+    publication: Global Fintech Series
+    title: "What Cryptocurrency Investors Need to Know About Latest Market Shakeup"
+    url: "https://globalfintechseries.com/tag/truecode-capital/"
+    description: "Fintech trade coverage of the post-FTX market shakeup, featuring TrueCode Capital and Peck."
+    featured: false
+
+  - date: "2022-10-27"
+    publication: Young Jewish Professionals
+    title: "Dinner & Panel: The Current Crypto Market & What's Next For Digital Assets"
+    url: "https://access.yjp.org/events/dinner_panel_the_current_crypto_market_what_s_next_for_digital_assets_2022_10_27"
+    description: "Panel appearance discussing the state of the crypto market and the outlook for digital assets."
+    media_type: event
+    featured: false
+
+  - date: null
+    publication: Middle East Business Magazine and News
+    title: "As the Stock Market Sinks, Is Investing in Cryptocurrency a Trick or a Treat?"
+    url: "https://middleeast-business.com/as-the-stock-market-sinks-is-investing-in-cryptocurrency-a-trick-or-a-treat/"
+    description: "Commentary on crypto allocation during an equity drawdown, featuring Peck's expert view."
+    featured: false
+
+  - date: null
+    publication: Advisor Magazine (Life Health)
+    title: "As the Stock Market Sinks, Is Investing In Cryptocurrency A Boom Or A Bust?"
+    url: "https://www.lifehealth.com/as-the-stock-market-sinks-is-investing-in-cryptocurrency-a-boom-or-a-bust/"
+    description: "Advisor-focused piece on whether crypto is a boom or bust amid falling equities. Peck quoted."
+    featured: false
+
+  - date: null
+    publication: FintechZoom
+    title: "As the Stock Market Sinks, Is Investing in Cryptocurrency a Boom or a Bust? Expert Explains"
+    url: "https://fintechzoom.com/fintech_news_opinion/as-the-stock-market-sinks-is-investing-in-cryptocurrency-a-boom-or-a-bust-expert-explains/"
+    description: "Syndicated expert commentary from Peck on crypto investing during a stock market decline."
+    featured: false
+
+  - date: null
+    publication: Fortune Herald
+    title: "As the Stock Market Sinks, Is Investing in Cryptocurrency a Boom or a Bust? Expert Explains"
+    url: "https://fortuneherald.com/finance/as-the-stock-market-sinks-is-investing-in-cryptocurrency-a-boom-or-a-bust-expert-explains/"
+    description: "Syndicated expert commentary from Peck on crypto investing during a stock market decline."
+    featured: false
+
+  - date: null
+    publication: Financial Investor 24
+    title: "As the Stock Market Sinks, Is Investing in Cryptocurrency a Trick or a Treat? Expert Explains"
+    url: "https://www.financialinvestor24.com/crypto/2175/as-the-stock-market-sinks-is-investing-in-cryptocurrency-a-trick-or-a-treat-expert-explains/"
+    description: "Syndicated expert commentary from Peck on crypto investing during a stock market decline."
+    featured: false
+
+  - date: null
+    publication: Live Bitcoin News
+    title: "Joshua Peck Discusses the State of Crypto"
+    url: "https://www.livebitcoinnews.com/joshua-peck-discusses-the-state-of-crypto/"
+    description: "Interview with Peck on the current state of the cryptocurrency market."
+    media_type: interview
+    featured: false
+
+  - date: null
+    publication: TechBullion
+    title: "The Emerging Cryptocurrency Market: Interview with Joshua Peck, Founder of TrueCode Capital"
+    url: "https://techbullion.com/the-emerging-cryptocurrency-market-interview-with-joshua-peck-founder-of-truecode-capital/"
+    description: "Interview with Peck on the emerging crypto market and TrueCode Capital's approach."
+    media_type: interview
+    featured: false
+
+  - date: null
+    publication: U.S. News & World Report
+    title: "The History of Bitcoin, the First Cryptocurrency"
+    url: "https://money.usnews.com/investing/articles/the-history-of-bitcoin"
+    description: "Explainer on bitcoin's origins and market evolution, citing Peck as an expert source."
+    featured: false
+
+  - date: null
+    publication: Modern Professional
+    title: "A Founder's Journey Includes Doing the Deep Work That Only You Can Do"
+    url: "https://www.modernprofessional.co/articles/founders-journey-joshua-peck"
+    description: "Profile/interview on Peck's founder journey and the deep work required to build a fund."
+    media_type: interview
+    featured: false
+
+  - date: null
+    publication: Columnist24
+    title: "Pros, Pitfalls and Key Takeaways of Cryptocurrency Investments"
+    url: "https://www.columnist24.com/business/3736/pros-pitfalls-and-key-takeaways-of-cryptocurrency-investments/"
+    description: "Overview of crypto investment upside and risk, featuring Peck's commentary."
+    featured: false
+
+  - date: null
+    publication: Journal of Cyber Policy
+    title: "Solid Strategies For Confident Cryptocurrency Investments"
+    url: "https://journalofcyberpolicy.com/solid-strategies-for-confident-cryptocurrency-investments/"
+    description: "Piece on disciplined crypto investment strategy and security practices, featuring Peck."
+    featured: false
+
+  - date: null
+    publication: Korea IT Times
+    title: "TrueCode Capital Fund Update - FTX & Deribit Failures"
+    url: "https://www.koreaittimes.com/news/articleView.html?idxno=117220"
+    description: "TrueCode Capital fund update from Peck on the FTX and Deribit failures and their fund impact."
+    featured: false
+
+  - date: null
+    publication: BioSpace
+    title: "How to Enhance Your Personal Executive Brand and Expand Your Influence"
+    url: "https://www.biospace.com/article/how-to-enhance-your-personal-executive-brand-and-expand-your-influence/"
+    description: "Career/leadership feature on building an executive brand, including Peck's perspective."
+    featured: false
+
+  - date: null
+    publication: CNA (Channel News Asia)
+    title: "Cryptoverse: Bitcoin investors take control"
+    url: "https://www.channelnewsasia.com/business/cryptoverse-bitcoin-investors-take-control-3227606"
+    description: "Syndication of the Reuters Cryptoverse self-custody column featuring Peck."
+    featured: false
+
+  - date: "2023-01-24"
+    publication: Euronews
+    title: "Cryptoverse: Bitcoin investors take control"
+    url: "https://www.euronews.com/next/2023/01/24/fintech-crypto-weekly"
+    description: "Euronews fintech/crypto weekly roundup carrying the Reuters self-custody column featuring Peck."
+    featured: false
+
+  - date: null
+    publication: Milan Fintech Summit
+    title: "The New Bitcoin's Hit And Solid Strategies For Confident Cryptocurrency Investments"
+    url: "https://www.milanfintechsummit.com/bitcoin-and-cryptocurrency-investments/"
+    description: "Feature on bitcoin market conditions and disciplined investment strategy, featuring Peck."
+    featured: false
+
+  - date: null
+    publication: Deep Wealth Podcast
+    title: "Adam Blakney and Josh Peck On Mastering The Post-Exit Life For Happiness And Prosperity (Episode 108)"
+    url: "https://www.deepwealth.com/podcast/adam-blakney-and-josh-peck-episode-108"
+    description: "Podcast episode with Peck on managing wealth and life after a business exit."
+    media_type: podcast
+    featured: false
+
+  - date: null
+    publication: Better Auds
+    title: "Joshua Peck, Author of Cryptocurrency Risk Management: A Guide for Family Wealth Managers"
+    url: "https://betterauds.com/featured/joshua-peck-author-of-cryptocurrency-risk-management-a-guide-for-family-wealth-managers/"
+    description: "Feature on Peck's book, Cryptocurrency Risk Management, aimed at family wealth managers."
+    featured: false
+
+  - date: "2022-08-31"
+    publication: WTOP News
+    title: "The History of Bitcoin, the First Cryptocurrency"
+    url: "https://wtop.com/news/2022/08/the-history-of-bitcoin-the-first-cryptocurrency-2/"
+    description: "Syndicated explainer on bitcoin's history and evolution, citing Peck as an expert source. Article footer notes 'Update 08/31/22'; originally published earlier."
+    featured: false
+
+  - date: null
+    publication: L'Expert Journal
+    title: "Despite recent debacles in Crypto Space, Now may be a great time to Invest"
+    url: "https://lexpertjournal.net/fr/despite-recent-debacles-in-crypto-space-now-may-be-a-great-time-to-invest/"
+    description: "Commentary arguing the post-collapse crypto market presents an entry point, featuring Peck."
+    featured: false
