@@ -1,8 +1,9 @@
 ---
 title:       "Regime Detection"
 description: "MacroContext regime detection — identifying which behavioral state the S&P 500 is currently in, updated weekly."
-eyebrow:     "MacroContext · Lab"
+eyebrow:     "Lab · Regime Detection"
 layout:      "regime-detection"
+image:       "/images/regime_detection.png"
 ---
 
 MacroContext is a quantitative framework that classifies every trading day into one of three macro regimes — Extremes, Neutral, or Danger — using 16 macro and market stress indicators. By systematically reducing equity exposure during confirmed stress periods, the framework has historically produced nearly double the Sharpe ratio with 38% less volatility than buy-and-hold.
