@@ -1,0 +1,6 @@
+{{- /* No-JS email obfuscation: entity-encode @ and . in both href and text.
+       The browser decodes the entities (mailto works, screen readers announce
+       the real address, copy-paste is intact), while naive @-regex scrapers miss it.
+       Params: addr (required), class (optional). */ -}}
+{{- $enc := replace (replace .addr "@" "&#64;") "." "&#46;" -}}
+{{- printf `<a href="mailto:%s" class="%s">%s</a>` $enc (.class | default "") $enc | safeHTML -}}

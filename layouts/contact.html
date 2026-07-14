@@ -1,0 +1,79 @@
+{{ define "main" }}
+
+{{ $mailClass := "font-mono text-base text-navy no-underline border-b-2 border-gold pb-px hover:text-gold-dark hover:border-gold-dark transition-colors duration-200" }}
+
+<!-- ════════ Header ════════ -->
+<header class="bg-navy border-b-4 border-gold px-6 lg:px-20 pt-20 pb-16">
+  <div class="max-w-content mx-auto">
+    <h1 class="font-display font-bold text-white leading-tight text-4xl md:text-5xl mb-4">{{ .Title }}</h1>
+    {{ with .Params.subhead }}
+    <p class="text-white/60 text-lg max-w-xl leading-relaxed">{{ . }}</p>
+    {{ end }}
+  </div>
+</header>
+
+<!-- ════════ Routing block ════════ -->
+<section class="bg-cream px-6 lg:px-20 py-16 border-b border-silk">
+  <div class="max-w-5xl mx-auto">
+
+    <!-- Three channels, ordered by preference: social · media · email -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-px bg-silk rounded-xl overflow-hidden border border-silk">
+
+      <!-- Reach me online (first) -->
+      <address class="not-italic bg-white p-8 flex flex-col gap-3">
+        <span class="font-mono text-xs font-medium tracking-widest uppercase text-muted">Reach me online</span>
+        <a href="https://x.com/joshpeck" target="_blank" rel="noopener noreferrer" class="{{ $mailClass }}">@joshpeck</a>
+        <p class="font-sans text-base text-navy leading-relaxed">On X. Public posts and DMs.</p>
+      </address>
+
+      <!-- Media inquiries (center) -->
+      <address class="not-italic bg-white p-8 flex flex-col gap-3">
+        <a href="/media/" class="font-mono text-xs font-medium tracking-widest uppercase text-gold no-underline hover:text-gold-dark transition-colors duration-200 w-fit">Media inquiries →</a>
+        {{ partial "obfuscated-email.html" (dict "addr" "media@truecodecapital.com" "class" $mailClass) }}
+        <p class="font-sans text-base text-navy leading-relaxed">Press, interviews, and quotes.</p>
+        <p class="font-sans text-sm text-muted leading-relaxed">
+          Monitored. Journalists on deadline should use this.
+        </p>
+      </address>
+
+      <!-- General inquiries (last) -->
+      <address class="not-italic bg-white p-8 flex flex-col gap-3">
+        <span class="font-mono text-xs font-medium tracking-widest uppercase text-muted">General inquiries</span>
+        {{ partial "obfuscated-email.html" (dict "addr" "info@truecodecapital.com" "class" $mailClass) }}
+        <p class="font-sans text-base text-navy leading-relaxed">Everything else — if email is the only option.</p>
+        <p class="font-sans text-sm text-muted leading-relaxed">
+          I check this inbox about once a week. If you need a fast answer, this is not the place.
+        </p>
+      </address>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════ TrueCode Capital ════════ -->
+<section class="bg-white px-6 lg:px-20 py-14 border-b border-silk">
+  <div class="max-w-content mx-auto">
+    <p class="font-mono text-xs font-medium tracking-widest uppercase text-gold mb-3">Investment matters</p>
+    <p class="font-sans text-base text-navy leading-relaxed max-w-2xl mb-4">
+      TrueCode Capital is a private investment management company. It takes no outside capital.
+      For anything on the investing side, go there rather than emailing this site.
+    </p>
+    <a href="https://truecodecapital.com" target="_blank" rel="noopener noreferrer"
+       class="font-sans text-sm font-semibold text-navy no-underline inline-flex items-center gap-1 border-b-2 border-gold pb-px w-fit hover:text-gold-dark hover:border-gold-dark transition-colors duration-200">
+      truecodecapital.com →
+    </a>
+  </div>
+</section>
+
+{{/* ════════ schema.org/ContactPage structured data (no telephone, no email) ════════ */}}
+{{ $ld := dict
+  "@context" "https://schema.org"
+  "@type" "ContactPage"
+  "name" "Contact — Joshua M. Peck"
+  "url" "https://joshuampeck.com/contact/"
+  "about" (dict "@type" "Person" "name" "Joshua M. Peck")
+}}
+<script type="application/ld+json">{{ $ld | jsonify | safeJS }}</script>
+
+{{ end }}
