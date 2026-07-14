@@ -27,13 +27,13 @@ enableRobotsTXT   = true
   target = "assets"
 
 [[menu.main]]
-  name = "Lab"
-  url = "/lab/"
+  name = "Newsletter"
+  url = "https://newsletter.joshuampeck.com/"
   weight = 1
 
 [[menu.main]]
-  name = "Newsletter"
-  url = "https://newsletter.joshuampeck.com/"
+  name = "Lab"
+  url = "/lab/"
   weight = 2
 
 [[menu.main]]
@@ -45,6 +45,11 @@ enableRobotsTXT   = true
   name = "Media"
   url = "/media/"
   weight = 4
+
+[[menu.main]]
+  name = "Contact"
+  url = "/contact/"
+  weight = 5
 
 [params]
   newsletterURL = "https://newsletter.joshuampeck.com/"
